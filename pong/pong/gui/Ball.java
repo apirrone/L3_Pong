@@ -42,7 +42,7 @@ public class Ball {
 		this.width = this.icon.getIconWidth();
 		this.height = this.icon.getIconHeight();
 		this.speed = new Point(ball_speed, ball_speed);
-		this.position = new Point(0, 0);
+		this.position = new Point(150, 0);
 	}
 
 	/**
@@ -83,7 +83,9 @@ public class Ball {
 	/**
 	 * Move ball position
 	 */
-	public void moveBall(int size_pong_x, int size_pong_y) {
+	public void moveBall(int size_pong_x, int size_pong_y, boolean coalition) {
+		if (coalition)
+			speed.x = -speed.x;
 		position.translate(speed.x, speed.y);
 		if (position.x < 0)
 		{

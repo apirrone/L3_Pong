@@ -83,7 +83,7 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	public void animate() {
 		/* Update ball position */
-		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y);
+		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, ballOnRacket(ball, racket));
 
 		/* Update racket position */
 		racket.moveRacket(SIZE_PONG_Y);
@@ -91,6 +91,19 @@ public class Pong extends JPanel implements KeyListener {
 		/* And update output */
 		updateScreen();
 	}
+
+	/**
+         * Test if the ball is on the racket
+	 */
+	public boolean ballOnRacket(Ball ball, Racket racket) {
+		return ((ball.getPosition().x == racket.getPosition().x + racket.getWidth() &&
+			ball.getPosition().y > racket.getPosition().y &&
+			ball.getPosition().y < racket.getPosition().y + racket.getHeight())||(
+			ball.getPosition().x == racket.getPosition().x + racket.getWidth() &&
+			ball.getPosition().y + ball.getHeight() > racket.getPosition().y &&
+			ball.getPosition().y + ball.getHeight() < racket.getPosition().y + racket.getHeight()));
+	}
+
 
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {

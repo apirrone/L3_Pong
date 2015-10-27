@@ -42,7 +42,7 @@ public class Racket {
 		this.width = this.icon.getIconWidth();
 		this.height = this.icon.getIconHeight();
 		this.speed = 0;
-		this.position = new Point(0, 0);
+		this.position = new Point(99, 0);
 	}
 
 	/**
@@ -89,6 +89,7 @@ public class Racket {
 			position.y = 0;
 		if (position.y > size_pong_y - height/2)
 			position.y = size_pong_y - height/2;
+		//System.out.println("\nposition X : "+position.x+"\nposition Y : "+position.y+"\nlargeur : "+width+"\nhauteur : "+height+"\n");
 	}
 		
 }
