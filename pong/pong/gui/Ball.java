@@ -4,44 +4,44 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
-public class Racket {
+public class Ball {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * One Racket to be displayed
+	 * One Ball to be displayed
 	 */
 	private final Image image;
 	/**
-	 * Icon of Racket
+	 * Icon of Ball
 	 */
 	private final ImageIcon icon;
 	/**
-	 * Width of the racket in pixels
+	 * Width of the ball in pixels
 	 */
 	private int width;
 	/**
-	 * Height of the racket in pixels
+	 * Height of the ball in pixels
 	 */
 	private int height;
 	/**
-	 * Speed of racket, in pixels per timestamp
+	 * Speed of ball, in pixels per timestamp
 	 */
-	private int speed;
+	private Point speed;
 	/**
-	 * Position of racket
+	 * Position of ball
 	 */
 	private Point position;
 
 	/**
-	 * Constructor of racket
+	 * Constructor of ball
 	 */
-	public Racket(Image image) {
+	public Ball(Image image, int ball_speed) {
 		this.image = image;
 		this.icon = new ImageIcon(this.image);
 		this.width = this.icon.getIconWidth();
 		this.height = this.icon.getIconHeight();
-		this.speed = 0;
+		this.speed = new Point(ball_speed, ball_speed);
 		this.position = new Point(0, 0);
 	}
 
@@ -64,7 +64,7 @@ public class Racket {
 		return height;
 	}
 
-	public int getSpeed() {
+	public Point getSpeed() {
 		return speed;
 	}
 
@@ -72,8 +72,8 @@ public class Racket {
 		return position;
 	}
 
-	public void setSpeed(int speed) {
-		this.speed = speed;
+	public void setSpeed(Point speed) {
+		this.speed.setLocation(speed);
 	}
 
 	public void setPosition(Point position) {
@@ -81,17 +81,31 @@ public class Racket {
 	}
 
 	/**
-	 * Move racket position
+	 * Move ball position
 	 */
-	public void moveRacket(int size_pong_y) {
-		position.y += speed;
+	public void moveBall(int size_pong_x, int size_pong_y) {
+		position.translate(speed.x, speed.y);
+		if (position.x < 0)
+		{
+			position.x = 0;
+			speed.x = -speed.x;
+		}
 		if (position.y < 0)
+		{
 			position.y = 0;
-		if (position.y > size_pong_y - height/2)
-			position.y = size_pong_y - height/2;
+			speed.y = -speed.y;
+		}
+		if (position.x > size_pong_x - width)
+		{
+			position.x = size_pong_x - width;
+			speed.x = -speed.x;
+		}
+		if (position.y > size_pong_y - height)
+		{
+			position.y = size_pong_y - height;
+			speed.y = -speed.y;
+		}
 	}
 		
 }
-
-
 

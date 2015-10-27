@@ -59,67 +59,21 @@ public class Pong extends JPanel implements KeyListener {
 	private Graphics graphicContext = null;
 
 	/**
-	 * Ball to be displayed
+	 * One Ball to be displayed
 	 */
-	private final Image ball;
-	/**
-	 * Width of ball in pixels
-	 */
-	private int ball_width;
-	/**
-	 * Height of ball in pixels
-	 */
-	private int ball_height;
-	/**
-	 * Position of ball
-	 */
-	private Point ball_position = new Point(0, 0);
-	/**
-	 * Speed of ball, in pixels per timestep
-	 */
-	private Point ball_speed = new Point(BALL_SPEED, BALL_SPEED);
+	private Ball ball;
 
 	/**
 	 * One Racket to be displayed
 	 */
 	private Racket racket;
-	//private final Image racket;
-	/**
-	 * Width of the racket in pixels
-	 */
-	//private int racket_width;
-	/**
-	 * Height of the racket in pixels
-	 */
-	//private int racket_height;
-	/**
-	 * Speed of racket, in pixels per timestamp
-	 */
-	//private int racket_speed;
-	/**
-	 * Position of racket
-	 */
-	//private Point racket_position = new Point(0, 0);
 
 	public Pong() {
-		ImageIcon icon;
-
-		this.ball = Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("image/ball.png"));
-		icon = new ImageIcon(ball);
-		this.ball_width = icon.getIconWidth();
-		this.ball_height = icon.getIconHeight();
-
+		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
+				ClassLoader.getSystemResource("image/ball.png")),
+				BALL_SPEED);
 		this.racket = new Racket(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("image/racket.png")));
-		/*
-		this.racket = Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("image/racket.png"));
-		icon = new ImageIcon(racket);
-		this.racket_width = icon.getIconWidth();
-		this.racket_height = icon.getIconHeight();
-		*/
-
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
 	}
@@ -129,36 +83,9 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	public void animate() {
 		/* Update ball position */
-		ball_position.translate(ball_speed.x, ball_speed.y);
-		if (ball_position.x < 0)
-		{
-			ball_position.x = 0;
-			ball_speed.x = -ball_speed.x;
-		}
-		if (ball_position.y < 0)
-		{
-			ball_position.y = 0;
-			ball_speed.y = -ball_speed.y;
-		}
-		if (ball_position.x > SIZE_PONG_X - ball_width)
-		{
-			ball_position.x = SIZE_PONG_X - ball_width;
-			ball_speed.x = -ball_speed.x;
-		}
-		if (ball_position.y > SIZE_PONG_Y - ball_height)
-		{
-			ball_position.y = SIZE_PONG_Y - ball_height;
-			ball_speed.y = -ball_speed.y;
-		}
+		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y);
 
 		/* Update racket position */
-		/*
-		racket_position.y += racket_speed;
-		if (racket_position.y < 0)
-			racket_position.y = 0;
-		if (racket_position.y > SIZE_PONG_Y - racket_height/2)
-			racket_position.y = SIZE_PONG_Y - racket_height/2;
-		*/
 		racket.moveRacket(SIZE_PONG_Y);
 
 		/* And update output */
@@ -227,7 +154,7 @@ public class Pong extends JPanel implements KeyListener {
 		graphicContext.fillRect(0, 0, SIZE_PONG_X, SIZE_PONG_Y);
 
 		/* Draw items */
-		graphicContext.drawImage(ball, ball_position.x, ball_position.y, ball_width, ball_height, null);
+		graphicContext.drawImage(ball.getImage(), ball.getPosition().x, ball.getPosition().y, ball.getWidth(), ball.getHeight(), null);
 		graphicContext.drawImage(racket.getImage(), racket.getPosition().x, racket.getPosition().y, racket.getWidth(), racket.getHeight(), null);
 
 		this.repaint();
