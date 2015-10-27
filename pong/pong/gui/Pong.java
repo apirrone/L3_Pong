@@ -82,23 +82,24 @@ public class Pong extends JPanel implements KeyListener {
 	/**
 	 * One Racket to be displayed
 	 */
-	private final Image racket;
+	private Racket racket;
+	//private final Image racket;
 	/**
 	 * Width of the racket in pixels
 	 */
-	private int racket_width;
+	//private int racket_width;
 	/**
 	 * Height of the racket in pixels
 	 */
-	private int racket_height;
+	//private int racket_height;
 	/**
 	 * Speed of racket, in pixels per timestamp
 	 */
-	private int racket_speed;
+	//private int racket_speed;
 	/**
 	 * Position of racket
 	 */
-	private Point racket_position = new Point(0, 0);
+	//private Point racket_position = new Point(0, 0);
 
 	public Pong() {
 		ImageIcon icon;
@@ -109,11 +110,15 @@ public class Pong extends JPanel implements KeyListener {
 		this.ball_width = icon.getIconWidth();
 		this.ball_height = icon.getIconHeight();
 
+		this.racket = new Racket(Toolkit.getDefaultToolkit().createImage(
+				ClassLoader.getSystemResource("image/racket.png")));
+		/*
 		this.racket = Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("image/racket.png"));
 		icon = new ImageIcon(racket);
 		this.racket_width = icon.getIconWidth();
 		this.racket_height = icon.getIconHeight();
+		*/
 
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
@@ -147,11 +152,14 @@ public class Pong extends JPanel implements KeyListener {
 		}
 
 		/* Update racket position */
+		/*
 		racket_position.y += racket_speed;
 		if (racket_position.y < 0)
 			racket_position.y = 0;
 		if (racket_position.y > SIZE_PONG_Y - racket_height/2)
 			racket_position.y = SIZE_PONG_Y - racket_height/2;
+		*/
+		racket.moveRacket(SIZE_PONG_Y);
 
 		/* And update output */
 		updateScreen();
@@ -161,11 +169,11 @@ public class Pong extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_KP_UP:
-				racket_speed = -RACKET_SPEED;
+				racket.setSpeed(racket.getSpeed()-RACKET_SPEED);
 				break;
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_KP_DOWN:
-				racket_speed = RACKET_SPEED;
+				racket.setSpeed(RACKET_SPEED);
 				break;
 			default:
 				System.out.println("got press "+e);
@@ -175,11 +183,11 @@ public class Pong extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_KP_UP:
-				racket_speed = 0;
+				racket.setSpeed(0);
 				break;
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_KP_DOWN:
-				racket_speed = 0;
+				racket.setSpeed(0);
 				break;
 			default:
 				System.out.println("got release "+e);
@@ -220,7 +228,7 @@ public class Pong extends JPanel implements KeyListener {
 
 		/* Draw items */
 		graphicContext.drawImage(ball, ball_position.x, ball_position.y, ball_width, ball_height, null);
-		graphicContext.drawImage(racket, racket_position.x, racket_position.y, racket_width, racket_height, null);
+		graphicContext.drawImage(racket.getImage(), racket.getPosition().x, racket.getPosition().y, racket.getWidth(), racket.getHeight(), null);
 
 		this.repaint();
 	}
