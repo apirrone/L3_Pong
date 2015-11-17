@@ -1,4 +1,4 @@
-package pong.gui;
+package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -70,10 +70,10 @@ public class Pong extends JPanel implements KeyListener {
 
 	public Pong() {
 		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("image/ball.png")),
+				ClassLoader.getSystemResource("ressource/ball.png")),
 				BALL_SPEED);
 		this.racket = new Racket(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("image/racket.png")));
+				ClassLoader.getSystemResource("ressource/racket.png")));
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
 	}

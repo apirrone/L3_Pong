@@ -1,4 +1,4 @@
-package pong.util;
+package util;
 
 import java.awt.Point;
 
