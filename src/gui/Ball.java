@@ -80,6 +80,7 @@ public class Ball {
 		this.position.setLocation(position);
 	}
 
+
 	/**
 	 * Move ball position
 	 */
