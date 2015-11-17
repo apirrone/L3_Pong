@@ -13,9 +13,9 @@ public class Client {
 		
 	}
 	
-	public void connect(InetAddress address, int port){
+	public void connect(String address, int port){
 		try {
-			socket = new Socket(address, port);
+			socket = new Socket(InetAddress.getByName(address), port);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
