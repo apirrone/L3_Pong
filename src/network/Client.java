@@ -20,5 +20,9 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+	public String getData(){
+		String data= "";
+		return data;
+	}
 	
 }
