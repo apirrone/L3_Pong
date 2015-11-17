@@ -14,6 +14,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import network.Client;
+import network.Server;
+
 /**
  * An Pong is a Java graphical container that extends the JPanel class in
  * order to display graphical elements.
@@ -63,19 +66,31 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	private Ball ball;
 
-	/**
-	 * One Racket to be displayed
-	 */
-	private Racket racket;
+	private Racket racketPlayer;
+	private Racket racketOpponent;
 
-	public Pong() {
+	public Pong(String[] args) {
 		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/ball.png")),
 				BALL_SPEED);
-		this.racket = new Racket(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/racket.png")));
+		this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
+				ClassLoader.getSystemResource("ressource/racket.png")), true);
+		
+		this.racketOpponent = new Racket(Toolkit.getDefaultToolkit().createImage(
+				ClassLoader.getSystemResource("ressource/racket.png")), false);
+		
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
+		
+		if(args.length == 0){//Serveur
+			Server server = new Server(2009);
+			server.waitForConnection();
+		}
+		else{//client
+			Client client = new Client();
+			String addr = args[0];
+			client.connect(addr, 2009);
+		}
 	}
 
 	/**
@@ -83,10 +98,12 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	public void animate() {
 		/* Update ball position */
-		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, ballOnRacket(ball, racket));
+		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, ballOnRacket(ball, racketPlayer));
 
 		/* Update racket position */
-		racket.moveRacket(SIZE_PONG_Y);
+		racketPlayer.moveRacket(SIZE_PONG_Y);
+		/* Update racket position */
+		racketOpponent.moveRacket(SIZE_PONG_Y);
 
 		/* And update output */
 		updateScreen();
@@ -109,11 +126,11 @@ public class Pong extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_KP_UP:
-				racket.setSpeed(racket.getSpeed()-RACKET_SPEED);
+				racketPlayer.setSpeed(racketPlayer.getSpeed()-RACKET_SPEED);
 				break;
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_KP_DOWN:
-				racket.setSpeed(RACKET_SPEED);
+				racketPlayer.setSpeed(RACKET_SPEED);
 				break;
 			default:
 				System.out.println("got press "+e);
@@ -123,11 +140,11 @@ public class Pong extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_KP_UP:
-				racket.setSpeed(0);
+				racketPlayer.setSpeed(0);
 				break;
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_KP_DOWN:
-				racket.setSpeed(0);
+				racketPlayer.setSpeed(0);
 				break;
 			default:
 				System.out.println("got release "+e);
@@ -168,7 +185,8 @@ public class Pong extends JPanel implements KeyListener {
 
 		/* Draw items */
 		graphicContext.drawImage(ball.getImage(), ball.getPosition().x, ball.getPosition().y, ball.getWidth(), ball.getHeight(), null);
-		graphicContext.drawImage(racket.getImage(), racket.getPosition().x, racket.getPosition().y, racket.getWidth(), racket.getHeight(), null);
+		graphicContext.drawImage(racketPlayer.getImage(), racketPlayer.getPosition().x, racketPlayer.getPosition().y, racketPlayer.getWidth(), racketPlayer.getHeight(), null);
+		graphicContext.drawImage(racketOpponent.getImage(), racketOpponent.getPosition().x, racketOpponent.getPosition().y, racketOpponent.getWidth(), racketOpponent.getHeight(), null);
 
 		this.repaint();
 	}

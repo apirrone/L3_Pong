@@ -83,8 +83,8 @@ public class Ball {
 	/**
 	 * Move ball position
 	 */
-	public void moveBall(int size_pong_x, int size_pong_y, boolean coalition) {
-		if (coalition)
+	public void moveBall(int size_pong_x, int size_pong_y, boolean collision) {
+		if (collision)
 			speed.x = -speed.x;
 		position.translate(speed.x, speed.y);
 		if (position.x < 0)

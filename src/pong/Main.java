@@ -15,17 +15,7 @@ import gui.Pong;
 public class Main  {
 	public static void main(String[] args) {
 		
-		if(args.length == 0){//Serveur
-			Server server = new Server(2009);
-			server.waitForConnection();
-		}
-		else{//client
-			Client client = new Client();
-			String addr = args[0];
-			client.connect(addr, 2009);
-		}
-		
-		Pong pong = new Pong();
+		Pong pong = new Pong(args);
 		Window window = new Window(pong);
 		window.displayOnscreen();
 	}

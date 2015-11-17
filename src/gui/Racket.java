@@ -36,13 +36,16 @@ public class Racket {
 	/**
 	 * Constructor of racket
 	 */
-	public Racket(Image image) {
+	public Racket(Image image, boolean player) {
 		this.image = image;
 		this.icon = new ImageIcon(this.image);
 		this.width = this.icon.getIconWidth();
 		this.height = this.icon.getIconHeight();
 		this.speed = 0;
-		this.position = new Point(99, 0);
+		if(player)
+			this.position = new Point(99, 0);
+		else
+			this.position = new Point(750, 0);
 	}
 
 	/**
