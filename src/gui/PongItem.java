@@ -83,5 +83,6 @@ public class PongItem {
 	 * Move racket position
 	 */
 	public void movePongItem() {
+		
 		}
 }
