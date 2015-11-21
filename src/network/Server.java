@@ -3,11 +3,13 @@ package network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.io.PrintWriter;
 
-public class Server {
+public class Server{
 	
 	private ServerSocket serverSocket;
 	private Socket socket;
+	private PrintWriter out;
 	
 	public Server(int port){
 		try {
@@ -27,6 +29,16 @@ public class Server {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void setData(){
+		try{
+			out = new PrintWriter(socket.getOutputStream());
+			out.println("Vous êtes connecté");
+			out.flush();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
 	}
 
 }

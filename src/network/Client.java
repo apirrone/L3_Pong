@@ -6,10 +6,13 @@ import gui.Ball;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Client {
 	
 	private Socket socket;
+	private BufferedReader in;
 	
 	public Client(){
 		
@@ -23,7 +26,7 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
-	public String getData(Racket r, Ball b){
+	public String getDataTempo(Racket r, Ball b){
 		String data= "";
 		//ajout en string de position de racket
 		data +=Integer.toString(r.getWidth()) + Integer.toString(r.getHeight()) + Integer.toString(r.getSpeed()) + 
@@ -34,5 +37,16 @@ public class Client {
 				Integer.toString(b.getSpeed().y) + (b.getPosition().x) + (b.getPosition().y);
 		return data;
 	}
+	
+	public void getData(){
+		try{
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String messageRecu = in.readLine();
+			System.out.println(messageRecu);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

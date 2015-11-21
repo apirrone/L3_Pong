@@ -69,7 +69,7 @@ public class Pong extends JPanel implements KeyListener {
 	private Racket racketPlayer;
 	private Racket racketOpponent;
 
-	public Pong(String[] args) {
+	public Pong() {
 		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/ball.png")),
 				BALL_SPEED);
@@ -81,16 +81,7 @@ public class Pong extends JPanel implements KeyListener {
 		
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
-		
-		if(args.length == 0){//Serveur
-			Server server = new Server(2009);
-			server.waitForConnection();
-		}
-		else{//client
-			Client client = new Client();
-			String addr = args[0];
-			client.connect(addr, 2009);
-		}
+	
 	}
 
 	/**
