@@ -14,7 +14,7 @@ public class Server{
 	public Server(int port){
 		try {
 			serverSocket = new ServerSocket(port);
-		} catch (IOException e) {
+		} catch (IOException e){
 			e.printStackTrace();
 		}
 	}
@@ -22,6 +22,7 @@ public class Server{
 	public void waitForConnection(){
 		try {
 			serverSocket.setSoTimeout(30000);
+			System.out.println("Attente de connexion, 30 secondes avant déconnexion\n");
 			socket = serverSocket.accept();//Bloquant : Attend une connexion (timeout de 30 secondes)
 			System.out.println("Connexion établie");
 			
