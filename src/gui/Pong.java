@@ -190,4 +190,12 @@ public class Pong extends JPanel implements KeyListener {
 
 		this.repaint();
 	}
+	
+	public void sendData(){
+		
+	}
+	
+	public void receiveData(){
+		
+	}
 }
