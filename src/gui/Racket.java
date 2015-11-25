@@ -83,6 +83,9 @@ public class Racket {
 		this.position.setLocation(position);
 	}
 
+	public void setY(int y){
+		this.position = new Point((int)this.position.getX(), y);
+	}
 	/**
 	 * Move racket position
 	 */

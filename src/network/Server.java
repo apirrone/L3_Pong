@@ -1,6 +1,8 @@
 package network;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.PrintWriter;
@@ -32,14 +34,32 @@ public class Server{
 		
 	}
 	
-	public void setData(){
+	public void setData(CustomProtocol p){
+		
+		PrintWriter out;
+		
 		try{
 			out = new PrintWriter(socket.getOutputStream());
-			out.println("Vous êtes connecté");
+			out.println(p.toString());
 			out.flush();
 		} catch (IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	public CustomProtocol getData(){
+		BufferedReader in;
+		
+		CustomProtocol c = new CustomProtocol("error");
+		try{
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String messageRecu = in.readLine();
+			c = new CustomProtocol(messageRecu);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		return c;
 	}
 
 }

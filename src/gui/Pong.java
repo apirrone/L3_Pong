@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import network.Client;
+import network.CustomProtocol;
 import network.Server;
 
 /**
@@ -69,7 +70,29 @@ public class Pong extends JPanel implements KeyListener {
 	private Racket racketPlayer;
 	private Racket racketOpponent;
 
-	public Pong() {
+	private Client client;
+	private Server server;
+	
+	
+	//Si on est un serveur
+	public Pong(Server s) {
+		this.server = s;
+		this.client = null;
+		
+		construct();
+	}
+	
+	//Si on est un client
+	public Pong(Client c){
+		this.client = c;
+		this.server = null;
+		
+		construct();
+	}
+
+	
+	//Par soucis de factorisation
+	public void construct(){
 		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/ball.png")),
 				BALL_SPEED);
@@ -81,9 +104,8 @@ public class Pong extends JPanel implements KeyListener {
 		
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
-	
 	}
-
+	
 	/**
          * Proceeds to the movement of the ball and updates the screen
 	 */
@@ -162,6 +184,9 @@ public class Pong extends JPanel implements KeyListener {
 	 * Draw each Pong item based on new positions
 	 */
 	public void updateScreen() {
+		
+		sendReceiveData();
+		
 		if (buffer == null) {
 			/* First time we get called with all windows initialized */
 			buffer = createImage(SIZE_PONG_X, SIZE_PONG_Y);
@@ -182,8 +207,20 @@ public class Pong extends JPanel implements KeyListener {
 		this.repaint();
 	}
 	
-	public void sendData(){
-		
+	public void sendReceiveData(){
+		if(this.client == null){//Je suis serveur
+			server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
+			CustomProtocol p = server.getData();
+			System.out.println("SERVER : "+p.toString());
+			racketOpponent.setY(p.getRacketY());
+		}
+		else{//Je suis client
+			client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
+			CustomProtocol p = client.getData();
+			System.out.println("CLIENT : "+p.toString());
+
+			racketOpponent.setY(p.getRacketY());
+		}
 	}
 	
 	public void receiveData(){
