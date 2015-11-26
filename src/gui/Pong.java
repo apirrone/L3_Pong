@@ -17,8 +17,6 @@ import javax.swing.JPanel;
 import network.Client;
 import network.CustomProtocol;
 import network.Server;
-import tests.Tests;
-
 
 /**
  * An Pong is a Java graphical container that extends the JPanel class in
