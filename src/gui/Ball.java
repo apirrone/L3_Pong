@@ -84,9 +84,11 @@ public class Ball {
 	/**
 	 * Move ball position
 	 */
-	public void moveBall(int size_pong_x, int size_pong_y, boolean collision) {
+	public void moveBall(int size_pong_x, int size_pong_y, boolean collision, boolean collisionHauteur) {
 		if (collision)
 			speed.x = -speed.x;
+		if (collisionHauteur)
+			speed.y = -speed.y;
 		position.translate(speed.x, speed.y);
 		if (position.x < 0)
 		{

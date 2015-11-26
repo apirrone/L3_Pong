@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import network.Client;
 import network.CustomProtocol;
 import network.Server;
+import tests.Tests;
+
 
 /**
  * An Pong is a Java graphical container that extends the JPanel class in
@@ -97,10 +99,10 @@ public class Pong extends JPanel implements KeyListener {
 				ClassLoader.getSystemResource("ressource/ball.png")),
 				BALL_SPEED);
 		this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/racket.png")), true);
+				ClassLoader.getSystemResource("ressource/barrePong.png")), true);
 		
 		this.racketOpponent = new Racket(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/racket.png")), false);
+				ClassLoader.getSystemResource("ressource/barrePong.png")), false);
 		
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
@@ -111,29 +113,16 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	public void animate() {
 		/* Update ball position */
-		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, ballOnRacket(ball, racketPlayer));
+		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, Racket.ballOnRacketCote(ball, racketPlayer) || Racket.ballOnRacketCote(ball, racketOpponent), Racket.ballOnRacketHaut(ball, racketPlayer) || Racket.ballOnRacketHaut(ball, racketOpponent));
 
 		/* Update racket position */
-		racketPlayer.moveRacket(SIZE_PONG_Y);
+		racketPlayer.moveRacket(SIZE_PONG_Y, ball);
 		/* Update racket position */
-		racketOpponent.moveRacket(SIZE_PONG_Y);
+		racketOpponent.moveRacket(SIZE_PONG_Y, ball);
 
 		/* And update output */
 		updateScreen();
 	}
-
-	/**
-         * Test if the ball is on the racket
-	 */
-	public boolean ballOnRacket(Ball ball, Racket racket) {
-		return ((ball.getPosition().x == racket.getPosition().x + racket.getWidth() &&
-			ball.getPosition().y > racket.getPosition().y &&
-			ball.getPosition().y < racket.getPosition().y + racket.getHeight())||(
-			ball.getPosition().x == racket.getPosition().x + racket.getWidth() &&
-			ball.getPosition().y + ball.getHeight() > racket.getPosition().y &&
-			ball.getPosition().y + ball.getHeight() < racket.getPosition().y + racket.getHeight()));
-	}
-
 
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {

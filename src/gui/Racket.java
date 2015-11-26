@@ -43,9 +43,9 @@ public class Racket {
 		this.height = this.icon.getIconHeight();
 		this.speed = 0;
 		if(player)
-			this.position = new Point(99, 0);
+			this.position = new Point(100, 0);
 		else
-			this.position = new Point(750, 0);
+			this.position = new Point(700, 0);
 	}
 
 	/**
@@ -86,16 +86,52 @@ public class Racket {
 	public void setY(int y){
 		this.position = new Point((int)this.position.getX(), y);
 	}
+	
+	/**
+     * Test if the ball is on the racket
+	 */
+	public static boolean ballOnRacketCote(Ball ball, Racket racket) {
+		return ((((
+			// Si l'item touche sur les cotés de la racket
+			ball.getPosition().y >= racket.getPosition().y &&
+			ball.getPosition().y <= racket.getPosition().y + racket.getHeight()) || (
+			ball.getPosition().y + ball.getHeight() >= racket.getPosition().y &&
+			ball.getPosition().y + ball.getHeight() <= racket.getPosition().y + racket.getHeight())) && ((
+			ball.getPosition().x == racket.getPosition().x + racket.getWidth()) || (
+			ball.getPosition().x + ball.getWidth() == racket.getPosition().x))));
+	}
+	
+	public static boolean ballOnRacketHaut(Ball ball, Racket racket) {
+		return ((((
+			// Si l'item touche le dessous de la racket
+			ball.getPosition().x >= racket.getPosition().x &&
+			ball.getPosition().x <= racket.getPosition().x + racket.getWidth()) || (
+			ball.getPosition().x + ball.getWidth() >= racket.getPosition().x &&
+			ball.getPosition().x + ball.getWidth() <= racket.getPosition().x + racket.getWidth())) && ((
+			ball.getPosition().y + ball.getHeight() == racket.getPosition().y ) || (
+			ball.getPosition().y == racket.getPosition().y + racket.getHeight()))));
+	}
+
+
 	/**
 	 * Move racket position
 	 */
-	public void moveRacket(int size_pong_y) {
-		position.y += speed;
+	public void moveRacket(int size_pong_y, Ball ball) {
+		int posY=position.y;
+		boolean prob=false;
+		for(int i=Math.abs(speed); i>0; i--){
+			if (ballOnRacketHaut(ball, this))
+				prob=true;
+			position.y += (speed/Math.abs(speed));
+		}
+		if (ballOnRacketHaut(ball, this))
+			prob=true;
+		if (prob)
+			position.y = posY;
 		if (position.y < 0)
 			position.y = 0;
-		if (position.y > size_pong_y - height/2)
-			position.y = size_pong_y - height/2;
-		//System.out.println("\nposition X : "+position.x+"\nposition Y : "+position.y+"\nlargeur : "+width+"\nhauteur : "+height+"\n");
+		if (position.y > size_pong_y - height)
+			position.y = size_pong_y - height;
 	}
 		
 }
