@@ -200,13 +200,18 @@ public class Pong extends JPanel implements KeyListener {
 			CustomProtocol p = server.getData();
 			System.out.println("SERVER : "+p.toString());
 			racketOpponent.setY(p.getRacketY());
+			if (p.getBallPosition().x < (SIZE_PONG_X/2) ){
+				ball.setPosition(p.getBallPosition());
+			}
 		}
 		else{//Je suis client
 			client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
 			CustomProtocol p = client.getData();
 			System.out.println("CLIENT : "+p.toString());
-
 			racketOpponent.setY(p.getRacketY());
+			if (p.getBallPosition().x <= (SIZE_PONG_X/2) ){
+				ball.setPosition(p.getBallPosition());
+			}
 		}
 	}
 	
