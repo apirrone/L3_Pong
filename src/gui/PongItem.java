@@ -4,33 +4,33 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
-public class PongItem {
+abstract public class PongItem {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * One Racket to be displayed
 	 */
-	private final Image image;
+	protected final Image image;
 	/**
 	 * Icon of Racket
 	 */
-	private final ImageIcon icon;
+	protected final ImageIcon icon;
 	/**
 	 * Width of the racket in pixels
 	 */
-	private int width;
+	protected int width;
 	/**
 	 * Height of the racket in pixels
 	 */
-	private int height;
+	protected int height;
 	/**
 	 * Speed of racket, in pixels per timestamp
 	 */
-	private int speed;
+	protected int speed;
 	/**
 	 * Position of racket
 	 */
-	private Point position;
+	protected Point position;
 
 	/**
 	 * Constructor of racket
@@ -77,6 +77,31 @@ public class PongItem {
 
 	public void setPosition(Point position) {
 		this.position.setLocation(position);
+	}
+
+	/**
+     * Test if the ball is on the racket
+	 */
+	public static boolean itemOnRacketCote(PongItem item, Racket racket) {
+		return ((((
+			// Si l'item touche sur les cotés de la racket
+			item.getPosition().y >= racket.getPosition().y &&
+			item.getPosition().y <= racket.getPosition().y + racket.getHeight()) || (
+			item.getPosition().y + item.getHeight() >= racket.getPosition().y &&
+			item.getPosition().y + item.getHeight() <= racket.getPosition().y + racket.getHeight())) && ((
+			item.getPosition().x == racket.getPosition().x + racket.getWidth()) || (
+			item.getPosition().x + item.getWidth() == racket.getPosition().x))));
+	}
+	
+	public static boolean itemOnRacketHaut(PongItem item, Racket racket) {
+		return ((((
+			// Si l'item touche le dessous de la racket
+			item.getPosition().x >= racket.getPosition().x &&
+			item.getPosition().x <= racket.getPosition().x + racket.getWidth()) || (
+			item.getPosition().x + item.getWidth() >= racket.getPosition().x &&
+			item.getPosition().x + item.getWidth() <= racket.getPosition().x + racket.getWidth())) && ((
+			item.getPosition().y + item.getHeight() == racket.getPosition().y ) || (
+			item.getPosition().y == racket.getPosition().y + racket.getHeight()))));
 	}
 
 	/**

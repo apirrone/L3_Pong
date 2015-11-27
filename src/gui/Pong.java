@@ -105,13 +105,13 @@ public class Pong extends JPanel implements KeyListener {
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
 	}
-	
+
 	/**
          * Proceeds to the movement of the ball and updates the screen
 	 */
 	public void animate() {
 		/* Update ball position */
-		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, Racket.ballOnRacketCote(ball, racketPlayer) || Racket.ballOnRacketCote(ball, racketOpponent), Racket.ballOnRacketHaut(ball, racketPlayer) || Racket.ballOnRacketHaut(ball, racketOpponent));
+		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent);
 
 		/* Update racket position */
 		racketPlayer.moveRacket(SIZE_PONG_Y, ball);

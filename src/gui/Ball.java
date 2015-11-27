@@ -4,111 +4,61 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
-public class Ball {
-
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * One Ball to be displayed
-	 */
-	private final Image image;
-	/**
-	 * Icon of Ball
-	 */
-	private final ImageIcon icon;
-	/**
-	 * Width of the ball in pixels
-	 */
-	private int width;
-	/**
-	 * Height of the ball in pixels
-	 */
-	private int height;
+public class Ball extends PongItem{
 	/**
 	 * Speed of ball, in pixels per timestamp
 	 */
-	private Point speed;
-	/**
-	 * Position of ball
-	 */
-	private Point position;
-
+	private Point speedBall;
 	/**
 	 * Constructor of ball
 	 */
 	public Ball(Image image, int ball_speed) {
-		this.image = image;
-		this.icon = new ImageIcon(this.image);
-		this.width = this.icon.getIconWidth();
-		this.height = this.icon.getIconHeight();
-		this.speed = new Point(ball_speed, ball_speed);
-		this.position = new Point(150, 0);
+		super(image);
+		this.speedBall = new Point(ball_speed, ball_speed);
 	}
 
 	/**
 	 * Get / Set accessors object
 	 */
-	public Image getImage() {
-		return image;
+	public Point getSpeedBall() {
+		return speedBall;
 	}
 
-	public ImageIcon getIcon() {
-		return icon;
+	public void setSpeed(int speed) {
+		this.speedBall.setLocation(new Point(speed, speed));
 	}
-
-	public int getWidth() {
-		return width;
+	
+	public void setSpeed(Point speedBall) {
+		this.speedBall.setLocation(speedBall);
 	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public Point getSpeed() {
-		return speed;
-	}
-
-	public Point getPosition() {
-		return position;
-	}
-
-	public void setSpeed(Point speed) {
-		this.speed.setLocation(speed);
-	}
-
-	public void setPosition(Point position) {
-		this.position.setLocation(position);
-	}
-
 
 	/**
 	 * Move ball position
 	 */
-	public void moveBall(int size_pong_x, int size_pong_y, boolean collision, boolean collisionHauteur) {
-		if (collision)
-			speed.x = -speed.x;
-		if (collisionHauteur)
-			speed.y = -speed.y;
-		position.translate(speed.x, speed.y);
-		if (position.x < 0)
-		{
-			position.x = 0;
-			speed.x = -speed.x;
-		}
-		if (position.y < 0)
-		{
-			position.y = 0;
-			speed.y = -speed.y;
-		}
-		if (position.x > size_pong_x - width)
-		{
-			position.x = size_pong_x - width;
-			speed.x = -speed.x;
-		}
-		if (position.y > size_pong_y - height)
-		{
-			position.y = size_pong_y - height;
-			speed.y = -speed.y;
+	public void moveBall(int size_pong_x, int size_pong_y, Racket racketPlayer, Racket racketOpponent) {
+		
+		for(int i=Math.abs(speedBall.x); i>0; i--){
+			if (itemOnRacketCote(this, racketPlayer) || itemOnRacketCote(this, racketOpponent))
+				speedBall.x = -speedBall.x;
+			if (itemOnRacketHaut(this, racketPlayer) || itemOnRacketHaut(this, racketOpponent))
+				speedBall.y = -speedBall.y;
+			position.translate(speedBall.x/Math.abs(speedBall.x), speedBall.y/Math.abs(speedBall.y));
+			if (position.x < 0){
+				position.x = 0;
+				speedBall.x = -speedBall.x;
+			}
+			if (position.y < 0){
+				position.y = 0;
+				speedBall.y = -speedBall.y;
+			}
+			if (position.x > size_pong_x - width){
+				position.x = size_pong_x - width;
+				speedBall.x = -speedBall.x;
+			}
+			if (position.y > size_pong_y - height){
+				position.y = size_pong_y - height;
+				speedBall.y = -speedBall.y;
+			}
 		}
 	}
 		
