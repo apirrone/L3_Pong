@@ -10,10 +10,17 @@ public class Ball extends PongItem{
 	 */
 	private Point speedBall;
 	/**
+	 * Score of the game
+	 */
+	private int scorePlayer;
+	private int scoreOpponent;
+	/**
 	 * Constructor of ball
 	 */
 	public Ball(Image image, int ball_speed, boolean serveur) {
 		super(image);
+		this.scorePlayer = 0;
+		this.scoreOpponent = 0;
 		if (serveur){
 			this.position = new Point(150, 0);
 			this.speedBall = new Point(ball_speed, ball_speed);
@@ -52,6 +59,7 @@ public class Ball extends PongItem{
 			if (position.x < 0){
 				position.x = 0;
 				speedBall.x = -speedBall.x;
+				scoreUpdateO();
 			}
 			if (position.y < 0){
 				position.y = 0;
@@ -60,6 +68,7 @@ public class Ball extends PongItem{
 			if (position.x > size_pong_x - width){
 				position.x = size_pong_x - width;
 				speedBall.x = -speedBall.x;
+				scoreUpdateP();
 			}
 			if (position.y > size_pong_y - height){
 				position.y = size_pong_y - height;
@@ -67,6 +76,21 @@ public class Ball extends PongItem{
 			}
 		}
 	}
-		
+	
+	public int getScorePlayer(){
+		return scorePlayer;
+	}
+	
+	public int getScoreOpponent(){
+		return scoreOpponent;
+	}
+	
+	public void scoreUpdateP(){
+		scorePlayer++;
+	}
+	public void scoreUpdateO(){
+		scoreOpponent++;
+	}
+	
 }
 

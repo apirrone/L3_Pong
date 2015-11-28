@@ -31,6 +31,11 @@ public class Pong extends JPanel implements KeyListener {
 	 * defining the background color of the Pong
 	 */
 	private static final Color backgroundColor = new Color(0xFF, 0x40, 0);
+	
+	/**
+	 * defining the color of the score
+	 */
+	private static final Color score = new Color(0, 0, 0);
 
 	/**
 	 * Width of pong area
@@ -191,6 +196,9 @@ public class Pong extends JPanel implements KeyListener {
 		graphicContext.drawImage(ball.getImage(), ball.getPosition().x, ball.getPosition().y, ball.getWidth(), ball.getHeight(), null);
 		graphicContext.drawImage(racketPlayer.getImage(), racketPlayer.getPosition().x, racketPlayer.getPosition().y, racketPlayer.getWidth(), racketPlayer.getHeight(), null);
 		graphicContext.drawImage(racketOpponent.getImage(), racketOpponent.getPosition().x, racketOpponent.getPosition().y, racketOpponent.getWidth(), racketOpponent.getHeight(), null);
+		graphicContext.setColor(score);
+		graphicContext.drawString("score Player:"+Integer.toString(ball.getScorePlayer()), 400, 50);
+		graphicContext.drawString("score Opponent:"+Integer.toString(ball.getScoreOpponent()), 400, 70);
 
 		this.repaint();
 	}
