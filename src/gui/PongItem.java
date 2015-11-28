@@ -84,7 +84,7 @@ abstract public class PongItem {
 	 */
 	public static boolean itemOnRacketCote(PongItem item, Racket racket) {
 		return ((((
-			// Si l'item touche sur les cotés de la racket
+			// Si l'item touche sur les cotï¿½s de la racket
 			item.getPosition().y >= racket.getPosition().y &&
 			item.getPosition().y <= racket.getPosition().y + racket.getHeight()) || (
 			item.getPosition().y + item.getHeight() >= racket.getPosition().y &&
@@ -105,7 +105,7 @@ abstract public class PongItem {
 	}
 	
 	public void inverserPosition(int sizePongX){
-		this.setPosition(new Point((sizePongX - this.getPosition().x), this.getPosition().y));
+		this.setPosition(new Point((sizePongX - this.getPosition().x - this.getWidth()), this.getPosition().y));
 	}
 
 	/**
