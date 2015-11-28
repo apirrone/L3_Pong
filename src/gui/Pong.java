@@ -79,7 +79,7 @@ public class Pong extends JPanel implements KeyListener {
 		this.server = s;
 		this.client = null;
 		
-		construct();
+		construct(false);
 	}
 	
 	//Si on est un client
@@ -87,20 +87,31 @@ public class Pong extends JPanel implements KeyListener {
 		this.client = c;
 		this.server = null;
 		
-		construct();
+		construct(true);
 	}
 
 	
 	//Par soucis de factorisation
-	public void construct(){
+	public void construct(boolean client){
 		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/ball.png")),
 				BALL_SPEED);
-		this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/racket.png")), true);
 		
-		this.racketOpponent = new Racket(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/racket.png")), false);
+		if(client){
+			this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
+					ClassLoader.getSystemResource("ressource/racket.png")), new Point(99, 0));
+			
+			this.racketOpponent = new Racket(Toolkit.getDefaultToolkit().createImage(
+					ClassLoader.getSystemResource("ressource/racket.png")), new Point(750, 0));
+		}
+		else{
+			this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
+					ClassLoader.getSystemResource("ressource/racket.png")), new Point(750, 0));
+			
+			this.racketOpponent = new Racket(Toolkit.getDefaultToolkit().createImage(
+					ClassLoader.getSystemResource("ressource/racket.png")), new Point(99, 0));
+		}
+
 		
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
