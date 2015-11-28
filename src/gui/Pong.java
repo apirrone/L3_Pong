@@ -197,27 +197,28 @@ public class Pong extends JPanel implements KeyListener {
 	
 	public void sendReceiveData(){
 		if(this.client == null){//Je suis serveur
-			if (ball.getPosition().getX() < (SIZE_PONG_X/2) )
-				server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
-			else
-				server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), POINT_DEFAULT));
+			server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
+			
 			CustomProtocol p = server.getData();
-			System.out.println("SERVER : "+p.toString());
 			racketOpponent.setY(p.getRacketY());
-			if (p.getBallPosition().getX() < (SIZE_PONG_X/2) ){
+			if (p.getBallPosition().getX() < (SIZE_PONG_X/2) ){//C'est notre côté, donc c'est nous qui calculons
+				//Intégrer comparaison pour cheat
+			}
+			else{//C'est de l'autre côté, on prend les données de l'autre
+				//Intégrer comparaison pour cheat
 				ball.setPosition(p.getBallPosition());
 				ball.inverserPosition(SIZE_PONG_X);
 			}
 		}
 		else{//Je suis client
-			if (ball.getPosition().getX() < (SIZE_PONG_X/2) )
-				client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
-			else
-				client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), POINT_DEFAULT));
+			client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
 			CustomProtocol p = client.getData();
-			System.out.println("CLIENT : "+p.toString());
 			racketOpponent.setY(p.getRacketY());
-			if (p.getBallPosition().getX() < (SIZE_PONG_X/2) ){
+			if (p.getBallPosition().getX() < (SIZE_PONG_X/2) ){//C'est notre côté, donc c'est nous qui calculons
+				//Intégrer comparaison pour cheat
+			}
+			else{//C'est de l'autre côté, on prend les données de l'autre
+				//Intégrer comparaison pour cheat
 				ball.setPosition(p.getBallPosition());
 				ball.inverserPosition(SIZE_PONG_X);
 			}
