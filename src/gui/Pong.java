@@ -74,6 +74,10 @@ public class Pong extends JPanel implements KeyListener {
 	 * One Ball to be displayed
 	 */
 	private Ball ball;
+	/**
+	 * New Balls to be displayed with bonuses
+	 */
+	private Ball ball2;
 
 	private Racket racketPlayer;
 	private Racket racketOpponent;
@@ -100,6 +104,10 @@ public class Pong extends JPanel implements KeyListener {
 	//Par soucis de factorisation
 	public void construct(boolean client){
 		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
+				ClassLoader.getSystemResource("ressource/ball.png")),
+				BALL_SPEED, client);
+		//seconde balle utilisée quand l'un des joueurs atteind 10 points
+		this.ball2 = new Ball(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/ball.png")),
 				BALL_SPEED, client);
 		this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
@@ -197,8 +205,9 @@ public class Pong extends JPanel implements KeyListener {
 		graphicContext.drawImage(racketPlayer.getImage(), racketPlayer.getPosition().x, racketPlayer.getPosition().y, racketPlayer.getWidth(), racketPlayer.getHeight(), null);
 		graphicContext.drawImage(racketOpponent.getImage(), racketOpponent.getPosition().x, racketOpponent.getPosition().y, racketOpponent.getWidth(), racketOpponent.getHeight(), null);
 		graphicContext.setColor(score);
-		graphicContext.drawString("score Player:"+Integer.toString(ball.getScorePlayer()), 400, 50);
-		graphicContext.drawString("score Opponent:"+Integer.toString(ball.getScoreOpponent()), 400, 70);
+		graphicContext.drawString("score Player:"+Integer.toString(ball.getScorePlayer()+ball2.getScorePlayer()), 400, 50);
+		graphicContext.drawString("score Opponent:"+Integer.toString(ball.getScoreOpponent()+ball2.getScoreOpponent()), 400, 70);
+		bonusManagement();
 
 		this.repaint();
 	}
@@ -232,8 +241,13 @@ public class Pong extends JPanel implements KeyListener {
 			}
 		}
 	}
-	
-	public void receiveData(){
-		
+	/**
+	 * Gestion des bonuses
+	 */
+	private void bonusManagement(){
+		if (ball.getScorePlayer() >= 3 || ball.getScoreOpponent() >= 3){
+			graphicContext.drawImage(ball2.getImage(), ball2.getPosition().x, ball2.getPosition().y, ball2.getWidth(), ball2.getHeight(), null);
+			ball2.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent);
+		}		
 	}
 }
