@@ -97,54 +97,31 @@ public class Pong extends JPanel implements KeyListener {
 				ClassLoader.getSystemResource("ressource/ball.png")),
 				BALL_SPEED);
 		
-		if(client){
-			this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
-					ClassLoader.getSystemResource("ressource/racket.png")), new Point(99, 0));
-			
-			this.racketOpponent = new Racket(Toolkit.getDefaultToolkit().createImage(
-					ClassLoader.getSystemResource("ressource/racket.png")), new Point(750, 0));
-		}
-		else{
-			this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
-					ClassLoader.getSystemResource("ressource/racket.png")), new Point(750, 0));
-			
-			this.racketOpponent = new Racket(Toolkit.getDefaultToolkit().createImage(
-					ClassLoader.getSystemResource("ressource/racket.png")), new Point(99, 0));
-		}
-
+		this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
+				ClassLoader.getSystemResource("ressource/barrePong.png")), true);
+		
+		this.racketOpponent = new Racket(Toolkit.getDefaultToolkit().createImage(
+				ClassLoader.getSystemResource("ressource/barrePong.png")), false);
 		
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
 	}
-	
+
 	/**
          * Proceeds to the movement of the ball and updates the screen
 	 */
 	public void animate() {
 		/* Update ball position */
-		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, ballOnRacket(ball, racketPlayer));
+		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent);
 
 		/* Update racket position */
-		racketPlayer.moveRacket(SIZE_PONG_Y);
+		racketPlayer.moveRacket(SIZE_PONG_Y, ball);
 		/* Update racket position */
-		racketOpponent.moveRacket(SIZE_PONG_Y);
+		racketOpponent.moveRacket(SIZE_PONG_Y, ball);
 
 		/* And update output */
 		updateScreen();
 	}
-
-	/**
-         * Test if the ball is on the racket
-	 */
-	public boolean ballOnRacket(Ball ball, Racket racket) {
-		return ((ball.getPosition().x == racket.getPosition().x + racket.getWidth() &&
-			ball.getPosition().y > racket.getPosition().y &&
-			ball.getPosition().y < racket.getPosition().y + racket.getHeight())||(
-			ball.getPosition().x == racket.getPosition().x + racket.getWidth() &&
-			ball.getPosition().y + ball.getHeight() > racket.getPosition().y &&
-			ball.getPosition().y + ball.getHeight() < racket.getPosition().y + racket.getHeight()));
-	}
-
 
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -224,13 +201,18 @@ public class Pong extends JPanel implements KeyListener {
 			CustomProtocol p = server.getData();
 			System.out.println("SERVER : "+p.toString());
 			racketOpponent.setY(p.getRacketY());
+			if (p.getBallPosition().x < (SIZE_PONG_X/2) ){
+				ball.setPosition(p.getBallPosition());
+			}
 		}
 		else{//Je suis client
 			client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
 			CustomProtocol p = client.getData();
 			System.out.println("CLIENT : "+p.toString());
-
 			racketOpponent.setY(p.getRacketY());
+			if (p.getBallPosition().x <= (SIZE_PONG_X/2) ){
+				ball.setPosition(p.getBallPosition());
+			}
 		}
 	}
 	

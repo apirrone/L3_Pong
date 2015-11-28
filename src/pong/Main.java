@@ -15,7 +15,7 @@ public class Main  {
 	public static void main(String[] args) {
 		
 		if(args.length == 0){//Serveur
-			Server server = new Server(2009);
+			Server server = new Server(2008);
 			server.waitForConnection();
 			Pong pong = new Pong(server);
 			Window window = new Window(pong);
@@ -25,7 +25,7 @@ public class Main  {
 		else{//client
 			Client client = new Client();
 			String addr = args[0];
-			client.connect(addr, 2009);
+			client.connect(addr, 2008);
 			Pong pong = new Pong(client);
 			Window window = new Window(pong);
 			window.displayOnscreen();
