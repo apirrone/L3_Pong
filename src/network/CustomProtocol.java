@@ -14,6 +14,10 @@ public class CustomProtocol {
 		this.ballPosition = ballPosition;
 	}
 	
+	public CustomProtocol(int yRacket){
+		this.yRacket = yRacket;
+	}
+	
 	//Constructeur à partir de string (supposée déja parsée)
 	public CustomProtocol(String s){
 		

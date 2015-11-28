@@ -41,7 +41,7 @@ abstract public class PongItem {
 		this.width = this.icon.getIconWidth();
 		this.height = this.icon.getIconHeight();
 		this.speed = 0;
-		this.position = new Point(300, 300);
+		this.position = new Point(150, 0);
 	}
 
 	/**
@@ -102,6 +102,10 @@ abstract public class PongItem {
 			item.getPosition().x + item.getWidth() <= racket.getPosition().x + racket.getWidth())) && ((
 			item.getPosition().y + item.getHeight() == racket.getPosition().y ) || (
 			item.getPosition().y == racket.getPosition().y + racket.getHeight()))));
+	}
+	
+	public void inverserPosition(int sizePongX){
+		this.setPosition(new Point((sizePongX - this.getPosition().x), this.getPosition().y));
 	}
 
 	/**

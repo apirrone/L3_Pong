@@ -12,9 +12,15 @@ public class Ball extends PongItem{
 	/**
 	 * Constructor of ball
 	 */
-	public Ball(Image image, int ball_speed) {
+	public Ball(Image image, int ball_speed, boolean serveur) {
 		super(image);
-		this.speedBall = new Point(ball_speed, ball_speed);
+		if (serveur){
+			this.position = new Point(150, 0);
+			this.speedBall = new Point(ball_speed, ball_speed);
+		}else{
+			this.position = new Point(630, 0);
+			this.speedBall = new Point(-ball_speed, ball_speed);
+		}
 	}
 
 	/**

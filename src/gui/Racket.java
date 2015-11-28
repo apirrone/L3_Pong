@@ -12,7 +12,7 @@ public class Racket extends PongItem{
 	public Racket(Image image, boolean player) {
 		super(image);
 		if(player)
-			this.position = new Point(100, 0);
+			this.position = new Point(78, 0);
 		else
 			this.position = new Point(700, 0);
 	}

@@ -52,6 +52,9 @@ public class Pong extends JPanel implements KeyListener {
 	 * Speed of racket (in pixels per second)
 	 */
 	public static final int RACKET_SPEED = 4;
+	
+	
+	public static final Point POINT_DEFAULT = new Point(800,800);
 
 	/**
 	 * Pixel data buffer for the Pong rendering
@@ -78,7 +81,6 @@ public class Pong extends JPanel implements KeyListener {
 	public Pong(Server s) {
 		this.server = s;
 		this.client = null;
-		
 		construct(false);
 	}
 	
@@ -86,7 +88,6 @@ public class Pong extends JPanel implements KeyListener {
 	public Pong(Client c){
 		this.client = c;
 		this.server = null;
-		
 		construct(true);
 	}
 
@@ -95,8 +96,7 @@ public class Pong extends JPanel implements KeyListener {
 	public void construct(boolean client){
 		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/ball.png")),
-				BALL_SPEED);
-		
+				BALL_SPEED, client);
 		this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/barrePong.png")), true);
 		
@@ -197,21 +197,29 @@ public class Pong extends JPanel implements KeyListener {
 	
 	public void sendReceiveData(){
 		if(this.client == null){//Je suis serveur
-			server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
+			if (ball.getPosition().x < (SIZE_PONG_X/2) )
+				server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
+			else
+				server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), POINT_DEFAULT));
 			CustomProtocol p = server.getData();
 			System.out.println("SERVER : "+p.toString());
 			racketOpponent.setY(p.getRacketY());
 			if (p.getBallPosition().x < (SIZE_PONG_X/2) ){
 				ball.setPosition(p.getBallPosition());
+				ball.inverserPosition(SIZE_PONG_X);
 			}
 		}
 		else{//Je suis client
-			client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
+			if (ball.getPosition().x < (SIZE_PONG_X/2) )
+				server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
+			else
+				server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), POINT_DEFAULT));
 			CustomProtocol p = client.getData();
 			System.out.println("CLIENT : "+p.toString());
 			racketOpponent.setY(p.getRacketY());
-			if (p.getBallPosition().x <= (SIZE_PONG_X/2) ){
+			if (p.getBallPosition().x < (SIZE_PONG_X/2) ){
 				ball.setPosition(p.getBallPosition());
+				ball.inverserPosition(SIZE_PONG_X);
 			}
 		}
 	}
