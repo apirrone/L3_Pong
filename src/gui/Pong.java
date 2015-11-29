@@ -246,8 +246,12 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	private void bonusManagement(){
 		if (ball.getScorePlayer() >= 3 || ball.getScoreOpponent() >= 3){
+			//mouvement de la nouvelle balle
 			graphicContext.drawImage(ball2.getImage(), ball2.getPosition().x, ball2.getPosition().y, ball2.getWidth(), ball2.getHeight(), null);
 			ball2.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent);
+			//update des rackets par rapport à la nouvelle balle
+			racketPlayer.moveRacket(SIZE_PONG_Y, ball2);
+			racketOpponent.moveRacket(SIZE_PONG_Y, ball2);
 		}		
 	}
 }
