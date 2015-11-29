@@ -85,15 +85,11 @@ public class Pong extends JPanel implements KeyListener {
 	private Client client;
 	private Server server;
 	
-	private ThreadForTest thread;
-	
 	
 	//Si on est un serveur
 	public Pong(Server s) {
 		this.server = s;
 		this.client = null;
-		this.thread = new ThreadForTest();
-		this.thread.start();
 		construct(false);
 	}
 	
@@ -101,8 +97,6 @@ public class Pong extends JPanel implements KeyListener {
 	public Pong(Client c){
 		this.client = c;
 		this.server = null;
-		this.thread = new ThreadForTest();
-		this.thread.start();
 		construct(true);
 	}
 
@@ -229,11 +223,6 @@ public class Pong extends JPanel implements KeyListener {
 			}
 			else{//C'est de l'autre côté, on prend les données de l'autre
 				//Intégrer comparaison pour cheat
-		/*		if ((SIZE_PONG_X - ball.getPosition().getX()- ball.getWidth())!= p.getBallPosition().getX() &&
-						ball.getPosition().getY() != p.getBallPosition().getY()){
-					System.out.println("CHEATER !!!!!");
-				}*/
-				thread.setValue((SIZE_PONG_X - ball.getPosition().getX() + 10 -  ball.getWidth()), p.getBallPosition().getX(), ball.getPosition().getY(), p.getBallPosition().getY(), true);
 				ball.setPosition(p.getBallPosition());
 				ball.inverserPosition(SIZE_PONG_X);
 			}
@@ -247,11 +236,6 @@ public class Pong extends JPanel implements KeyListener {
 			}
 			else{//C'est de l'autre côté, on prend les données de l'autre
 				//Intégrer comparaison pour cheat
-		/*		if ((SIZE_PONG_X - ball.getPosition().getX()- ball.getWidth())!= p.getBallPosition().getX() &&
-						ball.getPosition().getY() != p.getBallPosition().getY()){
-					System.out.println("CHEATER !!!!!");
-				}*/
-				thread.setValue((SIZE_PONG_X - ball.getPosition().getX() + 10 - ball.getWidth()), p.getBallPosition().getX(), ball.getPosition().getY(), p.getBallPosition().getY(), true);
 				ball.setPosition(p.getBallPosition());
 				ball.inverserPosition(SIZE_PONG_X);
 			}
