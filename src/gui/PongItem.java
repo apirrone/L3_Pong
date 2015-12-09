@@ -79,6 +79,9 @@ abstract public class PongItem {
 		this.position.setLocation(position);
 	}
 
+	public void setPosition(int x, int y) {
+		this.position.setLocation(x, y);
+	}
 	/**
      * Test if the ball is on the racket
 	 */

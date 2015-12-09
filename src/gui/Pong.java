@@ -49,10 +49,6 @@ public class Pong extends JPanel implements KeyListener {
 	 * Time step of the simulation (in ms)
 	 */
 	public static final int timestep = 10;
-	/**
-	 * Speed of racket (in pixels per second)
-	 */
-	public static final int RACKET_SPEED = 4;
 	
 	
 	public static final Point POINT_DEFAULT = new Point(800,800);
@@ -138,11 +134,11 @@ public class Pong extends JPanel implements KeyListener {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_KP_UP:
-				racketPlayer.setSpeed(racketPlayer.getSpeed()-RACKET_SPEED);
+				racketPlayer.setSpeed(racketPlayer.getSpeed()-racketPlayer.getBaseSpeed());
 				break;
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_KP_DOWN:
-				racketPlayer.setSpeed(RACKET_SPEED);
+				racketPlayer.setSpeed(racketPlayer.getBaseSpeed());
 				break;
 			default:
 				System.out.println("got press "+e);
