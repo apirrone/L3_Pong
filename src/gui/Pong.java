@@ -81,11 +81,14 @@ public class Pong extends JPanel implements KeyListener {
 	private Client client;
 	private Server server;
 	
+	private long time;
+	
 	
 	//Si on est un serveur
 	public Pong(Server s) {
 		this.server = s;
 		this.client = null;
+		this.time = System.currentTimeMillis();
 		construct(false);
 	}
 	
@@ -93,6 +96,7 @@ public class Pong extends JPanel implements KeyListener {
 	public Pong(Client c){
 		this.client = c;
 		this.server = null;
+		this.time = System.currentTimeMillis();
 		construct(true);
 	}
 
@@ -201,7 +205,7 @@ public class Pong extends JPanel implements KeyListener {
 		graphicContext.setColor(score);
 		graphicContext.drawString("score Player:"+Integer.toString(ball.getScorePlayer()+ball2.getScorePlayer()), 400, 50);
 		graphicContext.drawString("score Opponent:"+Integer.toString(ball.getScoreOpponent()+ball2.getScoreOpponent()), 400, 70);
-		bonusManagement();
+//		bonusManagement();
 
 		this.repaint();
 	}
@@ -212,11 +216,14 @@ public class Pong extends JPanel implements KeyListener {
 			
 			CustomProtocol p = server.getData();
 			racketOpponent.setY(p.getRacketY());
-			if (p.getBallPosition().getX() < (SIZE_PONG_X/2) ){//C'est notre côté, donc c'est nous qui calculons
-				//Intégrer comparaison pour cheat
-			}
-			else{//C'est de l'autre côté, on prend les données de l'autre
-				//Intégrer comparaison pour cheat
+			if (p.getBallPosition().getX() >= (SIZE_PONG_X/2) ){//C'est de l'autre côté, on prend les données de l'autre
+				if ((System.currentTimeMillis() - time) >= 10){
+					if ((SIZE_PONG_X - ball.getPosition().getX() - ball.getWidth())!= p.getBallPosition().getX() ||
+								ball.getPosition().getY() != p.getBallPosition().getY()){
+						System.out.println("CHEATER !!!!!"); 
+					}
+					time = System.currentTimeMillis();
+				}
 				ball.setPosition(p.getBallPosition());
 				ball.inverserPosition(SIZE_PONG_X);
 			}
@@ -225,11 +232,14 @@ public class Pong extends JPanel implements KeyListener {
 			client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
 			CustomProtocol p = client.getData();
 			racketOpponent.setY(p.getRacketY());
-			if (p.getBallPosition().getX() < (SIZE_PONG_X/2) ){//C'est notre côté, donc c'est nous qui calculons
-				//Intégrer comparaison pour cheat
-			}
-			else{//C'est de l'autre côté, on prend les données de l'autre
-				//Intégrer comparaison pour cheat
+			if (p.getBallPosition().getX() >= (SIZE_PONG_X/2) ){//C'est de l'autre côté, on prend les données de l'autre
+				if ((System.currentTimeMillis() - time) >= 10){
+					if ((SIZE_PONG_X - ball.getPosition().getX()- ball.getWidth())!= p.getBallPosition().getX() ||
+								ball.getPosition().getY() != p.getBallPosition().getY()){
+						System.out.println("CHEATER !!!!!"); 
+					}
+					time = System.currentTimeMillis();
+				}
 				ball.setPosition(p.getBallPosition());
 				ball.inverserPosition(SIZE_PONG_X);
 			}
