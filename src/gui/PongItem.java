@@ -24,10 +24,6 @@ abstract public class PongItem {
 	 */
 	protected int height;
 	/**
-	 * Speed of racket, in pixels per timestamp
-	 */
-	protected int speed;
-	/**
 	 * Position of racket
 	 */
 	protected Point position;
@@ -40,7 +36,6 @@ abstract public class PongItem {
 		this.icon = new ImageIcon(this.image);
 		this.width = this.icon.getIconWidth();
 		this.height = this.icon.getIconHeight();
-		this.speed = 0;
 		this.position = new Point(150, 0);
 	}
 
@@ -63,16 +58,8 @@ abstract public class PongItem {
 		return height;
 	}
 
-	public int getSpeed() {
-		return speed;
-	}
-
 	public Point getPosition() {
 		return position;
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
 	}
 
 	public void setPosition(Point position) {

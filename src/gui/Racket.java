@@ -14,9 +14,9 @@ public class Racket extends RacketType{
 	
 	public void moveBallOnRacket(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball){	
 				if (itemOnRacketCote(ball, racketPlayer) || itemOnRacketCote(ball, racketOpponent))
-					ball.setSpeedBall(-ball.getSpeedBall().x, ball.getSpeedBall().y );
+					ball.setSpeedX(-ball.getSpeed().x);
 				if (itemOnRacketHaut(ball, racketPlayer) || itemOnRacketHaut(ball, racketOpponent))
-					ball.setSpeedBall(ball.getSpeedBall().x, -ball.getSpeedBall().y);			
+					ball.setSpeedY(-ball.getSpeed().y);			
 	}
 }
 

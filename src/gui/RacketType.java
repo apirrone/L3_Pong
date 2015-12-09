@@ -11,12 +11,17 @@ public abstract class RacketType extends PongItem{
 	 */
 	protected int baseSpeed;
 	/**
+	 * Speed of racket, in pixels per timestamp
+	 */
+	protected int speed;
+	/**
 	 * Speed of racket (in pixels per second)
 	 */
 	public static final int RACKET_BASE_SPEED = 4;
 	
 	public RacketType(Image image, boolean player){
 		super(image);
+		speed = 0;
 		baseSpeed = RACKET_BASE_SPEED;
 		if(player)
 			this.position.setLocation(78, 0);
@@ -35,10 +40,17 @@ public abstract class RacketType extends PongItem{
 		this.baseSpeed = baseSpeed;
 	}
 	
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
 	
 	abstract void moveBallOnRacket(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball);
 	
-	void moveRacket(int size_pong_y, BallType ball) {
+	public void moveRacket(int size_pong_y, BallType ball) {
 		int posY=position.y;
 		boolean prob=false;
 		for(int i=Math.abs(speed); i>0; i--){
@@ -56,7 +68,7 @@ public abstract class RacketType extends PongItem{
 			position.y = size_pong_y - height;
 	}
 	
-	void setY(int y){
+	public void setY(int y){
 		this.position.setLocation(this.position.getX(), y);
 	}
 }

@@ -77,6 +77,8 @@ public class Pong extends JPanel implements KeyListener {
 	private Client client;
 	private Server server;
 	
+	private Score pongScore;
+	
 	private long time;
 	
 	
@@ -84,6 +86,7 @@ public class Pong extends JPanel implements KeyListener {
 	public Pong(Server s) {
 		this.server = s;
 		this.client = null;
+		this.pongScore = new Score();
 		this.time = System.currentTimeMillis();
 		construct(false);
 	}
@@ -92,6 +95,7 @@ public class Pong extends JPanel implements KeyListener {
 	public Pong(Client c){
 		this.client = c;
 		this.server = null;
+		this.pongScore = new Score();
 		this.time = System.currentTimeMillis();
 		construct(true);
 	}
@@ -119,7 +123,7 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	public void animate() {
 		/* Update ball position */
-		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent);
+		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
 
 		/* Update racket position */
 		racketPlayer.moveRacket(SIZE_PONG_Y, ball);
@@ -199,8 +203,8 @@ public class Pong extends JPanel implements KeyListener {
 		graphicContext.drawImage(racketPlayer.getImage(), racketPlayer.getPosition().x, racketPlayer.getPosition().y, racketPlayer.getWidth(), racketPlayer.getHeight(), null);
 		graphicContext.drawImage(racketOpponent.getImage(), racketOpponent.getPosition().x, racketOpponent.getPosition().y, racketOpponent.getWidth(), racketOpponent.getHeight(), null);
 		graphicContext.setColor(score);
-		graphicContext.drawString("score Player:"+Integer.toString(ball.getScorePlayer()+ball2.getScorePlayer()), 400, 50);
-		graphicContext.drawString("score Opponent:"+Integer.toString(ball.getScoreOpponent()+ball2.getScoreOpponent()), 400, 70);
+		graphicContext.drawString("score Player:"+Integer.toString(pongScore.getScorePlayer()), 400, 50);
+		graphicContext.drawString("score Opponent:"+Integer.toString(pongScore.getScoreOpponent()), 400, 70);
 //		bonusManagement();
 
 		this.repaint();
@@ -209,7 +213,6 @@ public class Pong extends JPanel implements KeyListener {
 	public void sendReceiveData(){
 		if(this.client == null){//Je suis serveur
 			server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
-			
 			CustomProtocol p = server.getData();
 			racketOpponent.setY(p.getRacketY());
 			if (p.getBallPosition().getX() >= (SIZE_PONG_X/2) ){//C'est de l'autre côté, on prend les données de l'autre
@@ -245,10 +248,10 @@ public class Pong extends JPanel implements KeyListener {
 	 * Gestion des bonuses
 	 */
 	private void bonusManagement(){
-		if (ball.getScorePlayer() >= 3 || ball.getScoreOpponent() >= 3){
+		if (pongScore.getScorePlayer() >= 3 || pongScore.getScoreOpponent() >= 3){
 			//mouvement de la nouvelle balle
 			graphicContext.drawImage(ball2.getImage(), ball2.getPosition().x, ball2.getPosition().y, ball2.getWidth(), ball2.getHeight(), null);
-			ball2.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent);
+			ball2.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
 			//update des rackets par rapport à la nouvelle balle
 			racketPlayer.moveRacket(SIZE_PONG_Y, ball2);
 			racketOpponent.moveRacket(SIZE_PONG_Y, ball2);
