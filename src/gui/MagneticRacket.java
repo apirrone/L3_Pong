@@ -4,14 +4,9 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
-public class MagneticRacket extends PongItem{
-	/**
-	 * SpeedPoint used for stopping the ball on the mangnetic racket
-	 */
-	private static final Point SpeedStop = new Point(0, 0);
-
-	/** Constructor of MagneticRacket
-	 * 
+public class MagneticRacket extends RacketType{
+	/** 
+	 * Constructor of MagneticRacket
 	 */
 	public MagneticRacket(Image image, boolean player) {
 		super(image);
@@ -30,7 +25,7 @@ public class MagneticRacket extends PongItem{
 	/**
 	 * Move racket position
 	 */
-	public void moveMagneticRacket(int size_pong_y, Ball ball) {
+	public void moveRacket(int size_pong_y, BallType ball) {
 		int posY=position.y;
 		boolean prob=false;
 		for(int i=Math.abs(speed); i>0; i--){
@@ -48,34 +43,28 @@ public class MagneticRacket extends PongItem{
 			position.y = size_pong_y - height;
 	}
 	
-	public boolean itemOnMagneticRacketHaut(PongItem item, MagneticRacket racket){
-		return (super.itemOnRacketHaut(item, racket));
+	public boolean itemOnMagneticRacketHaut(BallType ball, RacketType racket){
+		return (super.itemOnRacketHaut(ball, racket));
 	}
-	public boolean itemOnMagneticRacketCote(PongItem item, MagneticRacket racket) {
-		return (super.itemOnRacketCote(item, racket));
+	public boolean itemOnMagneticRacketCote(BallType ball, RacketType racket) {
+		return (super.itemOnRacketCote(ball, racket));
 	}
 	/**
 	 * moveBall with MagneticRackets changes, not finished yet
 	 */
-	public void moveBall(int size_pong_x, int size_pong_y, MagneticRacket racketPlayer,MagneticRacket racketOpponent, PongItem ball){
-		//on verifie si le PongItem est bien une balle
-		if (ball instanceof Ball){
-			Ball ballon;
-			ballon = (Ball) ball;
-			for(int i=Math.abs(ballon.getSpeedBall().x); i>0; i--){
-				if (itemOnMagneticRacketCote(ballon, racketPlayer) || itemOnMagneticRacketHaut(ballon, racketPlayer)){
-					ballon.getSpeedBall().x = this.position.x;
-					ballon.getSpeedBall().y = this.position.y;
+	public void moveBallOnRacket(int size_pong_x, int size_pong_y, RacketType racketPlayer,RacketType racketOpponent, BallType ball){
+				if (itemOnMagneticRacketCote(ball, racketPlayer) || itemOnMagneticRacketCote(ball, racketPlayer)){
+					ball.setSpeedBall(0,0);
+					ball.setPosition(new Point(position.x, position.y));
 				}
-				if (itemOnMagneticRacketCote(ballon, racketOpponent) || itemOnMagneticRacketCote(ballon, racketOpponent)){
-					ballon.getSpeedBall().x = this.position.x;
-					ballon.getSpeedBall().y = this.position.y;
+				if (itemOnMagneticRacketHaut(ball, racketOpponent) || itemOnMagneticRacketHaut(ball, racketOpponent)){
+					ball.setSpeedBall(0,0);
+					ball.setPosition(new Point(position.x, position.y));
 				}
-				//changement du code de moveBall dans pongItem pour uniformalisation du code et ainsi utiliser super() ici
-	}
-	}
-}
-}
+				else
+					ball.position.translate(ball.getSpeedBall().x/Math.abs(ball.getSpeedBall().x), ball.getSpeedBall().y/Math.abs(ball.getSpeedBall().y));
+	}	
+	}	
 	
 
 

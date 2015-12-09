@@ -4,57 +4,48 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
-public class Ball extends PongItem{
-	/**
-	 * Speed of ball, in pixels per timestamp
-	 */
-	private Point speedBall;
+public class Ball extends BallType{
 	/**
 	 * Score of the game
 	 */
 	private int scorePlayer;
 	private int scoreOpponent;
 	/**
+	 * Speed of ball, in pixels per second
+	 */	
+	private static final int BALL_SPEED = 2;
+	/**
+	 * Point defining speed of ball, in pixels per timestamp
+	 */
+	protected Point speedBall;
+	/**
 	 * Constructor of ball
 	 */
-	public Ball(Image image, int ball_speed, boolean serveur) {
+	public Ball(Image image, boolean serveur) {
 		super(image);
 		this.scorePlayer = 0;
 		this.scoreOpponent = 0;
 		if (serveur){
 			this.position = new Point(150, 0);
-			this.speedBall = new Point(ball_speed, ball_speed);
+			this.speedBall = new Point(BALL_SPEED, BALL_SPEED);
 		}else{
 			this.position = new Point(630, 0);
-			this.speedBall = new Point(-ball_speed, ball_speed);
+			this.speedBall = new Point(-BALL_SPEED, BALL_SPEED);
 		}
 	}
-
-	/**
-	 * Get / Set accessors object
-	 */
-	public Point getSpeedBall() {
-		return speedBall;
-	}
-
-	public void setSpeed(int speed) {
-		this.speedBall.setLocation(new Point(speed, speed));
-	}
-	
-	public void setSpeed(Point speedBall) {
-		this.speedBall.setLocation(speedBall);
-	}
-
 	/**
 	 * Move ball position
 	 */
-	public void moveBall(int size_pong_x, int size_pong_y, Racket racketPlayer, Racket racketOpponent) {
+	public void moveBall(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent) {
 		
 		for(int i=Math.abs(speedBall.x); i>0; i--){
-			if (itemOnRacketCote(this, racketPlayer) || itemOnRacketCote(this, racketOpponent))
+			racketPlayer.moveBallOnRacket(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
+			/**if (itemOnRacketCote(this, racketPlayer) || itemOnRacketCote(this, racketOpponent))
 				speedBall.x = -speedBall.x;
 			if (itemOnRacketHaut(this, racketPlayer) || itemOnRacketHaut(this, racketOpponent))
 				speedBall.y = -speedBall.y;
+				*/
+			
 			position.translate(speedBall.x/Math.abs(speedBall.x), speedBall.y/Math.abs(speedBall.y));
 			if (position.x < 0){
 				position.x = 0;
@@ -76,6 +67,24 @@ public class Ball extends PongItem{
 			}
 		}
 	}
+	/**
+	 * Get / Set accessors object
+	 */
+	public Point getSpeedBall() {
+		return speedBall;
+	}
+	public void setSpeedBall(int x, int y){
+		speedBall.x = x;
+		speedBall.y = y;
+	}
+	public void setSpeed(int speed) {
+		this.speedBall.setLocation(new Point(speed, speed));
+	}
+	
+	public void setSpeed(Point speedBall) {
+		this.speedBall.setLocation(speedBall);
+	}
+	
 	
 	public int getScorePlayer(){
 		return scorePlayer;
@@ -85,10 +94,10 @@ public class Ball extends PongItem{
 		return scoreOpponent;
 	}
 	
-	public void scoreUpdateP(){
+	private void scoreUpdateP(){
 		scorePlayer++;
 	}
-	public void scoreUpdateO(){
+	private void scoreUpdateO(){
 		scoreOpponent++;
 	}
 	

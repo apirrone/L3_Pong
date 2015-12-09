@@ -4,8 +4,7 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
-public class Racket extends PongItem{
-	
+public class Racket extends RacketType{
 	/**
 	 * Constructor of racket
 	 */
@@ -27,7 +26,7 @@ public class Racket extends PongItem{
 	/**
 	 * Move racket position
 	 */
-	public void moveRacket(int size_pong_y, Ball ball) {
+	public void moveRacket(int size_pong_y, BallType ball) {
 		int posY=position.y;
 		boolean prob=false;
 		for(int i=Math.abs(speed); i>0; i--){
@@ -43,6 +42,13 @@ public class Racket extends PongItem{
 			position.y = 0;
 		if (position.y > size_pong_y - height)
 			position.y = size_pong_y - height;
+	}
+	
+	public void moveBallOnRacket(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball){	
+				if (itemOnRacketCote(ball, racketPlayer) || itemOnRacketCote(ball, racketOpponent))
+					ball.setSpeedBall(-ball.getSpeedBall().x, ball.getSpeedBall().y );
+				if (itemOnRacketHaut(ball, racketPlayer) || itemOnRacketHaut(ball, racketOpponent))
+					ball.setSpeedBall(ball.getSpeedBall().x, -ball.getSpeedBall().y);			
 	}
 }
 

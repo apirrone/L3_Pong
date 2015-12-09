@@ -50,10 +50,6 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	public static final int timestep = 10;
 	/**
-	 * Speed of ball (in pixels per second)
-	 */
-	public static final int BALL_SPEED = 2;
-	/**
 	 * Speed of racket (in pixels per second)
 	 */
 	public static final int RACKET_SPEED = 4;
@@ -73,14 +69,14 @@ public class Pong extends JPanel implements KeyListener {
 	/**
 	 * One Ball to be displayed
 	 */
-	private Ball ball;
+	private BallType ball;
 	/**
 	 * New Balls to be displayed with bonuses
 	 */
-	private Ball ball2;
+	private BallType ball2;
 
-	private Racket racketPlayer;
-	private Racket racketOpponent;
+	private RacketType racketPlayer;
+	private RacketType racketOpponent;
 
 	private Client client;
 	private Server server;
@@ -104,12 +100,10 @@ public class Pong extends JPanel implements KeyListener {
 	//Par soucis de factorisation
 	public void construct(boolean client){
 		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/ball.png")),
-				BALL_SPEED, client);
+				ClassLoader.getSystemResource("ressource/ball.png")), client);
 		//seconde balle utilisée quand l'un des joueurs atteind 10 points
 		this.ball2 = new Ball(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/ball.png")),
-				BALL_SPEED, client);
+				ClassLoader.getSystemResource("ressource/ball.png")), client);
 		this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/barrePong.png")), true);
 		
