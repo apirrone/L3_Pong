@@ -11,7 +11,7 @@ public class CustomProtocol {
 	//Constructeur à partir de variables
 	public CustomProtocol(int yRacket, Point ballPosition){
 		this.yRacket = yRacket;
-		this.ballPosition = ballPosition;
+		this.ballPosition = new Point(ballPosition);
 	}
 	
 	public CustomProtocol(int yRacket){

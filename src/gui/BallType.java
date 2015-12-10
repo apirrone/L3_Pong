@@ -19,10 +19,10 @@ public abstract class BallType extends PongItem{
 	public BallType (Image image, boolean serveur) {
 		super(image);
 		if (serveur){
-			this.position = new Point(390, 0);
+			this.position.setLocation(390, 0);
 			this.speed = new Point(BALL_SPEED_X, BALL_SPEED_X);
 		}else{
-			this.position = new Point(390, 0);
+			this.position.setLocation(390, 0);
 			this.speed = new Point(-BALL_SPEED_X, BALL_SPEED_X);
 		}
 	}

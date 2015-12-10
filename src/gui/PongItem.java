@@ -95,6 +95,6 @@ abstract public class PongItem {
 	}
 	
 	public void inverserPosition(int sizePongX){
-		this.setPosition(new Point((sizePongX - this.getPosition().x - this.getWidth()), this.getPosition().y));
+		this.setPosition((sizePongX - this.getPosition().x - this.getWidth()), this.getPosition().y);
 	}
 }
