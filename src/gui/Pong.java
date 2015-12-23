@@ -106,8 +106,8 @@ public class Pong extends JPanel implements KeyListener {
 		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/ball.png")), client);
 		//seconde balle utilisée quand l'un des joueurs atteind 10 points
-		this.ball2 = new Ball(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/ball.png")), client);
+	//	this.ball2 = new Ball(Toolkit.getDefaultToolkit().createImage(
+	//			ClassLoader.getSystemResource("ressource/ball.png")), client);
 		this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
 				ClassLoader.getSystemResource("ressource/barrePong.png")), true);
 		
