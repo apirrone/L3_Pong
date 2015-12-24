@@ -24,9 +24,9 @@ public abstract class RacketType extends PongItem{
 		speed = 0;
 		baseSpeed = RACKET_BASE_SPEED;
 		if(player)
-			this.position.setLocation(78, 0);
+			this.position.setLocation(28, 250);
 		else
-			this.position.setLocation(700, 0);
+			this.position.setLocation(750, 250);
 	}
 
 	/**
@@ -47,8 +47,9 @@ public abstract class RacketType extends PongItem{
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	
-	abstract void moveBallOnRacket(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball);
+
+	abstract void moveBallOnRacketCote(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball);
+	abstract void moveBallOnRacketOther(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball);
 	
 	public void moveRacket(int size_pong_y, BallType ball) {
 		int posY=position.y;

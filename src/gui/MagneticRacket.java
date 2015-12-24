@@ -26,6 +26,20 @@ public class MagneticRacket extends RacketType{
 				}
 				else
 					ball.position.translate(ball.getSpeed().x/Math.abs(ball.getSpeed().x), ball.getSpeed().y/Math.abs(ball.getSpeed().y));
+	}
+
+	@Override
+	void moveBallOnRacketCote(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent,
+			BallType ball) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void moveBallOnRacketOther(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent,
+			BallType ball) {
+		// TODO Auto-generated method stub
+		
 	}	
 }	
 	
