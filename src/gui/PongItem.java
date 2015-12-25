@@ -69,39 +69,6 @@ abstract public class PongItem {
 	public void setPosition(int x, int y) {
 		this.position.setLocation(x, y);
 	}
-	/**
-     * Test if the ball is on the racket
-	 */
-	public static boolean itemOnRacketCote(PongItem item, RacketType racket) {
-		return ((((
-			// Si l'item touche sur les cot�s de la racket
-			item.getPosition().y > racket.getPosition().y &&
-			item.getPosition().y < racket.getPosition().y + racket.getHeight()) || (
-			item.getPosition().y + item.getHeight() > racket.getPosition().y &&
-			item.getPosition().y + item.getHeight() < racket.getPosition().y + racket.getHeight())) && ((
-			item.getPosition().x == racket.getPosition().x + racket.getWidth()) || (
-			item.getPosition().x + item.getWidth() == racket.getPosition().x))));
-	}
-	
-	public static boolean itemOnRacketHaut(PongItem item, RacketType racket) {
-		return ((((
-			// Si l'item touche le dessous de la racket
-			item.getPosition().x > racket.getPosition().x &&
-			item.getPosition().x < racket.getPosition().x + racket.getWidth()) || (
-			item.getPosition().x + item.getWidth() > racket.getPosition().x &&
-			item.getPosition().x + item.getWidth() < racket.getPosition().x + racket.getWidth())) && ((
-			item.getPosition().y + item.getHeight() == racket.getPosition().y ) || (
-			item.getPosition().y == racket.getPosition().y + racket.getHeight()))));
-	}
-	
-	public static boolean itemOnRacketCorner(PongItem item, RacketType racket) {
-		return ((
-			// Si l'item touche sur les cot�s de la racket
-			item.getPosition().y == racket.getPosition().y + racket.getHeight() || 
-			item.getPosition().y + item.getHeight() == racket.getPosition().y) && (
-			item.getPosition().x == racket.getPosition().x + racket.getWidth() || 
-			item.getPosition().x + item.getWidth() == racket.getPosition().x));
-	}
 	
 	public void inverserPosition(int sizePongX){
 		this.setPosition((sizePongX - this.getPosition().x - this.getWidth()), this.getPosition().y);

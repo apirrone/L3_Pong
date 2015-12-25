@@ -56,13 +56,14 @@ public class Client {
 	public CustomProtocol getData(){
 		BufferedReader in;
 		
-		CustomProtocol c = new CustomProtocol("error");
+		CustomProtocol c;
 		try{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String messageRecu = in.readLine();
 			c = new CustomProtocol(messageRecu);
 		}catch(IOException e){
 			e.printStackTrace();
+			c = new CustomProtocol("error");
 		}
 		
 		return c;

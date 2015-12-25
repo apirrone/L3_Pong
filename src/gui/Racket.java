@@ -14,7 +14,7 @@ public class Racket extends RacketType{
 	
 	public void moveBallOnRacketCote(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball){	
 				float decalageMax = 3;
-				if (itemOnRacketCote(ball, racketPlayer)) {
+				if (racketPlayer.itemOnRacketCote(ball)) {
 					// Valeur calculée par : ((distance entre le milieu de la balle et le milieu de la raquette) / 
 					// ((1/2)* (longueur de la raquette + longueur de la balle))) * 
 					// décalage Maximal sur Y
@@ -24,7 +24,7 @@ public class Racket extends RacketType{
 					ball.setSpeedX(-ball.getSpeed().x);
 					
 				}
-				if (itemOnRacketCote(ball, racketOpponent)) {
+				if (racketOpponent.itemOnRacketCote(ball)) {
 					// Valeur calculée par : ((distance entre le milieu de la balle et le milieu de la raquette) / 
 					// ((1/2)* (longueur de la raquette + longueur de la balle))) * 
 					// décalage Maximal sur Y
@@ -36,9 +36,9 @@ public class Racket extends RacketType{
 	}
 	
 	public void moveBallOnRacketOther(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball){	
-				if (itemOnRacketHaut(ball, racketPlayer) || itemOnRacketHaut(ball, racketOpponent))
+				if (racketPlayer.itemOnRacketHaut(ball) || racketOpponent.itemOnRacketHaut(ball))
 					ball.setSpeedY(-ball.getSpeed().y);	
-				if (itemOnRacketCorner(ball, racketPlayer) || itemOnRacketCorner(ball, racketOpponent))
+				if (racketPlayer.itemOnRacketCorner(ball) || racketOpponent.itemOnRacketCorner(ball))
 					ball.setSpeed(-ball.getSpeed().x, -ball.getSpeed().y);
 	}
 }

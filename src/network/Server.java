@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import util.ExceptionPong;
+
 import java.io.PrintWriter;
 
 public class Server{
@@ -13,11 +16,12 @@ public class Server{
 	private Socket socket;
 	private PrintWriter out;
 	
-	public Server(int port){
+	public Server(int port) throws ExceptionPong{
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e){
-			e.printStackTrace();
+			throw new ExceptionPong("Socket not open, cause : "+e.getMessage());
+			//e.printStackTrace();
 		}
 	}
 	

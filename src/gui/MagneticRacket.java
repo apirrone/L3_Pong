@@ -16,11 +16,11 @@ public class MagneticRacket extends RacketType{
 	 * moveBall with MagneticRackets changes, not finished yet
 	 */
 	public void moveBallOnRacket(int size_pong_x, int size_pong_y, RacketType racketPlayer,RacketType racketOpponent, BallType ball){
-				if (itemOnRacketCote(ball, racketPlayer) || itemOnRacketCote(ball, racketPlayer)){
+				if (racketPlayer.itemOnRacketCote(ball) || racketOpponent.itemOnRacketCote(ball)){
 					ball.setSpeed(0,0);
 					ball.setPosition(position.x, position.y);
 				}
-				if (itemOnRacketHaut(ball, racketOpponent) || itemOnRacketHaut(ball, racketOpponent)){
+				if (racketPlayer.itemOnRacketHaut(ball) || racketOpponent.itemOnRacketHaut(ball)){
 					ball.setSpeed(0,0);
 					ball.setPosition(position.x, position.y);
 				}
