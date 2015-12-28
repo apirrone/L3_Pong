@@ -1,46 +1,52 @@
 package gui;
 
-import java.awt.Image;
-import java.awt.Point;
-import javax.swing.ImageIcon;
+
+import java.awt.Toolkit;
 
 public class MagneticRacket extends RacketType{
 	/** 
 	 * Constructor of MagneticRacket
 	 */
-	public MagneticRacket(Image image, boolean player) {
-		super(image, player);
+	public MagneticRacket(boolean player) {
+		super(Toolkit.getDefaultToolkit().createImage(
+				ClassLoader.getSystemResource("ressource/barrePongAimante.png")), player);
 	}
 	
 	/**
 	 * moveBall with MagneticRackets changes, not finished yet
 	 */
-	public void moveBallOnRacket(int size_pong_x, int size_pong_y, RacketType racketPlayer,RacketType racketOpponent, BallType ball){
-				if (racketPlayer.itemOnRacketCote(ball) || racketOpponent.itemOnRacketCote(ball)){
-					ball.setSpeed(0,0);
+	public void moveBallOnRacketCote(int size_pong_x, int size_pong_y, RacketType racketPlayer,RacketType racketOpponent, BallType ball){
+				if (racketPlayer.itemOnRacketCote(ball)){
+					ball.setSpeed(1,1);
 					ball.setPosition(position.x, position.y);
 				}
-				if (racketPlayer.itemOnRacketHaut(ball) || racketOpponent.itemOnRacketHaut(ball)){
-					ball.setSpeed(0,0);
-					ball.setPosition(position.x, position.y);
+				
+				if (racketOpponent.itemOnRacketCote(ball)) {
+					ball.setSpeed(1,1);
+					ball.setPosition(racketOpponent.getPosition().x, racketOpponent.getPosition().y);
 				}
-				else
-					ball.position.translate(ball.getSpeed().x/Math.abs(ball.getSpeed().x), ball.getSpeed().y/Math.abs(ball.getSpeed().y));
+				ball.position.translate(ball.getSpeed().x/Math.abs(ball.getSpeed().x), 0);
 	}
-
-	@Override
-	void moveBallOnRacketCote(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent,
+	public void moveBallOnRacketOther(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent,
 			BallType ball) {
-		// TODO Auto-generated method stub
-		
+		if (racketPlayer.itemOnRacketHaut(ball)){
+			ball.setSpeed(1,1);
+			ball.setPosition(position.x, position.y);
+		}
+		 if (racketOpponent.itemOnRacketHaut(ball)){
+			ball.setSpeed(1,1);
+			ball.setPosition(racketOpponent.getPosition().x, racketOpponent.getPosition().y);
+		}
+		if (racketPlayer.itemOnRacketCorner(ball)){
+			ball.setSpeed(1,1);
+			ball.setPosition(position.x, position.y);
+		}
+		if (racketOpponent.itemOnRacketCorner(ball)){
+			ball.setSpeed(1,1);
+			ball.setPosition(racketOpponent.getPosition().x, racketOpponent.getPosition().y);
 	}
-
-	@Override
-	void moveBallOnRacketOther(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent,
-			BallType ball) {
-		// TODO Auto-generated method stub
-		
-	}	
+		ball.position.translate(0, ball.getSpeed().y/Math.abs(ball.getSpeed().y));
+	}
 }	
 	
 

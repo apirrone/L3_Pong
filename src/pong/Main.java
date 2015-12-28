@@ -18,7 +18,7 @@ public class Main  {
 		if(args.length == 0){//Serveur
 			Server server;
 			try {
-				server = new Server(2008);
+				server = new Server(3008);
 				server.waitForConnection();
 				Pong pong = new Pong(server);
 				Window window = new Window(pong);
@@ -31,7 +31,7 @@ public class Main  {
 		else{//client
 			Client client = new Client();
 			String addr = args[0];
-			client.connect(addr, 2008);
+			client.connect(addr, 3008);
 			Pong pong = new Pong(client);
 			Window window = new Window(pong);
 			window.displayOnscreen();

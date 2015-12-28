@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
+
 abstract public class PongItem {
 	private static final long serialVersionUID = 1L;
 

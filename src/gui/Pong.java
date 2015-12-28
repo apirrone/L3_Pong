@@ -103,16 +103,13 @@ public class Pong extends JPanel implements KeyListener {
 	
 	//Par soucis de factorisation
 	public void construct(boolean client){
-		this.ball = new Ball(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/ball.png")), client);
+		this.ball = new Ball(client);
 		//seconde balle utilisée quand l'un des joueurs atteind 10 points
 	//	this.ball2 = new Ball(Toolkit.getDefaultToolkit().createImage(
 	//			ClassLoader.getSystemResource("ressource/ball.png")), client);
-		this.racketPlayer = new Racket(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/barrePong.png")), true);
+		this.racketPlayer = new Racket(true);
 		
-		this.racketOpponent = new Racket(Toolkit.getDefaultToolkit().createImage(
-				ClassLoader.getSystemResource("ressource/barrePong.png")), false);
+		this.racketOpponent = new Racket(false);
 		
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));
 		this.addKeyListener(this);
