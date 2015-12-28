@@ -15,6 +15,8 @@ public abstract class BallType extends PongItem{
 	 * Point defining speed of ball, in pixels per timestamp
 	 */
 	protected Point speed;
+	protected boolean hasLift;
+	protected int liftSpeed ;
 	
 	public BallType (Image image, boolean serveur) {
 		super(image);
@@ -25,6 +27,8 @@ public abstract class BallType extends PongItem{
 			this.position.setLocation(390, 290);
 			this.speed = new Point(-BALL_SPEED_X, 0);
 		}
+		hasLift = false;
+		liftSpeed = 0;
 	}
 	
 	/**
@@ -49,19 +53,57 @@ public abstract class BallType extends PongItem{
 	 * Move ball position
 	 */
 	public void moveBall(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent, Score score) {
+		if(racketPlayer.itemOnRacketCote(this) && racketPlayer.getSpeed() != 0){
+			//applyLift
+			this.hasLift = true;
+			liftSpeed = racketPlayer.getSpeed()+10;
+		}
+		if(racketOpponent.itemOnRacketCote(this) && racketOpponent.getSpeed() != 0){
+			//applyLift
+			this.hasLift = true;
+			liftSpeed = racketOpponent.getSpeed()+10;
+		}
+		
 		for(int i=Math.abs(speed.x); i>0; i--){
 			racketPlayer.moveBallOnRacketCote(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
 			if (speed.y != 0) {
 				for(int j=Math.abs(speed.y); j>0; j--){
 					racketPlayer.moveBallOnRacketOther(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
 					position.translate(0, speed.y/Math.abs(speed.y));
+					
+					
 					if (position.y < 0){
-						position.y = 0;
-						speed.y = -speed.y;
+						if(this.hasLift){
+							this.hasLift = false;
+							position.y = 0;
+							speed.y = -speed.y + liftSpeed;
+							
+						}
+						else{
+							position.y = 0;
+							if(speed.y<=0)
+								speed.y = BALL_SPEED_X;
+							else{
+								speed.y = - BALL_SPEED_X;
+							}
+						}
 					}
 					if (position.y > size_pong_y - height){
-						position.y = size_pong_y - height;
-						speed.y = -speed.y;
+						if(this.hasLift){
+							this.hasLift = false;
+							position.y = size_pong_y - height;
+							speed.y = -speed.y + liftSpeed;
+							
+						}
+						else{
+							position.y = size_pong_y - height;	
+							if(speed.y<=0)
+								speed.y = BALL_SPEED_X;
+							else{
+								speed.y = - BALL_SPEED_X;
+							}
+							
+						}
 					}
 				}
 			}
