@@ -63,13 +63,13 @@ public abstract class BallType extends PongItem{
 			this.hasLift = true;
 			liftSpeed = racketOpponent.getSpeed()+10;
 		}
-		
+		int copyOfY=Math.abs(speed.y);
 		for(int i=Math.abs(speed.x); i>0; i--){
 			racketPlayer.moveBallOnRacketCote(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
 			if (speed.y != 0) {
-				for(int j=Math.abs(speed.y); j>0; j--){
+				for(int j=(Math.abs(speed.y)/Math.abs(speed.x)); j>0; j--){
 					racketPlayer.moveBallOnRacketOther(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
-					//position.translate(0, speed.y/Math.abs(speed.y));
+					position.translate(0, speed.y/Math.abs(speed.y));
 					
 					
 					if (position.y < 0){
@@ -105,9 +105,13 @@ public abstract class BallType extends PongItem{
 							
 						}
 					}
+					copyOfY--;
+					if (copyOfY<speed.x && j==1){
+						j+=copyOfY;
+					}
 				}
 			}
-			//position.translate(speed.x/Math.abs(speed.x), 0);
+			position.translate(speed.x/Math.abs(speed.x), 0);
 			if (position.x < 0){
 				position.x = 0;
 				speed.x = -speed.x;

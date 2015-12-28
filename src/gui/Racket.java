@@ -13,7 +13,7 @@ public class Racket extends RacketType{
 	}
 	
 	public void moveBallOnRacketCote(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball){	
-				float decalageMax = 3;
+				float decalageMax = 6;
 				if (racketPlayer.itemOnRacketCote(ball)) {
 					// Valeur calcul�e par : ((distance entre le milieu de la balle et le milieu de la raquette) / 
 					// ((1/2)* (longueur de la raquette + longueur de la balle))) * 
