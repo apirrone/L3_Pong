@@ -28,6 +28,18 @@ public abstract class RacketType extends PongItem{
 		else
 			this.position.setLocation(750, 250);
 	}
+	
+	/**
+	 * Restart all racket in early definition
+	 */
+	public void restartRacket(boolean player) {
+		speed = 0;
+		baseSpeed = RACKET_BASE_SPEED;
+		if(player)
+			this.position.setLocation(28, 250);
+		else
+			this.position.setLocation(750, 250);
+	}
 
 	/**
 	 * Get / Set accessors object

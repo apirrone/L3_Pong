@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Image;
 import java.awt.Point;
-import javax.swing.ImageIcon;
 
 public abstract class BallType extends PongItem{
 
@@ -13,6 +12,10 @@ public abstract class BallType extends PongItem{
 
 	/**
 	 * Point defining speed of ball, in pixels per timestamp
+	 * hasLift definit si oui ou non il y a un effet sur la balle
+	 * liftSpeed est un pourcentage compris dans [-100% , 100%]
+	 * liftSpeed>0 => lift sens horaire
+	 * liftSpeed<0 => lift sens trigo
 	 */
 	protected Point speed;
 	protected boolean hasLift;
@@ -30,7 +33,22 @@ public abstract class BallType extends PongItem{
 		hasLift = false;
 		liftSpeed = 0;
 	}
-	
+
+	/**
+	 * Restart ball in early definition
+	 */
+	public void restartBall(boolean serveur) {
+		if (serveur){
+			this.position.setLocation(390, 290);
+			this.speed = new Point(BALL_SPEED_X, 0);
+		}else{
+			this.position.setLocation(390, 290);
+			this.speed = new Point(-BALL_SPEED_X, 0);
+		}
+		hasLift = false;
+		liftSpeed = 0;
+	}
+
 	/**
 	 * Get / Set accessors object
 	 */
@@ -48,82 +66,124 @@ public abstract class BallType extends PongItem{
 	public void setSpeedY(int speedY) {
 		this.speed.setLocation(getSpeed().x, speedY);
 	}
+	
+	public boolean getHasLift() {
+		return hasLift;
+	}
+
+	public void setHasLift(boolean hasLift) {
+		this.hasLift = hasLift;
+	}
+	
+	public int getLiftSpeed() {
+		return liftSpeed;
+	}
+
+	public void setLiftSpeed(int liftSpeed) {
+		this.liftSpeed = liftSpeed;
+	}
 
 	/**
 	 * Move ball position
 	 */
 	public void moveBall(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent, Score score) {
-		if(racketPlayer.itemOnRacketCote(this) && racketPlayer.getSpeed() != 0){
-			//applyLift
-			this.hasLift = true;
-			liftSpeed = racketPlayer.getSpeed()+10;
-		}
-		if(racketOpponent.itemOnRacketCote(this) && racketOpponent.getSpeed() != 0){
-			//applyLift
-			this.hasLift = true;
-			liftSpeed = racketOpponent.getSpeed()+10;
-		}
+		// On crée une copie de speed.y pour garder, plus tard, le reste de la division par speed.x
 		int copyOfY=Math.abs(speed.y);
+		// Pour chaque speed.x on va se déplacer de speed.y/speed.x
 		for(int i=Math.abs(speed.x); i>0; i--){
+			// Si la balle est sur la raquette on change la direction de la balle
 			racketPlayer.moveBallOnRacketCote(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
+			// Si la raquette est en mouvement, on donne un effet a la balle
+			if(testIfMoveRacketCote(racketPlayer)){
+				doLift(racketPlayer, true);
+			}
+			if(testIfMoveRacketCote(racketOpponent)){
+				doLift(racketOpponent, false);
+			}
+			// Si la direction de la balle n'est pas horizontal
 			if (speed.y != 0) {
+				// Pour chaque mouvement vertical
 				for(int j=(Math.abs(speed.y)/Math.abs(speed.x)); j>0; j--){
+					// On test si on ne touche pas la raquette
 					racketPlayer.moveBallOnRacketOther(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
+					// On réalise le mouvement vertical d'un pixel
 					position.translate(0, speed.y/Math.abs(speed.y));
-					
-					
+					// Si la balle tape le haut du pong
 					if (position.y < 0){
-						if(this.hasLift){
-							this.hasLift = false;
-							position.y = 0;
-							speed.y = -speed.y + liftSpeed;
-							
+						position.y = 0;
+						// On inverse son mouvement ET on y applique l'effet de la balle SI elle en a un
+						if(getHasLift()){
+							setHasLift(false);
+							speed.y = -(speed.y + ((liftSpeed * speed.y) /100));
 						}
-						else{
-							position.y = 0;
-							if(speed.y<=0)
-								speed.y = BALL_SPEED_X;
-							else{
-								speed.y = - BALL_SPEED_X;
-							}
-						}
+						else
+							speed.y = -speed.y;
 					}
+					// Si la balle tape le bas du pong
 					if (position.y > size_pong_y - height){
+						position.y = size_pong_y - height;
+						// On inverse son mouvement ET on y applique l'effet de la balle SI elle en a un
 						if(this.hasLift){
 							this.hasLift = false;
-							position.y = size_pong_y - height;
-							speed.y = -speed.y + liftSpeed;
-							
+							speed.y = -(speed.y + (((-liftSpeed) * speed.y) /100));
 						}
-						else{
-							position.y = size_pong_y - height;	
-							if(speed.y<=0)
-								speed.y = BALL_SPEED_X;
-							else{
-								speed.y = - BALL_SPEED_X;
-							}
-							
-						}
+						else
+							speed.y = -speed.y;
 					}
+					// On decremente notre copie de speed.y pour connaitre le nombre de mouvement vertical restant
 					copyOfY--;
-					if (copyOfY<speed.x && j==1){
+					// Ce test permet d'ajouter le reste de la division de speed.y par speed.x
+					// Ainsi on pourra realiser ces derniers mouvements sur la dernière iteration de boucle de speed.x
+					if (copyOfY<speed.x && j==1)
 						j+=copyOfY;
-					}
 				}
 			}
+			// On réalise le mouvement horizontal d'un pixel
 			position.translate(speed.x/Math.abs(speed.x), 0);
+			// Si la balle touche notre cote du pong, on arrete la balle ET l'adversaire gagne un point
+			// C'est la fin d'un round
 			if (position.x < 0){
 				position.x = 0;
-				speed.x = -speed.x;
+				i = 0;
+				setSpeed(0, 0);
 				score.incrementScoreOpponent();
+				score.setFinRound(true);
 			}
+			// Si la balle touche le cote du pong adverse, on arrete la balle ET nous gagnons un point
+			// C'est la fin d'un round
 			if (position.x > size_pong_x - width){
 				position.x = size_pong_x - width;
-				speed.x = -speed.x;
+				i = 0;
+				setSpeed(0, 0);
 				score.incrementScorePlayer();
+				score.setFinRound(true);
 			}
 		}
 	}
+	
+	/**
+	 * Test si la raquette touche la balle quand elle est en mouvement
+	 */
+	public boolean testIfMoveRacketCote (RacketType racket){
+		return (racket.itemOnRacketCote(this) && racket.getSpeed() != 0);
+	}
 
-
+	/**
+	 * Applique un effet lift sur la balle selon la vitesse de la raquette
+	 * Cet effet est traduit en pourcentage, donc la vitesse de la raquette doit etre comprise dans [-10 ; 10]
+	 */
+	public void doLift (RacketType racket, boolean player){
+		this.hasLift = true;
+		if(racket.getSpeed()<0){
+			if(player)
+				liftSpeed = racket.getSpeed()*10;
+			else
+				liftSpeed = -racket.getSpeed()*10;
+		}else{
+			if(player)
+				liftSpeed = -racket.getSpeed()*10;
+			else
+				liftSpeed = racket.getSpeed()*10;
+		}
+	}
 }

@@ -121,14 +121,30 @@ public class Pong extends JPanel implements KeyListener {
 	public void animate() {
 		/* Update ball position */
 		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
-
-		/* Update racket position */
-		racketPlayer.moveRacket(SIZE_PONG_Y, ball);
-		/* Update racket position */
-		racketOpponent.moveRacket(SIZE_PONG_Y, ball);
-
-		/* And update output */
-		updateScreen();
+		// Si le round est en cour
+		if(!pongScore.getFinRound()){
+			/* Update racket position */
+			racketPlayer.moveRacket(SIZE_PONG_Y, ball);
+			/* Update racket position */
+			racketOpponent.moveRacket(SIZE_PONG_Y, ball);
+			/* And update output */
+			updateScreen();
+		}else{
+		// Sinon on reinitialise le round
+			pongScore.setFinRound(false);
+			boolean client = (this.server == null);
+			ball.restartBall(client);
+			racketPlayer.restartRacket(true);
+			racketOpponent.restartRacket(false);
+			/* And update output */
+			updateScreen();
+			// On attend deux sec avant le debut du prochain round
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -216,7 +232,7 @@ public class Pong extends JPanel implements KeyListener {
 				if ((System.currentTimeMillis() - time) >= 10){
 					if ((SIZE_PONG_X - ball.getPosition().getX() - ball.getWidth())!= p.getBallPosition().getX() ||
 								ball.getPosition().getY() != p.getBallPosition().getY()){
-						System.out.println("CHEATER !!!!!"); 
+//						System.out.println("CHEATER !!!!!"); 
 					}
 					time = System.currentTimeMillis();
 				}
@@ -232,7 +248,7 @@ public class Pong extends JPanel implements KeyListener {
 				if ((System.currentTimeMillis() - time) >= 10){
 					if ((SIZE_PONG_X - ball.getPosition().getX()- ball.getWidth())!= p.getBallPosition().getX() ||
 								ball.getPosition().getY() != p.getBallPosition().getY()){
-						System.out.println("CHEATER !!!!!"); 
+//						System.out.println("CHEATER !!!!!"); 
 					}
 					time = System.currentTimeMillis();
 				}

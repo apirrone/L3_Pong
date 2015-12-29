@@ -20,6 +20,20 @@ public class Racket extends RacketType{
 					// d�calage Maximal sur Y
 					float valueY = ((((float)ball.getPosition().y + (ball.getHeight() / 2)) - (racketPlayer.getPosition().y + (racketPlayer.getHeight() / 2))) / 
 							(((racketPlayer.getHeight() + ball.getHeight()) / 2))) * decalageMax;
+					// Si la balle a un effet
+					if(ball.getHasLift()){
+						// On ajoute l'effet a la direction de la balle, cet effet est defini comme un pourcentage
+						if(valueY > 0)
+							valueY = (float)valueY + ((valueY * ball.getLiftSpeed())/100);
+						else{
+							if(valueY < 0)
+								valueY = (float)valueY + ((valueY * (-ball.getLiftSpeed()))/100);
+							else
+								valueY = 0;
+						}
+						// On enleve l'effet sur la balle
+						ball.setHasLift(false);
+					}
 					ball.setSpeedY(Math.round(valueY));
 					ball.setSpeedX(-ball.getSpeed().x);
 					
@@ -30,10 +44,23 @@ public class Racket extends RacketType{
 					// d�calage Maximal sur Y
 					float valueY = ((((float)ball.getPosition().y + (ball.getHeight() / 2)) - (racketOpponent.getPosition().y + (racketOpponent.getHeight() / 2))) / 
 							(((racketOpponent.getHeight() + ball.getHeight()) / 2))) * decalageMax;
+					// Si la balle a un effet
+					if(ball.getHasLift()){
+						// On ajoute l'effet a la direction de la balle, cet effet est defini comme un pourcentage
+						if(valueY > 0)
+							valueY = (float)valueY + ((valueY * (-ball.getLiftSpeed()))/100);
+						else{
+							if(valueY < 0)
+								valueY = (float)valueY + ((valueY * ball.getLiftSpeed())/100);
+							else
+								valueY = 0;
+						}
+						// On enleve l'effet sur la balle
+						ball.setHasLift(false);
+					}
 					ball.setSpeedY(Math.round(valueY));
 					ball.setSpeedX(-ball.getSpeed().x);
 				}
-				ball.position.translate(ball.getSpeed().x/Math.abs(ball.getSpeed().x), 0);
 	}
 	
 	public void moveBallOnRacketOther(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball){	
@@ -41,7 +68,6 @@ public class Racket extends RacketType{
 					ball.setSpeedY(-ball.getSpeed().y);	
 				if (racketPlayer.itemOnRacketCorner(ball) || racketOpponent.itemOnRacketCorner(ball))
 					ball.setSpeed(-ball.getSpeed().x, -ball.getSpeed().y);
-				ball.position.translate(0, ball.getSpeed().y/Math.abs(ball.getSpeed().y));
 	}
 }
 

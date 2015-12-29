@@ -1,4 +1,4 @@
-package gui;
+/*package gui;
 
 public class ThreadForTest extends Thread{
 	
@@ -33,3 +33,4 @@ public class ThreadForTest extends Thread{
 		}
 	}
 }
+*/

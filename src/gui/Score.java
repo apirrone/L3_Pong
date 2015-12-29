@@ -4,10 +4,12 @@ public class Score {
 	
 	private int scorePlayer;
 	private int scoreOpponent;
+	private boolean finRound;
 
 	public Score(){
 		scorePlayer = 0;
 		scoreOpponent = 0;
+		setFinRound(false);
 	}
 
 	/**
@@ -27,6 +29,14 @@ public class Score {
 
 	public void incrementScoreOpponent() {
 		this.scoreOpponent++;
+	}
+
+	public boolean getFinRound() {
+		return finRound;
+	}
+
+	public void setFinRound(boolean finRound) {
+		this.finRound = finRound;
 	}
 	
 	

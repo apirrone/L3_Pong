@@ -25,7 +25,7 @@ public class MagneticRacket extends RacketType{
 					ball.setSpeed(1,1);
 					ball.setPosition(racketOpponent.getPosition().x, racketOpponent.getPosition().y);
 				}
-				ball.position.translate(ball.getSpeed().x/Math.abs(ball.getSpeed().x), 0);
+				//ball.position.translate(ball.getSpeed().x/Math.abs(ball.getSpeed().x), 0);
 	}
 	public void moveBallOnRacketOther(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent,
 			BallType ball) {
@@ -45,7 +45,7 @@ public class MagneticRacket extends RacketType{
 			ball.setSpeed(1,1);
 			ball.setPosition(racketOpponent.getPosition().x, racketOpponent.getPosition().y);
 	}
-		ball.position.translate(0, ball.getSpeed().y/Math.abs(ball.getSpeed().y));
+		//ball.position.translate(0, ball.getSpeed().y/Math.abs(ball.getSpeed().y));
 	}
 }	
 	
