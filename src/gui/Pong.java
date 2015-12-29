@@ -30,7 +30,7 @@ public class Pong extends JPanel implements KeyListener {
 	 * Constant (c.f. final) common to all Pong instances (c.f. static)
 	 * defining the background color of the Pong
 	 */
-	private static final Color backgroundColor = new Color(0xFF, 0x40, 0);
+	private static final Color backgroundColor = new Color(0x22, 0x40, 0);
 	
 	/**
 	 * defining the color of the score
@@ -60,7 +60,7 @@ public class Pong extends JPanel implements KeyListener {
 	/**
 	 * Graphic component context derived from buffer Image
 	 */
-	private Graphics graphicContext = null;
+	public Graphics graphicContext = null;
 
 	/**
 	 * One Ball to be displayed
@@ -78,6 +78,9 @@ public class Pong extends JPanel implements KeyListener {
 	private Server server;
 	
 	private Score pongScore;
+	private int playTime = 0;
+	private Bonus bonus;
+	private Bonus bonus1;
 	
 	private long time;
 	
@@ -121,8 +124,27 @@ public class Pong extends JPanel implements KeyListener {
 	public void animate() {
 		/* Update ball position */
 		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
+		//playTime++;
 		// Si le round est en cour
 		if(!pongScore.getFinRound()){
+			if(playTime == 300 || playTime == 301){
+				this.bonus = new Bonus(1,3,ball,racketPlayer,racketOpponent,true);
+				this.bonus1 = new Bonus(1,3,ball,racketPlayer,racketOpponent,false);
+				if(bonus != null){
+					bonus.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
+					bonus.updateScreenBonus(this);
+				}
+				if(bonus1 != null){
+					bonus1.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
+					bonus1.updateScreenBonus(this);
+				}
+				System.out.print("Arrivée des bonus\n");
+				if(bonus == null && bonus1 == null){
+					playTime = 302;
+					System.out.print("Fin des bonus\n");
+				}
+				playTime = 300;
+			}
 			/* Update racket position */
 			racketPlayer.moveRacket(SIZE_PONG_Y, ball);
 			/* Update racket position */
@@ -156,6 +178,10 @@ public class Pong extends JPanel implements KeyListener {
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_KP_DOWN:
 				racketPlayer.setSpeed(racketPlayer.getBaseSpeed());
+				break;
+			case KeyEvent.VK_RIGHT:
+			case KeyEvent.VK_KP_RIGHT:
+				racketPlayer.releaseTheBall(ball, this);
 				break;
 			default:
 				System.out.println("got press "+e);

@@ -118,4 +118,20 @@ public abstract class RacketType extends PongItem{
 			item.getPosition().x == getPosition().x + getWidth() || 
 			item.getPosition().x + item.getWidth() == getPosition().x));
 	}
+	public void releaseTheBall(BallType ball, Pong pong){
+		if (this instanceof MagneticRacket){
+			System.out.print("relachement \n");
+				//if(this.itemOnRacketCorner(ball) || this.itemOnRacketCote(ball) || this.itemOnRacketHaut(ball)){
+			ball.setPosition(ball.position.x + 10, ball.position.y+ 10);
+			System.out.print("relachement 2\n");
+			ball.setSpeedY(0);
+			ball.setSpeedX(-2);
+						//ball.position.translate(0, ball.getSpeed().y/Math.abs(ball.getSpeed().y));
+			ball.position.translate(ball.getSpeed().x/Math.abs(ball.getSpeed().x), 0);
+			System.out.print("relachement 3\n");
+			pong.animate();
+			System.out.print("relachement 4\n");		
+			//}
+		}
+	}
 }
