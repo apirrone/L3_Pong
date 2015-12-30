@@ -109,8 +109,7 @@ public class Pong extends JPanel implements KeyListener {
 	public void construct(boolean client){
 		this.ball = new Ball(client);
 		//seconde balle utilisée quand l'un des joueurs atteind 10 points
-	//	this.ball2 = new Ball(Toolkit.getDefaultToolkit().createImage(
-	//			ClassLoader.getSystemResource("ressource/ball.png")), client);
+		//this.ball2 = new Ball(client);
 		this.racketPlayer = new Racket(true);
 		
 		this.racketOpponent = new Racket(false);
@@ -126,30 +125,12 @@ public class Pong extends JPanel implements KeyListener {
 		/* Update ball position */
 		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
 		playTime++;
+		//Permet le lancement des bonus a un moment precis
+		if(playTime == 300 || playTime == 301)
+			bonusManagement();
 		// Si le round est en cour
 		if(!pongScore.getFinRound()){
-			if(playTime == 300 || playTime == 301){
-				if(!bonusIsCreated){
-					this.bonus = new Bonus(1,3,ball,racketPlayer,racketOpponent,true);
-					this.bonus1 = new Bonus(1,3,ball,racketPlayer,racketOpponent,false);
-					System.out.print("Arrivée des bonus\n");
-					bonusIsCreated = true;
-				}
-				if(bonus.getInUse() == true){
-					bonus.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
-					bonus.updateScreenBonus(this);
-				}
-				if(bonus1.getInUse() == true){
-					bonus1.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
-					bonus1.updateScreenBonus(this);
-				}
-				if(bonus.getInUse() == false && bonus1.getInUse() == false){
-					playTime = 302;
-					System.out.print("Fin des bonus\n");
-				}
-				else
-					playTime = 300;
-			}
+			//Permet le lancement des bonus a un moment precis
 			/* Update racket position */
 			racketPlayer.moveRacket(SIZE_PONG_Y, ball);
 			/* Update racket position */
@@ -238,7 +219,7 @@ public class Pong extends JPanel implements KeyListener {
 			else
 				graphicContext = buffer.getGraphics();
 		}
-		/* Fill the area with blue */
+		/* Fill the area with green */
 		graphicContext.setColor(backgroundColor);
 		graphicContext.fillRect(0, 0, SIZE_PONG_X, SIZE_PONG_Y);
 
@@ -292,13 +273,27 @@ public class Pong extends JPanel implements KeyListener {
 	 * Gestion des bonuses
 	 */
 	private void bonusManagement(){
-		if (pongScore.getScorePlayer() >= 3 || pongScore.getScoreOpponent() >= 3){
-			//mouvement de la nouvelle balle
-			graphicContext.drawImage(ball2.getImage(), ball2.getPosition().x, ball2.getPosition().y, ball2.getWidth(), ball2.getHeight(), null);
-			ball2.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
-			//update des rackets par rapport à la nouvelle balle
-			racketPlayer.moveRacket(SIZE_PONG_Y, ball2);
-			racketOpponent.moveRacket(SIZE_PONG_Y, ball2);
-		}		
+		if(!bonusIsCreated){
+			this.bonus = new Bonus(1,4,ball,racketPlayer,racketOpponent,true);
+			this.bonus1 = new Bonus(1,4,ball,racketPlayer,racketOpponent,false);
+			System.out.print("Arrivée des bonus\n");
+			bonusIsCreated = true;
+			bonus.updateScreenBonus(this);
+		}
+		if(bonus.getInUse() == true){
+			bonus.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
+			bonus.updateScreenBonus(this);
+		}
+		if(bonus1.getInUse() == true){
+			bonus1.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
+			bonus1.updateScreenBonus(this);
+		}
+		if(bonus.getInUse() == false && bonus1.getInUse() == false){
+			playTime = 302;
+			bonusIsCreated = false;
+			System.out.print("Fin des bonus\n");
+		}
+		else
+			playTime = 300;
 	}
 }
