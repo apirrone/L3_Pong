@@ -47,16 +47,22 @@ public class Bonus extends PongItem{
 	}
 	public void moveBonus(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent, BallType ball){
 		for(int i=Math.abs(speed.x); i>0; i--){
+			if(racketPlayer.itemOnRacketCote(this)){
+				getRandomBonus(min, max, ball, racketPlayer, racketOpponent);
+				deleteBonus();
+			}
+			if(racketOpponent.itemOnRacketCote(this)){
+				getRandomBonus(min, max, ball, racketOpponent, racketPlayer);
+				deleteBonus();
+			}
 			for(int j=(Math.abs(speed.y)/Math.abs(speed.x)); j>0; j--){
-				if(racketPlayer.itemOnRacketCote(this) || racketPlayer.itemOnRacketHaut(this) || racketPlayer.itemOnRacketCorner(this)){
+				if(racketPlayer.itemOnRacketHaut(this) || racketPlayer.itemOnRacketCorner(this)){
 					getRandomBonus(min, max, ball, racketPlayer, racketOpponent);
 					deleteBonus();
-					System.out.print("bonus utilisé\n");
 				}
-				if(racketOpponent.itemOnRacketCote(this) || racketOpponent.itemOnRacketHaut(this) || racketOpponent.itemOnRacketCorner(this)){
+				if(racketOpponent.itemOnRacketHaut(this) || racketOpponent.itemOnRacketCorner(this)){
 					getRandomBonus(min, max, ball,racketOpponent, racketPlayer);
 					deleteBonus();
-					System.out.print("bonus utilisé\n");
 				}
 				this.position.translate(0, speed.y/Math.abs(speed.y));
 			}
