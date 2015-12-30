@@ -81,6 +81,7 @@ public class Pong extends JPanel implements KeyListener {
 	private int playTime = 0;
 	private Bonus bonus;
 	private Bonus bonus1;
+	private boolean bonusIsCreated = false;
 	
 	private long time;
 	
@@ -124,26 +125,30 @@ public class Pong extends JPanel implements KeyListener {
 	public void animate() {
 		/* Update ball position */
 		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
-		//playTime++;
+		playTime++;
 		// Si le round est en cour
 		if(!pongScore.getFinRound()){
 			if(playTime == 300 || playTime == 301){
-				this.bonus = new Bonus(1,3,ball,racketPlayer,racketOpponent,true);
-				this.bonus1 = new Bonus(1,3,ball,racketPlayer,racketOpponent,false);
-				if(bonus != null){
+				if(!bonusIsCreated){
+					this.bonus = new Bonus(1,3,ball,racketPlayer,racketOpponent,true);
+					this.bonus1 = new Bonus(1,3,ball,racketPlayer,racketOpponent,false);
+					System.out.print("Arrivée des bonus\n");
+					bonusIsCreated = true;
+				}
+				if(bonus.getInUse() == true){
 					bonus.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
 					bonus.updateScreenBonus(this);
 				}
-				if(bonus1 != null){
+				if(bonus1.getInUse() == true){
 					bonus1.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
 					bonus1.updateScreenBonus(this);
 				}
-				System.out.print("Arrivée des bonus\n");
-				if(bonus == null && bonus1 == null){
+				if(bonus.getInUse() == false && bonus1.getInUse() == false){
 					playTime = 302;
 					System.out.print("Fin des bonus\n");
 				}
-				playTime = 300;
+				else
+					playTime = 300;
 			}
 			/* Update racket position */
 			racketPlayer.moveRacket(SIZE_PONG_Y, ball);
