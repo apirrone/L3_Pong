@@ -8,7 +8,12 @@ public abstract class BallType extends PongItem{
 	/**
 	 * Speed of ball, in pixels per second
 	 */	
-	private static final int BALL_SPEED_X = 2;
+	private static final int BALL_BASE_SPEED_X = 2;
+	private static final int BALL_BASE_SPEED_Y = 0;
+	private static final int BALL_BASE_LIFTSPEED = 0;
+	private static final boolean BALL_BASE_HASLIFT = false;
+	private static final int BALL_BASE_POSITION_X = 390;
+	private static final int BALL_BASE_POSITION_Y = 290;
 
 	/**
 	 * Point defining speed of ball, in pixels per timestamp
@@ -24,14 +29,14 @@ public abstract class BallType extends PongItem{
 	public BallType (Image image, boolean serveur) {
 		super(image);
 		if (serveur){
-			this.position.setLocation(390, 290);
-			this.speed = new Point(BALL_SPEED_X, 0);
+			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
+			this.speed = new Point(BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
 		}else{
-			this.position.setLocation(390, 290);
-			this.speed = new Point(-BALL_SPEED_X, 0);
+			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
+			this.speed = new Point(-BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
 		}
-		hasLift = false;
-		liftSpeed = 0;
+		hasLift = BALL_BASE_HASLIFT;
+		liftSpeed = BALL_BASE_LIFTSPEED;
 	}
 
 	/**
@@ -39,14 +44,14 @@ public abstract class BallType extends PongItem{
 	 */
 	public void restartBall(boolean serveur) {
 		if (serveur){
-			this.position.setLocation(390, 290);
-			this.speed = new Point(BALL_SPEED_X, 0);
+			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
+			this.speed = new Point(BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
 		}else{
-			this.position.setLocation(390, 290);
-			this.speed = new Point(-BALL_SPEED_X, 0);
+			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
+			this.speed = new Point(-BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
 		}
-		hasLift = false;
-		liftSpeed = 0;
+		hasLift = BALL_BASE_HASLIFT;
+		liftSpeed = BALL_BASE_LIFTSPEED;
 	}
 
 	/**

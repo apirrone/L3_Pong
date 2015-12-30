@@ -18,15 +18,18 @@ public abstract class RacketType extends PongItem{
 	 * Speed of racket (in pixels per second)
 	 */
 	public static final int RACKET_BASE_SPEED = 4;
+	public static final int RACKET_PLAYER_BASE_POSITION_X = 28;
+	public static final int RACKET_OPPONENT_BASE_POSITION_X = 750;
+	public static final int RACKET_BASE_POSITION_Y = 250;
 	
 	public RacketType(Image image, boolean player){
 		super(image);
 		speed = 0;
 		baseSpeed = RACKET_BASE_SPEED;
 		if(player)
-			this.position.setLocation(28, 250);
+			this.position.setLocation(RACKET_PLAYER_BASE_POSITION_X, RACKET_BASE_POSITION_Y);
 		else
-			this.position.setLocation(750, 250);
+			this.position.setLocation(RACKET_OPPONENT_BASE_POSITION_X, RACKET_BASE_POSITION_Y);
 	}
 	
 	/**
@@ -36,9 +39,9 @@ public abstract class RacketType extends PongItem{
 		speed = 0;
 		baseSpeed = RACKET_BASE_SPEED;
 		if(player)
-			this.position.setLocation(28, 250);
+			this.position.setLocation(RACKET_PLAYER_BASE_POSITION_X, RACKET_BASE_POSITION_Y);
 		else
-			this.position.setLocation(750, 250);
+			this.position.setLocation(RACKET_OPPONENT_BASE_POSITION_X, RACKET_BASE_POSITION_Y);
 	}
 
 	/**

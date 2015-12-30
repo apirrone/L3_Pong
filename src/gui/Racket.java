@@ -48,10 +48,10 @@ public class Racket extends RacketType{
 					if(ball.getHasLift()){
 						// On ajoute l'effet a la direction de la balle, cet effet est defini comme un pourcentage
 						if(valueY > 0)
-							valueY = (float)valueY + ((valueY * (-ball.getLiftSpeed()))/100);
+							valueY = (float)valueY + ((valueY * ball.getLiftSpeed())/100);
 						else{
 							if(valueY < 0)
-								valueY = (float)valueY + ((valueY * ball.getLiftSpeed())/100);
+								valueY = (float)valueY + ((valueY * (-ball.getLiftSpeed()))/100);
 							else
 								valueY = 0;
 						}

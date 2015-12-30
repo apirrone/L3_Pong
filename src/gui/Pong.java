@@ -255,36 +255,69 @@ public class Pong extends JPanel implements KeyListener {
 	}
 	
 	public void sendReceiveData(){
+		boolean cheater = false;
 		if(this.client == null){//Je suis serveur
-			server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
+			server.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition(), ball.getHasLift(), ball.getLiftSpeed(), ball.getSpeed().y));
 			CustomProtocol p = server.getData();
 			racketOpponent.setY(p.getRacketY());
-			if (p.getBallPosition().getX() >= (SIZE_PONG_X/2) ){//C'est de l'autre côté, on prend les données de l'autre
+//			System.out.println("ball pos X = "+(SIZE_PONG_X - ball.getPosition().x - ball.getWidth())+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y);
+			if (ball.getPosition().getX() > ((SIZE_PONG_X - ball.getWidth())/2) ){//C'est de l'autre côté, on prend les données de l'autre
 				if ((System.currentTimeMillis() - time) >= 10){
 					if ((SIZE_PONG_X - ball.getPosition().getX() - ball.getWidth())!= p.getBallPosition().getX() ||
-								ball.getPosition().getY() != p.getBallPosition().getY()){
-//						System.out.println("CHEATER !!!!!"); 
+								ball.getPosition().getY() != p.getBallPosition().getY() ||
+								ball.getHasLift() != p.getHasLift() ||
+								ball.getLiftSpeed() != p.getLiftSpeed() ||
+								ball.getSpeed().getY() != p.getBallSpeedY()){
+						cheater = true;
+//						System.out.println("ball pos X = "+(SIZE_PONG_X - ball.getPosition().x - ball.getWidth())+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y);
+//						System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
 					}
 					time = System.currentTimeMillis();
 				}
 				ball.setPosition(p.getBallPosition());
 				ball.inverserPosition(SIZE_PONG_X);
+//				System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
+				if (ball.getPosition().getX() == RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()|| 
+						ball.getPosition().getX() == RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth() - Math.abs(ball.getSpeed().getX())){
+					ball.setHasLift(p.getHasLift());
+					ball.setLiftSpeed(p.getLiftSpeed());
+					ball.setSpeedY(p.getBallSpeedY());
+					cheater = false;
+				}
+				if (cheater)
+					System.out.println("CHEATER !!!!!"); 
 			}
 		}
 		else{//Je suis client
-			client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition()));
+			client.setData(new CustomProtocol((int)racketPlayer.getPosition().getY(), ball.getPosition(), ball.getHasLift(), ball.getLiftSpeed(), ball.getSpeed().y));
 			CustomProtocol p = client.getData();
 			racketOpponent.setY(p.getRacketY());
-			if (p.getBallPosition().getX() >= (SIZE_PONG_X/2) ){//C'est de l'autre côté, on prend les données de l'autre
+//			System.out.println("ball pos X = "+ball.getPosition().x+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y); 
+			if (ball.getPosition().getX() > ((SIZE_PONG_X - ball.getWidth())/2) ){//C'est de l'autre côté, on prend les données de l'autre
 				if ((System.currentTimeMillis() - time) >= 10){
 					if ((SIZE_PONG_X - ball.getPosition().getX()- ball.getWidth())!= p.getBallPosition().getX() ||
-								ball.getPosition().getY() != p.getBallPosition().getY()){
-//						System.out.println("CHEATER !!!!!"); 
+								ball.getPosition().getY() != p.getBallPosition().getY() ||
+										ball.getHasLift() != p.getHasLift() ||
+										ball.getLiftSpeed() != p.getLiftSpeed() ||
+										ball.getSpeed().getY() != p.getBallSpeedY()){
+						cheater = true;
+//						System.out.println("ball pos X = "+ball.getPosition().x+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y); 
+//						System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
 					}
 					time = System.currentTimeMillis();
 				}
 				ball.setPosition(p.getBallPosition());
 				ball.inverserPosition(SIZE_PONG_X);
+//				System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
+				if (ball.getPosition().getX() == RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()|| 
+						ball.getPosition().getX() == RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth() - Math.abs(ball.getSpeed().getX())){
+					ball.setHasLift(p.getHasLift());
+					ball.setLiftSpeed(p.getLiftSpeed());
+					ball.setSpeedY(p.getBallSpeedY());
+					cheater = false;
+				}
+				if (cheater)
+					System.out.println("CHEATER !!!!!"); 
 			}
 		}
 	}
