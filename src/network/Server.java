@@ -1,69 +1,69 @@
 package network;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import util.ExceptionPong;
-
 import java.io.PrintWriter;
 
-public class Server{
+public class Server {
+
+	private static final int timeMaxToWaitConnection = 30000;
 	
 	private ServerSocket serverSocket;
 	private Socket socket;
-	private PrintWriter out;
+	private CustomProtocol protocol;
+	private BufferedReader bufferIn;
+	private PrintWriter writerOut;
 	
-	public Server(int port) throws ExceptionPong{
+	public Server(int port) throws ExceptionPong {
+		protocol = new CustomProtocol();
 		try {
 			serverSocket = new ServerSocket(port);
-		} catch (IOException e){
-			throw new ExceptionPong("Socket not open, cause : "+e.getMessage());
-			//e.printStackTrace();
-		}
-	}
-	
-	public void waitForConnection(){
-		try {
-			serverSocket.setSoTimeout(30000);
-			System.out.println("Attente de connexion, 30 secondes avant déconnexion\n");
-			socket = serverSocket.accept();//Bloquant : Attend une connexion (timeout de 30 secondes)
-			System.out.println("Connexion établie");
-			
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public void setData(CustomProtocol p){
-		
-		PrintWriter out;
-		
-		try{
-			out = new PrintWriter(socket.getOutputStream());
-			out.println(p.toString());
-			out.flush();
-		} catch (IOException e){
-			e.printStackTrace();
+			throw new ExceptionPong("ERROR : La socket n'a pas pu s'ouvrir, cause : "+e.getMessage());
 		}
 	}
 	
-	public CustomProtocol getData(){
-		BufferedReader in;
-		
-		CustomProtocol c = new CustomProtocol("error");
-		try{
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String messageRecu = in.readLine();
-			c = new CustomProtocol(messageRecu);
-		}catch(IOException e){
-			e.printStackTrace();
+	public void waitForConnection() throws ExceptionPong {
+		try {
+			// Le serveur va attendre une connexion pendant "timeMaxToWaitConnection" secondes;
+			serverSocket.setSoTimeout(timeMaxToWaitConnection);
+			System.out.println("Attente de connexion, "+timeMaxToWaitConnection+" secondes avant deconnexion\n");
+			socket = serverSocket.accept();
+			System.out.println("Connexion Etablie");
+		} catch (IOException e) {
+			throw new ExceptionPong("ERROR : Aucun client ne s'est connecte.");
 		}
-		
-		return c;
+		try {
+			bufferIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		} catch(IOException e) {
+			throw new ExceptionPong("ERROR : Echec de lecture de l'input stream.");
+		}
+		try {
+			writerOut = new PrintWriter(socket.getOutputStream());
+		} catch (IOException e) {
+			throw new ExceptionPong("ERROR : Socket non connectee OU erreur dans la creation de l'output stream.");
+		}
 	}
-
+	
+	public void setData(int yRacket, Point ballPosition, boolean haslift, int liftSpeed, int ballSpeedY) {
+		protocol.setCustomProtocol(yRacket, ballPosition, haslift, liftSpeed, ballSpeedY);
+		writerOut.println(protocol.toString());
+		writerOut.flush();
+	}
+	
+	public CustomProtocol getData() throws ExceptionPong {
+		try {
+			String messageRecu = bufferIn.readLine();
+			protocol.setCustomProtocol(messageRecu);
+		} catch (IOException e) {
+			protocol.setCustomProtocol("error");
+			throw new ExceptionPong("ERROR : Problemes I/O avec bufferIn.");
+		}
+		return protocol;
+	}
 }

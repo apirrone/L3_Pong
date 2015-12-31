@@ -3,10 +3,10 @@ package gui;
 import java.awt.Image;
 import java.awt.Point;
 
-public abstract class BallType extends PongItem{
+public abstract class BallType extends PongItem {
 
 	/**
-	 * Speed of ball, in pixels per second
+	 * Definition des constantes de bases
 	 */	
 	private static final int BALL_BASE_SPEED_X = 2;
 	private static final int BALL_BASE_SPEED_Y = 0;
@@ -16,11 +16,11 @@ public abstract class BallType extends PongItem{
 	private static final int BALL_BASE_POSITION_Y = 290;
 
 	/**
-	 * Point defining speed of ball, in pixels per timestamp
+	 * speed est un Point qui défini la vitesse sur "X" et "Y" de la balle, en pixels par timeStep
 	 * hasLift definit si oui ou non il y a un effet sur la balle
 	 * liftSpeed est un pourcentage compris dans [-100% , 100%]
-	 * liftSpeed>0 => lift sens horaire
-	 * liftSpeed<0 => lift sens trigo
+	 * liftSpeed > 0 => rotation de sens horaire
+	 * liftSpeed < 0 => rotation de sens trigo
 	 */
 	protected Point speed;
 	protected boolean hasLift;
@@ -40,22 +40,22 @@ public abstract class BallType extends PongItem{
 	}
 
 	/**
-	 * Restart ball in early definition
+	 * Remet la balle au meme etat que lors de sa construction
 	 */
 	public void restartBall(boolean serveur) {
 		if (serveur){
 			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
-			this.speed = new Point(BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
+			this.speed.setLocation(BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
 		}else{
 			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
-			this.speed = new Point(-BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
+			this.speed.setLocation(-BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
 		}
 		hasLift = BALL_BASE_HASLIFT;
 		liftSpeed = BALL_BASE_LIFTSPEED;
 	}
 
 	/**
-	 * Get / Set accessors object
+	 * Get / Set accesseurs des attributs
 	 */
 	public Point getSpeed() {
 		return speed;
@@ -89,7 +89,7 @@ public abstract class BallType extends PongItem{
 	}
 
 	/**
-	 * Move ball position
+	 * Fonction de déplacement de la balle
 	 */
 	public void moveBall(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent, Score score) {
 		// On crée une copie de speed.y pour garder, plus tard, le reste de la division par speed.x

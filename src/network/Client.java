@@ -1,11 +1,10 @@
 package network;
 
-import gui.Racket;
-import gui.Ball;
-
+import util.ExceptionPong;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -13,61 +12,46 @@ import java.io.PrintWriter;
 public class Client {
 	
 	private Socket socket;
+	private CustomProtocol protocol;
+	private BufferedReader bufferIn;
+	private PrintWriter writerOut;
 	
-	public Client(){
-		
-		
+	public Client() {
+		protocol = new CustomProtocol();
 	}
 	
-	public void connect(String address, int port){
+	public void connect(String address, int port) throws ExceptionPong {
 		try {
 			socket = new Socket(InetAddress.getByName(address), port);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new ExceptionPong("ERROR : Problemes de connection au serveur OU serveur inexistant.");
 		}
-	}
-	
-	
-//	public String getDataTempo(Racket r, Ball b){
-//		String data= "";
-//		//ajout en string de position de racket
-//		data +=Integer.toString(r.getWidth()) + Integer.toString(r.getHeight()) + Integer.toString(r.getSpeed()) + 
-//				(r.getPosition().x) + (r.getPosition().y);
-//		
-//		//ajout en string de position de ball
-//		data+= Integer.toString(b.getWidth()) + Integer.toString(b.getHeight()) + Integer.toString(b.getSpeed().x) +  
-//				Integer.toString(b.getSpeed().y) + (b.getPosition().x) + (b.getPosition().y);
-//		return data;
-//	}
-	
-	public void setData(CustomProtocol p){
-
-		PrintWriter out;
-		
+		try {
+			bufferIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		} catch (IOException e) {
+			throw new ExceptionPong("ERROR : Echec de lecture de l'input stream.");
+		}
 		try{
-			out = new PrintWriter(socket.getOutputStream());
-			out.println(p.toString());
-			out.flush();
-		} catch (IOException e){
-			e.printStackTrace();
+			writerOut = new PrintWriter(socket.getOutputStream());
+		} catch (IOException e) {
+			throw new ExceptionPong("ERROR : Socket non connectee OU erreur dans la creation de l'output stream.");
 		}
 	}
 	
-	public CustomProtocol getData(){
-		BufferedReader in;
-		
-		CustomProtocol c;
-		try{
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String messageRecu = in.readLine();
-			c = new CustomProtocol(messageRecu);
-		}catch(IOException e){
-			e.printStackTrace();
-			c = new CustomProtocol("error");
-		}
-		
-		return c;
+	public void setData(int yRacket, Point ballPosition, boolean haslift, int liftSpeed, int ballSpeedY) {
+		protocol.setCustomProtocol(yRacket, ballPosition, haslift, liftSpeed, ballSpeedY);
+		writerOut.println(protocol.toString());
+		writerOut.flush();
 	}
 	
-	
+	public CustomProtocol getData() throws ExceptionPong {
+		try {
+			String messageRecu = bufferIn.readLine();
+			protocol.setCustomProtocol(messageRecu);
+		} catch (IOException e) {
+			protocol.setCustomProtocol("error");
+			throw new ExceptionPong("ERROR : Problemes I/O avec bufferIn.");
+		}
+		return protocol;
+	}
 }

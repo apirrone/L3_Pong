@@ -6,14 +6,14 @@ public class Score {
 	private int scoreOpponent;
 	private boolean finRound;
 
-	public Score(){
+	public Score() {
 		scorePlayer = 0;
 		scoreOpponent = 0;
 		setFinRound(false);
 	}
 
 	/**
-	 * Get / Set accessors object
+	 * Get / Set accesseurs des attributs
 	 */
 	public int getScorePlayer() {
 		return scorePlayer;
@@ -38,6 +38,4 @@ public class Score {
 	public void setFinRound(boolean finRound) {
 		this.finRound = finRound;
 	}
-	
-	
 }

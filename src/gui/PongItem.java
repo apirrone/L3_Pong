@@ -4,44 +4,24 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
-
 abstract public class PongItem {
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * One Racket to be displayed
-	 */
+	
 	protected final Image image;
-	/**
-	 * Icon of Racket
-	 */
 	protected final ImageIcon icon;
-	/**
-	 * Width of the racket in pixels
-	 */
 	protected int width;
-	/**
-	 * Height of the racket in pixels
-	 */
 	protected int height;
-	/**
-	 * Position of racket
-	 */
 	protected Point position;
-
-	/**
-	 * Constructor of racket
-	 */
+	
 	public PongItem(Image image) {
 		this.image = image;
 		this.icon = new ImageIcon(this.image);
 		this.width = this.icon.getIconWidth();
 		this.height = this.icon.getIconHeight();
-		this.position = new Point(0, 0);
+		this.position = new Point(Pong.POINT_DEFAULT);
 	}
 
 	/**
-	 * Get / Set accessors object
+	 * Get / Set accesseurs des attributs
 	 */
 	public Image getImage() {
 		return image;
@@ -71,7 +51,7 @@ abstract public class PongItem {
 		this.position.setLocation(x, y);
 	}
 	
-	public void inverserPosition(int sizePongX){
+	public void inverserPosition(int sizePongX) {
 		this.setPosition((sizePongX - this.getPosition().x - this.getWidth()), this.getPosition().y);
 	}
 }
