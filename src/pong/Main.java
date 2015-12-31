@@ -31,7 +31,7 @@ public class Main {
 				window.displayOnscreen();
 			}
 		} catch (ExceptionPong e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }

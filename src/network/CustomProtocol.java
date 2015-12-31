@@ -20,7 +20,7 @@ public class CustomProtocol {
 	
 	public void setCustomProtocol(int yRacket, Point ballPosition, boolean haslift, int liftSpeed, int ballSpeedY) {
 		this.yRacket = yRacket;
-		this.ballPosition = new Point(ballPosition);
+		this.ballPosition.setLocation(ballPosition);
 		this.hasLift = haslift;
 		this.liftSpeed = liftSpeed;
 		this.ballSpeedY = ballSpeedY;
@@ -34,13 +34,13 @@ public class CustomProtocol {
 			// Separe dans un tableau de String les elements de la chaine "s" separes par ";"
 			String[] st = s.split(";");
 			this.yRacket = Integer.parseInt(st[0]);
-			this.ballPosition = new Point(Integer.parseInt(st[1]), Integer.parseInt(st[2]));
+			this.ballPosition.setLocation(Integer.parseInt(st[1]), Integer.parseInt(st[2]));
 			this.hasLift = Boolean.valueOf(st[3]);
 			this.liftSpeed = Integer.parseInt(st[4]);
 			this.ballSpeedY = Integer.parseInt(st[5]);
 		} else {
 			this.yRacket = 0;
-			this.ballPosition = new Point(0,0);
+			this.ballPosition.setLocation(0,0);
 			this.hasLift = false;
 			this.liftSpeed = 0;
 			this.ballSpeedY = 0;
