@@ -7,7 +7,7 @@ public abstract class RacketType extends PongItem {
 	/**
 	 * Definition des constantes de bases
 	 */	
-	public static final int RACKET_BASE_SPEED = 4;
+	public static final int RACKET_BASE_SPEED = 8;
 	public static final int RACKET_PLAYER_BASE_POSITION_X = 28;
 	public static final int RACKET_OPPONENT_BASE_POSITION_X = 750;
 	public static final int RACKET_BASE_POSITION_Y = 250;
@@ -58,11 +58,11 @@ public abstract class RacketType extends PongItem {
 		int posY=position.y;
 		boolean prob=false;
 		for(int i=Math.abs(speed); i>0; i--) {
-			if (itemOnRacketHaut(ball))
+			if (itemOnRacketHaut(ball) || itemOnRacketCorner(ball))
 				prob=true;
 			position.y += (speed/Math.abs(speed));
 		}
-		if (itemOnRacketHaut(ball))
+		if (itemOnRacketHaut(ball) || itemOnRacketCorner(ball))
 			prob=true;
 		if (prob)
 			position.y = posY;

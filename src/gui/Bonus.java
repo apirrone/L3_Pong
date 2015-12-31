@@ -92,12 +92,12 @@ public class Bonus extends PongItem {
 	 * Liste des bonus applicable aux raquettes ou a la balle
 	 */
 	private void increaseSpeedBall(BallType ball) {
-		ball.setSpeed(ball.getSpeed().x* 2,ball.getSpeed().y*2);
+		ball.setSpeed(ball.getSpeed().x* 2, ball.getSpeed().y*2);
 		System.out.print("la vitesse de la balle a ete augmente par 2!\n");
 	}
 	
 	private void decreaseSpeedBall(BallType ball) {
-		ball.setSpeed(ball.getSpeed().x/2,ball.getSpeed().y/2);
+		ball.setSpeed(ball.getSpeed().x/2, ball.getSpeed().y/2);
 		System.out.print("La vitesse de la balle a ete divise par 2!\n");
 	}
 	

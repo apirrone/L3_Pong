@@ -14,11 +14,14 @@ public abstract class BallType extends PongItem {
 	private static final boolean BALL_BASE_HASLIFT = false;
 	private static final int BALL_BASE_POSITION_X = 390;
 	private static final int BALL_BASE_POSITION_Y = 290;
+	private static final int TO_MAKE_LIFTSPEED_IN_PERCENT = 10;
+	private static final int LIFTSPEED_MAX = 90;
+	private static final int LIFTSPEED_MIN = -90;
 
 	/**
 	 * speed est un Point qui défini la vitesse sur "X" et "Y" de la balle, en pixels par timeStep
 	 * hasLift definit si oui ou non il y a un effet sur la balle
-	 * liftSpeed est un pourcentage compris dans [-100% , 100%]
+	 * liftSpeed est un pourcentage compris dans [LIFTSPEED_MIN , LIFTSPEED_MAX]%
 	 * liftSpeed > 0 => rotation de sens horaire
 	 * liftSpeed < 0 => rotation de sens trigo
 	 */
@@ -28,10 +31,10 @@ public abstract class BallType extends PongItem {
 	
 	public BallType (Image image, boolean serveur) {
 		super(image);
-		if (serveur){
+		if (serveur) {
 			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
 			this.speed = new Point(BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
-		}else{
+		} else {
 			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
 			this.speed = new Point(-BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
 		}
@@ -43,10 +46,10 @@ public abstract class BallType extends PongItem {
 	 * Remet la balle au meme etat que lors de sa construction
 	 */
 	public void restartBall(boolean serveur) {
-		if (serveur){
+		if (serveur) {
 			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
 			this.speed.setLocation(BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
-		}else{
+		} else {
 			this.position.setLocation(BALL_BASE_POSITION_X, BALL_BASE_POSITION_Y);
 			this.speed.setLocation(-BALL_BASE_SPEED_X, BALL_BASE_SPEED_Y);
 		}
@@ -60,7 +63,7 @@ public abstract class BallType extends PongItem {
 	public Point getSpeed() {
 		return speed;
 	}
-	public void setSpeed(int x, int y){
+	public void setSpeed(int x, int y) {
 		speed.x = x;
 		speed.y = y;
 	}
@@ -92,62 +95,60 @@ public abstract class BallType extends PongItem {
 	 * Fonction de déplacement de la balle
 	 */
 	public void moveBall(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent, Score score) {
-		// On crée une copie de speed.y pour garder, plus tard, le reste de la division par speed.x
-		int copyOfY=Math.abs(speed.y);
+		// On cree une copie de speed.y pour connaitre le nombre de mouvement Y restant
+		int mvtYToDo = Math.abs(speed.y);
+		// On calcul combien de mouvement sur Y il faut faire, pour chaque mouvement de X
+		int mvtYtoX = (Math.abs(speed.y)/Math.abs(speed.x));
+		// On calcul combien de mouvement sur X il faut faire, pour chaque mouvement de Y
+		int mvtXtoY = 0;
+		if (speed.y != 0)
+			mvtXtoY = (Math.abs(speed.x)/Math.abs(speed.y));
+		// On note combien de mouvement sur X ont ete realise
+		int mvtXMade = 0;
 		// Pour chaque speed.x on va se déplacer de speed.y/speed.x
-		for(int i=Math.abs(speed.x); i>0; i--){
+		for(int i=Math.abs(speed.x); i>0; i--) {
 			// Si la balle est sur la raquette on change la direction de la balle
 			racketPlayer.moveBallOnRacketCote(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
 			// Si la raquette est en mouvement, on donne un effet a la balle
-			if(testIfMoveRacketCote(racketPlayer)){
+			if(testIfMoveRacketCote(racketPlayer)) {
 				doLift(racketPlayer, true);
 			}
-			if(testIfMoveRacketCote(racketOpponent)){
+			if(testIfMoveRacketCote(racketOpponent)) {
 				doLift(racketOpponent, false);
 			}
 			// Si la direction de la balle n'est pas horizontal
 			if (speed.y != 0) {
 				// Pour chaque mouvement vertical
-				for(int j=(Math.abs(speed.y)/Math.abs(speed.x)); j>0; j--){
-					// On test si on ne touche pas la raquette
-					racketPlayer.moveBallOnRacketOther(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
-					// On réalise le mouvement vertical d'un pixel
-					position.translate(0, speed.y/Math.abs(speed.y));
-					// Si la balle tape le haut du pong
-					if (position.y < 0){
-						position.y = 0;
-						// On inverse son mouvement ET on y applique l'effet de la balle SI elle en a un
-						if(getHasLift()){
-							setHasLift(false);
-							speed.y = -(speed.y + ((liftSpeed * speed.y) /100));
-						}
-						else
-							speed.y = -speed.y;
+				// Si n'y a pas de mouvement Y par X a faire
+				if (mvtYtoX == 0) {
+					// Si le nombre de mouvement X par Y a ete fait ET s'il reste des mouvements Y a faire
+					if (mvtXtoY == mvtXMade && mvtYToDo != 0) {
+						// On realise le mouvement d'un pixel sur Y
+						oneMoveBallOnY(size_pong_x, size_pong_y, racketPlayer, racketOpponent);
+						// On remet a 0 le nombre de mouvement X realise
+						mvtXMade=0;
+						// On decremente le nombre de mouvement vertical restant
+						mvtYToDo --;
 					}
-					// Si la balle tape le bas du pong
-					if (position.y > size_pong_y - height){
-						position.y = size_pong_y - height;
-						// On inverse son mouvement ET on y applique l'effet de la balle SI elle en a un
-						if(this.hasLift){
-							this.hasLift = false;
-							speed.y = -(speed.y + (((-liftSpeed) * speed.y) /100));
-						}
-						else
-							speed.y = -speed.y;
+				} else {
+					for(int j=mvtYtoX; j>0; j--) {
+						// On realise le mouvement d'un pixel sur Y
+						oneMoveBallOnY(size_pong_x, size_pong_y, racketPlayer, racketOpponent);
+						// On decremente le nombre de mouvement vertical restant
+						mvtYToDo --;
+						// Ce test permet d'ajouter le reste de la division de speed.y par speed.x
+						// Ainsi on pourra realiser ces derniers mouvements sur la dernière iteration de boucle de speed.x
+						if (mvtYToDo<Math.abs(speed.x) && j==1)
+							j += mvtYToDo;
 					}
-					// On decremente notre copie de speed.y pour connaitre le nombre de mouvement vertical restant
-					copyOfY--;
-					// Ce test permet d'ajouter le reste de la division de speed.y par speed.x
-					// Ainsi on pourra realiser ces derniers mouvements sur la dernière iteration de boucle de speed.x
-					if (copyOfY<Math.abs(speed.x) && j==1)
-						j+=copyOfY;
 				}
 			}
-			// On réalise le mouvement horizontal d'un pixel
+			// On realise le mouvement horizontal d'un pixel
 			position.translate(speed.x/Math.abs(speed.x), 0);
+			mvtXMade ++;
 			// Si la balle touche notre cote du pong, on arrete la balle ET l'adversaire gagne un point
 			// C'est la fin d'un round
-			if (position.x < 0){
+			if (position.x < 0) {
 				position.x = 0;
 				i = 0;
 				setSpeed(0, 0);
@@ -156,7 +157,7 @@ public abstract class BallType extends PongItem {
 			}
 			// Si la balle touche le cote du pong adverse, on arrete la balle ET nous gagnons un point
 			// C'est la fin d'un round
-			if (position.x > size_pong_x - width){
+			if (position.x > size_pong_x - width) {
 				position.x = size_pong_x - width;
 				i = 0;
 				setSpeed(0, 0);
@@ -167,28 +168,64 @@ public abstract class BallType extends PongItem {
 	}
 	
 	/**
+	 * Realisation d'un mouvement vertical (sur Y) de la balle d'un pixel 
+	 */
+	public void oneMoveBallOnY (int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent) {
+		// On test si on ne touche pas la raquette
+		racketPlayer.moveBallOnRacketOther(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
+		// On realise le mouvement vertical d'un pixel
+		position.translate(0, speed.y/Math.abs(speed.y));
+		// Si la balle tape le haut du pong
+		if (position.y < 0) {
+			position.y = 0;
+			// On inverse son mouvement ET on y applique l'effet de la balle SI elle en a un
+			if(getHasLift()) {
+				setHasLift(false);
+				speed.y = -(speed.y + ((liftSpeed * speed.y) /100));
+			}
+			else
+				speed.y = -speed.y;
+		}
+		// Si la balle tape le bas du pong
+		if (position.y > size_pong_y - height) {
+			position.y = size_pong_y - height;
+			// On inverse son mouvement ET on y applique l'effet de la balle SI elle en a un
+			if(this.hasLift) {
+				this.hasLift = false;
+				speed.y = -(speed.y + (((-liftSpeed) * speed.y) /100));
+			}
+			else
+				speed.y = -speed.y;
+		}
+	}
+	
+	/**
 	 * Test si la raquette touche la balle quand elle est en mouvement
 	 */
-	public boolean testIfMoveRacketCote (RacketType racket){
+	public boolean testIfMoveRacketCote (RacketType racket) {
 		return (racket.itemOnRacketCote(this) && racket.getSpeed() != 0);
 	}
 
 	/**
 	 * Applique un effet lift sur la balle selon la vitesse de la raquette
-	 * Cet effet est traduit en pourcentage, donc la vitesse de la raquette doit etre comprise dans [-10 ; 10]
+	 * Cet effet est traduit en pourcentage compris entre [-LIFTSPEED_MIN ; LIFTSPEED_MAX]
 	 */
-	public void doLift (RacketType racket, boolean player){
+	public void doLift (RacketType racket, boolean player) {
 		this.hasLift = true;
-		if(racket.getSpeed()<0){
-			if(player)
-				liftSpeed = racket.getSpeed()*10;
+		if (racket.getSpeed()<0) {
+			if (player)
+				liftSpeed = racket.getSpeed()*TO_MAKE_LIFTSPEED_IN_PERCENT;
 			else
-				liftSpeed = -racket.getSpeed()*10;
-		}else{
-			if(player)
-				liftSpeed = -racket.getSpeed()*10;
+				liftSpeed = -racket.getSpeed()*TO_MAKE_LIFTSPEED_IN_PERCENT;
+		} else {
+			if (player)
+				liftSpeed = -racket.getSpeed()*TO_MAKE_LIFTSPEED_IN_PERCENT;
 			else
-				liftSpeed = racket.getSpeed()*10;
+				liftSpeed = racket.getSpeed()*TO_MAKE_LIFTSPEED_IN_PERCENT;
 		}
+		if (liftSpeed > LIFTSPEED_MAX)
+			liftSpeed = LIFTSPEED_MAX;
+		if (liftSpeed < LIFTSPEED_MIN)
+			liftSpeed = LIFTSPEED_MIN;
 	}
 }
