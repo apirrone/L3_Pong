@@ -93,20 +93,15 @@ public class Pong extends JPanel implements KeyListener {
      * Met a jour la fenetre graphique
 	 */
 	public void animate() throws ExceptionPong {
-		//Permet le lancement des bonus a un moment precis
-		if(playTime == 300 || playTime == 301) {
-//			bonusManagement();
-		}
 		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
 		playTime++;
 		// Si le round est en cour
 		if(!pongScore.getFinRound()) {
-			//Permet le lancement des bonus a un moment precis
-			/* Update racket position */
+			/* Actualisation de la position de la raquette */
 			racketPlayer.moveRacket(SIZE_PONG_Y, ball);
-			/* Update racket position */
+			/* Actualisation de la position de la raquette */
 			racketOpponent.moveRacket(SIZE_PONG_Y, ball);
-			/* And update output */
+			/* Et actualisation du Pong */
 			updateScreen();
 		} else {
 		// Sinon on reinitialise le round
@@ -115,7 +110,7 @@ public class Pong extends JPanel implements KeyListener {
 			ball.restartBall(client);
 			racketPlayer.restartRacket(true);
 			racketOpponent.restartRacket(false);
-			/* And update output */
+			/* Et actualisation du Pong */
 			updateScreen();
 			// On attend deux sec avant le debut du prochain round
 			try {
@@ -190,6 +185,10 @@ public class Pong extends JPanel implements KeyListener {
 		graphicContext.setColor(scoreColor);
 		graphicContext.drawString("score Player:"+Integer.toString(pongScore.getScorePlayer()), 400, 50);
 		graphicContext.drawString("score Opponent:"+Integer.toString(pongScore.getScoreOpponent()), 400, 70);
+		//Permet le lancement des bonus a un moment precis
+		if(playTime == 300 || playTime == 301) {
+			bonusManagement();
+		}
 		
 //		bonusManagement();
 		this.repaint();

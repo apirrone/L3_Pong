@@ -13,7 +13,7 @@ public abstract class RacketType extends PongItem {
 	public static final int RACKET_BASE_POSITION_Y = 250;
 	
 	/**
-	 * speed est un Point qui défini la vitesse sur "X" et "Y" de la raquette, en pixels par timeStep
+	 * speed est un Point qui defini la vitesse sur "X" et "Y" de la raquette, en pixels par timeStep
 	 */
 	protected int speed;
 	
@@ -52,7 +52,7 @@ public abstract class RacketType extends PongItem {
 	abstract void moveBallOnRacketOther(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball);
 
 	/**
-	 * Fonction de déplacement de la raquette
+	 * Fonction de deplacement de la raquette
 	 */
 	public void moveRacket(int size_pong_y, BallType ball) {
 		int posY=position.y;

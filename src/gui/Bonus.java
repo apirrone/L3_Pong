@@ -83,6 +83,7 @@ public class Bonus extends PongItem {
 				this.position.translate(0, speed.y/Math.abs(speed.y));
 			}
 			this.position.translate(speed.x/Math.abs(speed.x), 0);
+			//si le bonus touche le bord de l'ecran a gauche ou a droite il est efface
 			if (position.x < 0 || position.x > size_pong_x - width)
 				deleteBonus();
 		}	
