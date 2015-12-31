@@ -93,11 +93,11 @@ public class Pong extends JPanel implements KeyListener {
      * Met a jour la fenetre graphique
 	 */
 	public void animate() throws ExceptionPong {
-		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
-		playTime++;
 		//Permet le lancement des bonus a un moment precis
 		if(playTime == 300 || playTime == 301)
 			bonusManagement();
+		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
+		playTime++;
 		// Si le round est en cour
 		if(!pongScore.getFinRound()) {
 			//Permet le lancement des bonus a un moment precis
@@ -211,7 +211,7 @@ public class Pong extends JPanel implements KeyListener {
 								ball.getHasLift() != p.getHasLift() ||
 								ball.getLiftSpeed() != p.getLiftSpeed() ||
 								ball.getSpeed().getY() != p.getBallSpeedY()) {
-						cheater = true;
+						//cheater = true;
 //						System.out.println("ball pos X = "+(SIZE_PONG_X - ball.getPosition().x - ball.getWidth())+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y);
 //						System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
 					}
@@ -248,7 +248,7 @@ public class Pong extends JPanel implements KeyListener {
 										ball.getHasLift() != p.getHasLift() ||
 										ball.getLiftSpeed() != p.getLiftSpeed() ||
 										ball.getSpeed().getY() != p.getBallSpeedY()) {
-						cheater = true;
+						//cheater = true;
 //						System.out.println("ball pos X = "+ball.getPosition().x+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y); 
 //						System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
 					}
@@ -282,15 +282,16 @@ public class Pong extends JPanel implements KeyListener {
 			this.bonus1 = new Bonus(1,4,ball,racketPlayer,racketOpponent,false);
 			System.out.print("Arrivee des bonus\n");
 			bonusIsCreated = true;
-			bonus.updateScreenBonus(this);
+			graphicContext.drawImage(bonus.getImage(), bonus.getPosition().x, bonus.getPosition().y, bonus.getWidth(), bonus.getHeight(), null);
+			graphicContext.drawImage(bonus1.getImage(), bonus1.getPosition().x, bonus1.getPosition().y, bonus1.getWidth(), bonus1.getHeight(), null);
 		}
 		if (bonus.getInUse() == true) {
 			bonus.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
-			bonus.updateScreenBonus(this);
+			graphicContext.drawImage(bonus.getImage(), bonus.getPosition().x, bonus.getPosition().y, bonus.getWidth(), bonus.getHeight(), null);
 		}
 		if (bonus1.getInUse() == true) {
 			bonus1.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
-			bonus1.updateScreenBonus(this);
+			graphicContext.drawImage(bonus1.getImage(), bonus1.getPosition().x, bonus1.getPosition().y, bonus1.getWidth(), bonus1.getHeight(), null);
 		}
 		if (bonus.getInUse() == false && bonus1.getInUse() == false) {
 			playTime = 302;

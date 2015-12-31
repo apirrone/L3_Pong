@@ -16,7 +16,7 @@ public class Bonus extends PongItem {
 	 * le bonus est en utilisation ou non et sa position sur le pong 
 	 */
 	public Bonus(int min, int max, BallType ball,RacketType racketPlayer,RacketType racketOpponent, boolean serveur) {
-		super(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("ressource/cheque-cadeau.png")));
+		super(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("ressource/cadeau.png")));
 		this.min = min;
 		this.max = max;
 		this.inUse = true;
@@ -86,13 +86,6 @@ public class Bonus extends PongItem {
 			if (position.x < 0 || position.x > size_pong_x - width)
 				deleteBonus();
 		}	
-	}
-	
-	/**
-	 * actualisation du bonus sur le pong
-	 */
-	public void updateScreenBonus(Pong pong) {
-		pong.graphicContext.drawImage(this.getImage(), this.getPosition().x, this.getPosition().y, this.getWidth(), this.getHeight(), null);
 	}
 	
 	/**
