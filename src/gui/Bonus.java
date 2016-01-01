@@ -60,6 +60,13 @@ public class Bonus extends PongItem {
 		return inUse;
 	}
 	
+	/**
+	 * Actualisation du Pong en fonction du bonus
+	 */
+	public void updateScreen(Pong pong){
+		pong.graphicContext.drawImage(this.getImage(), this.getPosition().x, this.getPosition().y, this.getWidth(), this.getHeight(), null);
+	}
+	
 	public void moveBonus(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent, BallType ball) {
 		for(int i=Math.abs(speed.x); i>0; i--) {
 			//si le bonus touche l'une des raquettes on applique le bonus

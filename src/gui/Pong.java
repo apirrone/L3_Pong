@@ -7,11 +7,14 @@ import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import javax.swing.JPanel;
+
 import network.Client;
 import network.CustomProtocol;
 import network.Server;
 import util.ExceptionPong;
+
 
 /**
  * Un Pong est un conteneur graphique Java qui etend la classe JPanel 
@@ -95,7 +98,7 @@ public class Pong extends JPanel implements KeyListener {
 	public void animate() throws ExceptionPong {
 		ball.moveBall(SIZE_PONG_X, SIZE_PONG_Y, racketPlayer, racketOpponent, pongScore);
 		playTime++;
-		// Si le round est en cour
+		// Si le round est en cours
 		if(!pongScore.getFinRound()) {
 			/* Actualisation de la position de la raquette */
 			racketPlayer.moveRacket(SIZE_PONG_Y, ball);
@@ -189,8 +192,6 @@ public class Pong extends JPanel implements KeyListener {
 		if(playTime == 300 || playTime == 301) {
 			bonusManagement();
 		}
-		
-//		bonusManagement();
 		this.repaint();
 	}
 	
@@ -282,16 +283,16 @@ public class Pong extends JPanel implements KeyListener {
 			this.bonus1 = new Bonus(1,4,ball,racketPlayer,racketOpponent,false);
 			System.out.print("Arrivee des bonus\n");
 			bonusIsCreated = true;
-			graphicContext.drawImage(bonus.getImage(), bonus.getPosition().x, bonus.getPosition().y, bonus.getWidth(), bonus.getHeight(), null);
-			graphicContext.drawImage(bonus1.getImage(), bonus1.getPosition().x, bonus1.getPosition().y, bonus1.getWidth(), bonus1.getHeight(), null);
+			bonus.updateScreen(this);
+			bonus1.updateScreen(this);
 		}
 		if (bonus.getInUse() == true) {
 			bonus.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
-			graphicContext.drawImage(bonus.getImage(), bonus.getPosition().x, bonus.getPosition().y, bonus.getWidth(), bonus.getHeight(), null);
+			bonus.updateScreen(this);
 		}
 		if (bonus1.getInUse() == true) {
 			bonus1.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
-			graphicContext.drawImage(bonus1.getImage(), bonus1.getPosition().x, bonus1.getPosition().y, bonus1.getWidth(), bonus1.getHeight(), null);
+			bonus1.updateScreen(this);
 		}
 		if (bonus.getInUse() == false && bonus1.getInUse() == false) {
 			playTime = 302;
