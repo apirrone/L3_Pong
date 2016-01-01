@@ -83,8 +83,6 @@ public class Pong extends JPanel implements KeyListener {
 		this.pongScore = new Score();
 		this.time = System.currentTimeMillis();
 		this.ball = new Ball(client);
-// seconde balle utilisee quand l'un des joueurs atteind 10 points
-//		this.ball2 = new Ball(client);
 		this.racketPlayer = new Racket(true);
 		this.racketOpponent = new Racket(false);
 		this.setPreferredSize(new Dimension(SIZE_PONG_X, SIZE_PONG_Y));

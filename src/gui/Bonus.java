@@ -10,6 +10,7 @@ public class Bonus extends PongItem {
 	private int min;
 	private int max;
 	private boolean inUse;
+	private int applyBonus;
 	
 	/**
 	 * Creation du bonus representee par un cadeau avec min et max l'intervalle des bonus a appliquer, un bool qui determine si
@@ -27,14 +28,15 @@ public class Bonus extends PongItem {
 			this.position.setLocation(400, 300);
 			this.speed = new Point(-1, 0);
 		}
+		//determine quel bonus sera applique a ce bonus quand il sera utilisé
+		this.applyBonus = RandomNumber.randomValue(min, max);
 	}
 	
 	/**
 	 * Fonction permettant de determiner le bonus a appliquer sur les raquettes et balle
 	 */
 	private void getRandomBonus(BallType ball, RacketType racketPlayer, RacketType racketOpponent) {
-		int random = RandomNumber.randomValue(min, max);
-		switch (random) {
+		switch (applyBonus) {
 			case 1:
 				increaseSpeedBall(ball);
 				break;
@@ -50,6 +52,17 @@ public class Bonus extends PongItem {
 			default:
 				System.out.print("no bonus");
 		}
+	}
+	
+	/**
+	 * Acces à la variable quel bonus a appliquer si le bonus est utilise:
+	 * Si 1 la vitesse de la balle est augmente
+	 * Si 2 la vitesse de la balle est ralentie
+	 * Si 3 La vitesse de la raquette touchant le bonus est augmente
+	 * Si 4 la vitesse de la raquette touchant le bonus est diminue
+	 */
+	public int getApplyBonus(){
+		return this.applyBonus;
 	}
 	
 	/** 
