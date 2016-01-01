@@ -7,8 +7,6 @@ import java.awt.Point;
 public class Bonus extends PongItem {
 	
 	private Point speed;
-	private int min;
-	private int max;
 	private boolean inUse;
 	private int applyBonus;
 	
@@ -16,10 +14,10 @@ public class Bonus extends PongItem {
 	 * Creation du bonus representee par un cadeau avec min et max l'intervalle des bonus a appliquer, un bool qui determine si
 	 * le bonus est en utilisation ou non et sa position sur le pong 
 	 */
-	public Bonus(int min, int max, BallType ball,RacketType racketPlayer,RacketType racketOpponent, boolean serveur) {
+	public Bonus(int min, int max, boolean serveur) {
+		/*min et max sont en parametre si on souhaiterai eventuellement  utiliser uniquement certains bonus, comme par exemple des bonus plus puissant
+		sous certaines conditions, applique dans BonusManagement de Pong*/
 		super(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("ressource/cadeau.png")));
-		this.min = min;
-		this.max = max;
 		this.inUse = true;
 		if(serveur) {
 			this.position.setLocation(400, 300);

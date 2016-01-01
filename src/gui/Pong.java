@@ -277,8 +277,8 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	private void bonusManagement() {
 		if (!bonusIsCreated) {
-			this.bonus = new Bonus(1,4,ball,racketPlayer,racketOpponent,true);
-			this.bonus1 = new Bonus(1,4,ball,racketPlayer,racketOpponent,false);
+			this.bonus = new Bonus(1,4,true);
+			this.bonus1 = new Bonus(1,4,false);
 			System.out.print("Arrivee des bonus\n");
 			bonusIsCreated = true;
 			bonus.updateScreen(this);
