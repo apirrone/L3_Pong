@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 
 public class Server {
 
-	private static final int timeMaxToWaitConnection = 30000;
+	private static final int TIME_MAX_TO_WAIT_CONNECTION = 30000;
 	
 	private ServerSocket serverSocket;
 	private Socket socket;
@@ -31,8 +31,8 @@ public class Server {
 	public void waitForConnection() throws ExceptionPong {
 		try {
 			// Le serveur va attendre une connexion pendant "timeMaxToWaitConnection" secondes;
-			serverSocket.setSoTimeout(timeMaxToWaitConnection);
-			System.out.println("Attente de connexion, "+timeMaxToWaitConnection+" secondes avant deconnexion\n");
+			serverSocket.setSoTimeout(TIME_MAX_TO_WAIT_CONNECTION);
+			System.out.println("Attente de connexion, "+TIME_MAX_TO_WAIT_CONNECTION+" secondes avant deconnexion\n");
 			socket = serverSocket.accept();
 			System.out.println("Connexion Etablie");
 		} catch (IOException e) {
@@ -49,13 +49,13 @@ public class Server {
 			throw new ExceptionPong("ERROR : Socket non connectee OU erreur dans la creation de l'output stream.");
 		}
 	}
-	
-	public void setData(int yRacket, Point ballPosition, boolean haslift, int liftSpeed, int ballSpeedY) {
-		protocol.setCustomProtocol(yRacket, ballPosition, haslift, liftSpeed, ballSpeedY);
+
+	public void setData(int yRacket, Point ballPosition, boolean haslift, int liftSpeed, int ballSpeedY, long timeToRand) {
+		protocol.setCustomProtocol(yRacket, ballPosition, haslift, liftSpeed, ballSpeedY, timeToRand);
 		writerOut.println(protocol.toString());
 		writerOut.flush();
 	}
-	
+
 	public CustomProtocol getData() throws ExceptionPong {
 		try {
 			String messageRecu = bufferIn.readLine();

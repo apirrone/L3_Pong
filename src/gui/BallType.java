@@ -94,7 +94,7 @@ public abstract class BallType extends PongItem {
 	/**
 	 * Fonction de déplacement de la balle
 	 */
-	public void moveBall(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent, Score score) {
+	public void moveBall(RacketType racketPlayer, RacketType racketOpponent, Score score) {
 		// On cree une copie de speed.y pour connaitre le nombre de mouvement Y restant
 		int mvtYToDo = Math.abs(speed.y);
 		// On calcul combien de mouvement sur Y il faut faire, pour chaque mouvement de X
@@ -108,7 +108,7 @@ public abstract class BallType extends PongItem {
 		// Pour chaque speed.x on va se déplacer de speed.y/speed.x
 		for(int i=Math.abs(speed.x); i>0; i--) {
 			// Si la balle est sur la raquette on change la direction de la balle
-			racketPlayer.moveBallOnRacketCote(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
+			racketPlayer.moveBallOnRacketCote(racketPlayer, racketOpponent, this);
 			// Si la raquette est en mouvement, on donne un effet a la balle
 			if(testIfMoveRacketCote(racketPlayer)) {
 				doLift(racketPlayer, true);
@@ -124,7 +124,7 @@ public abstract class BallType extends PongItem {
 					// Si le nombre de mouvement X par Y a ete fait ET s'il reste des mouvements Y a faire
 					if (mvtXtoY == mvtXMade && mvtYToDo != 0) {
 						// On realise le mouvement d'un pixel sur Y
-						oneMoveBallOnY(size_pong_x, size_pong_y, racketPlayer, racketOpponent);
+						oneMoveBallOnY(racketPlayer, racketOpponent);
 						// On remet a 0 le nombre de mouvement X realise
 						mvtXMade=0;
 						// On decremente le nombre de mouvement vertical restant
@@ -133,7 +133,7 @@ public abstract class BallType extends PongItem {
 				} else {
 					for(int j=mvtYtoX; j>0; j--) {
 						// On realise le mouvement d'un pixel sur Y
-						oneMoveBallOnY(size_pong_x, size_pong_y, racketPlayer, racketOpponent);
+						oneMoveBallOnY(racketPlayer, racketOpponent);
 						// On decremente le nombre de mouvement vertical restant
 						mvtYToDo --;
 						// Ce test permet d'ajouter le reste de la division de speed.y par speed.x
@@ -157,8 +157,8 @@ public abstract class BallType extends PongItem {
 			}
 			// Si la balle touche le cote du pong adverse, on arrete la balle ET nous gagnons un point
 			// C'est la fin d'un round
-			if (position.x > size_pong_x - width) {
-				position.x = size_pong_x - width;
+			if (position.x > Pong.SIZE_PONG_X - width) {
+				position.x = Pong.SIZE_PONG_X - width;
 				i = 0;
 				setSpeed(0, 0);
 				score.incrementScorePlayer();
@@ -170,9 +170,9 @@ public abstract class BallType extends PongItem {
 	/**
 	 * Realisation d'un mouvement vertical (sur Y) de la balle d'un pixel 
 	 */
-	public void oneMoveBallOnY (int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent) {
+	public void oneMoveBallOnY (RacketType racketPlayer, RacketType racketOpponent) {
 		// On test si on ne touche pas la raquette
-		racketPlayer.moveBallOnRacketOther(size_pong_x, size_pong_y, racketPlayer, racketOpponent, this);
+		racketPlayer.moveBallOnRacketOther(racketPlayer, racketOpponent, this);
 		// On realise le mouvement vertical d'un pixel
 		position.translate(0, speed.y/Math.abs(speed.y));
 		// Si la balle tape le haut du pong
@@ -187,8 +187,8 @@ public abstract class BallType extends PongItem {
 				speed.y = -speed.y;
 		}
 		// Si la balle tape le bas du pong
-		if (position.y > size_pong_y - height) {
-			position.y = size_pong_y - height;
+		if (position.y > Pong.SIZE_PONG_Y - height) {
+			position.y = Pong.SIZE_PONG_Y - height;
 			// On inverse son mouvement ET on y applique l'effet de la balle SI elle en a un
 			if(this.hasLift) {
 				this.hasLift = false;

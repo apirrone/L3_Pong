@@ -13,13 +13,15 @@ public abstract class RacketType extends PongItem {
 	public static final int RACKET_BASE_POSITION_Y = 250;
 	
 	/**
-	 * speed est un Point qui defini la vitesse sur "X" et "Y" de la raquette, en pixels par timeStep
+	 * speed defini la vitesse sur "Y" de la raquette, en pixels par timeStep
 	 */
 	protected int speed;
+	private int speedMax;
 	
 	public RacketType(Image image, boolean player) {
 		super(image);
 		speed = 0;
+		setSpeedMax(RACKET_BASE_SPEED);
 		if(player)
 			this.position.setLocation(RACKET_PLAYER_BASE_POSITION_X, RACKET_BASE_POSITION_Y);
 		else
@@ -31,6 +33,7 @@ public abstract class RacketType extends PongItem {
 	 */
 	public void restartRacket(boolean player) {
 		speed = 0;
+		setSpeedMax(RACKET_BASE_SPEED);
 		if(player)
 			this.position.setLocation(RACKET_PLAYER_BASE_POSITION_X, RACKET_BASE_POSITION_Y);
 		else
@@ -48,13 +51,23 @@ public abstract class RacketType extends PongItem {
 		this.speed = speed;
 	}
 
-	abstract void moveBallOnRacketCote(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball);
-	abstract void moveBallOnRacketOther(int size_pong_x, int size_pong_y,RacketType racketPlayer, RacketType racketOpponent, BallType ball);
+	public int getSpeedMax() {
+		return speedMax;
+	}
+
+	public void setSpeedMax(int speedMax) {
+		this.speedMax = speedMax;
+	}
+
+	abstract void moveBallOnRacketCote(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
+	abstract void moveBallOnRacketOther(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
+	abstract public void divideRacket();
+	abstract public void multiplyRacket();
 
 	/**
 	 * Fonction de deplacement de la raquette
 	 */
-	public void moveRacket(int size_pong_y, BallType ball) {
+	public void moveRacket(BallType ball) {
 		int posY=position.y;
 		boolean prob=false;
 		for(int i=Math.abs(speed); i>0; i--) {
@@ -68,8 +81,8 @@ public abstract class RacketType extends PongItem {
 			position.y = posY;
 		if (position.y < 0)
 			position.y = 0;
-		if (position.y > size_pong_y - height)
-			position.y = size_pong_y - height;
+		if (position.y > Pong.SIZE_PONG_Y - height)
+			position.y = Pong.SIZE_PONG_Y - height;
 	}
 	
 	public void setY(int y) {

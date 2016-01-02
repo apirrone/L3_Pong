@@ -5,29 +5,47 @@ import java.awt.Toolkit;
 import java.awt.Point;
 
 public class Bonus extends PongItem {
+
+	private static final int BONUS_BASE_POSITION_X = 386;
+	private static final int BONUS_BASE_SPEED_X = 1;
+
+	public static final int BONUS_MAX_POSITION_Y  = 570;
+	public static final int NUMBER_OF_BONUS = 6;
 	
 	private Point speed;
 	private boolean inUse;
 	private int applyBonus;
 	
 	/**
-	 * Creation du bonus representee par un cadeau avec min et max l'intervalle des bonus a appliquer, un bool qui determine si
-	 * le bonus est en utilisation ou non et sa position sur le pong 
+	 * 
 	 */
-	public Bonus(int min, int max, boolean serveur) {
-		/*min et max sont en parametre si on souhaiterai eventuellement  utiliser uniquement certains bonus, comme par exemple des bonus plus puissant
-		sous certaines conditions, applique dans BonusManagement de Pong*/
+	public Bonus() {
 		super(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("ressource/cadeau.png")));
-		this.inUse = true;
+		this.inUse = false;
+		this.speed = new Point(0, 0);
+		this.position.setLocation(BONUS_BASE_POSITION_X, 0);
+	}
+	
+	public void setBonus (boolean serveur, long positionY, long numBonus) {
+		inUse = true;
+		position.setLocation(BONUS_BASE_POSITION_X, (int)positionY);
+		if (serveur)
+			speed.setLocation(-BONUS_BASE_SPEED_X, 0);
+		else 
+			speed.setLocation(BONUS_BASE_SPEED_X, 0);
+		this.applyBonus = (int) numBonus;
+		
+		/*
 		if(serveur) {
-			this.position.setLocation(400, 300);
-			this.speed = new Point(1, 0);
+			this.position.setLocation(BONUS_BASE_POSITION_X, 300);
+			this.speed = new Point(BONUS_BASE_SPEED_X, 0);
 		} else {
-			this.position.setLocation(400, 300);
-			this.speed = new Point(-1, 0);
+			this.position.setLocation(BONUS_BASE_POSITION_X, 300);
+			this.speed = new Point(-BONUS_BASE_SPEED_X, 0);
 		}
 		//determine quel bonus sera applique a ce bonus quand il sera utilisé
 		this.applyBonus = RandomNumber.randomValue(min, max);
+		*/
 	}
 	
 	/**
@@ -35,20 +53,26 @@ public class Bonus extends PongItem {
 	 */
 	private void getRandomBonus(BallType ball, RacketType racketPlayer, RacketType racketOpponent) {
 		switch (applyBonus) {
-			case 1:
+			case 0:
 				increaseSpeedBall(ball);
 				break;
-			case 2:
+			case 1:
 				decreaseSpeedBall(ball);
 				break;
-			case 3:
+			case 2:
 				increaseSpeedRacket(racketPlayer);
 				break;
-			case 4:
+			case 3:
 				decreaseSpeedRacket(racketPlayer);
 				break;
+			case 4:
+				increaseSizeRacket(racketPlayer);
+				break;
+			case 5:
+				decreaseSizeRacket(racketPlayer);
+				break;
 			default:
-				System.out.print("no bonus");
+				System.out.println("no bonus");
 		}
 	}
 	
@@ -71,38 +95,31 @@ public class Bonus extends PongItem {
 		return inUse;
 	}
 	
-	/**
-	 * Actualisation du Pong en fonction du bonus
-	 */
-	public void updateScreen(Pong pong){
-		pong.graphicContext.drawImage(this.getImage(), this.getPosition().x, this.getPosition().y, this.getWidth(), this.getHeight(), null);
-	}
-	
-	public void moveBonus(int size_pong_x, int size_pong_y, RacketType racketPlayer, RacketType racketOpponent, BallType ball) {
-		for(int i=Math.abs(speed.x); i>0; i--) {
-			//si le bonus touche l'une des raquettes on applique le bonus
-			if(racketPlayer.itemOnRacketCote(this)) {
+	public void moveBonus(RacketType racketPlayer, RacketType racketOpponent, BallType ball) {
+		for (int i=Math.abs(speed.x); i>0; i--) {
+			// Si le bonus touche l'une des raquettes on applique le bonus
+			if (racketPlayer.itemOnRacketCote(this) || racketPlayer.itemOnRacketCorner(this)) {
 				getRandomBonus(ball, racketPlayer, racketOpponent);
 				deleteBonus();
 			}
-			if(racketOpponent.itemOnRacketCote(this)) {
+			if (racketOpponent.itemOnRacketCote(this) || racketOpponent.itemOnRacketCorner(this)) {
 				getRandomBonus(ball, racketOpponent, racketPlayer);
 				deleteBonus();
 			}
-			for(int j=(Math.abs(speed.y)/Math.abs(speed.x)); j>0; j--) {
-				if(racketPlayer.itemOnRacketHaut(this) || racketPlayer.itemOnRacketCorner(this)) {
+			for (int j=(Math.abs(speed.y)/Math.abs(speed.x)); j>0; j--) {
+				if (racketPlayer.itemOnRacketHaut(this) || racketPlayer.itemOnRacketCorner(this)) {
 					getRandomBonus(ball, racketPlayer, racketOpponent);
 					deleteBonus();
 				}
-				if(racketOpponent.itemOnRacketHaut(this) || racketOpponent.itemOnRacketCorner(this)) {
+				if (racketOpponent.itemOnRacketHaut(this) || racketOpponent.itemOnRacketCorner(this)) {
 					getRandomBonus(ball,racketOpponent, racketPlayer);
 					deleteBonus();
 				}
 				this.position.translate(0, speed.y/Math.abs(speed.y));
 			}
 			this.position.translate(speed.x/Math.abs(speed.x), 0);
-			//si le bonus touche le bord de l'ecran a gauche ou a droite il est efface
-			if (position.x < 0 || position.x > size_pong_x - width)
+			// Si le bonus touche le bord de l'ecran a gauche ou a droite il est efface
+			if (position.x < (RacketType.RACKET_PLAYER_BASE_POSITION_X + racketPlayer.getWidth()) || position.x > (RacketType.RACKET_OPPONENT_BASE_POSITION_X - width))
 				deleteBonus();
 		}	
 	}
@@ -112,26 +129,41 @@ public class Bonus extends PongItem {
 	 */
 	private void increaseSpeedBall(BallType ball) {
 		ball.setSpeed(ball.getSpeed().x* 2, ball.getSpeed().y*2);
-		System.out.print("la vitesse de la balle a ete augmente par 2!\n");
+		System.out.println("la vitesse de la balle a ete augmente par 2!");
 	}
 	
 	private void decreaseSpeedBall(BallType ball) {
-		ball.setSpeed(ball.getSpeed().x/2, ball.getSpeed().y/2);
-		System.out.print("La vitesse de la balle a ete divise par 2!\n");
+		if (Math.abs(ball.getSpeed().x) != 1) {
+			ball.setSpeed(ball.getSpeed().x/2, ball.getSpeed().y/2);
+			System.out.println("La vitesse de la balle a ete divise par 2!");
+		} else {
+			System.out.println("Reduction de la vitesse de la balle impossible. La balle est deja trop lente");
+		}
 	}
 	
 	private void increaseSpeedRacket(RacketType racket) {
-		racket.setSpeed(racket.getSpeed()*2);
-		System.out.print("La vitesse de la raquette a ete multiplie par 2!\n");
+		racket.setSpeedMax(racket.getSpeedMax()*2);
+		System.out.println("La vitesse de la raquette a ete multiplie par 2!");
 	}
 	
 	private void decreaseSpeedRacket(RacketType racket) {
-		racket.setSpeed(racket.getSpeed()/2);
-		System.out.print("La vitesse de la raquette a ete divise par 2!\n");
+		if (Math.abs(racket.getSpeedMax()) != 1) {
+			racket.setSpeedMax(racket.getSpeedMax()/2);
+			System.out.println("La vitesse de la raquette a ete divise par 2!");
+		} else
+			System.out.println("Reduction de la vitesse de la raquette impossible. La raquette est deja trop lente");
+	}
+	
+	private void increaseSizeRacket(RacketType racket) {
+		racket.multiplyRacket();
+	}
+	
+	private void decreaseSizeRacket(RacketType racket) {
+		racket.divideRacket();
 	}
 	
 	private void deleteBonus() {
 		 inUse = false;
-		 System.out.print("Le bonus a ete utilise ou detruit\n");
+		 System.out.println("Le bonus a ete utilise ou detruit");
 	}
 }	

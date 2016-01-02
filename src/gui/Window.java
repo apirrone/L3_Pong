@@ -7,8 +7,6 @@ import util.ExceptionPong;
  * Window est un Jframe contenant un Pong
  */
 public class Window extends JFrame {
-
-	private static final long serialVersionUID = 1L;
 	
 	private final Pong pong;
 
@@ -29,7 +27,7 @@ public class Window extends JFrame {
 		while(true) {
 			pong.animate();
 			try {
-				Thread.sleep(Pong.timeStep);
+				Thread.sleep(Pong.TIME_STEP);
 			} catch (InterruptedException e) {
 				throw new ExceptionPong("ERROR : Un thread vient d'arreter Pong.java");
 			}

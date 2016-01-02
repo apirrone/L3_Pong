@@ -9,6 +9,7 @@ public class CustomProtocol {
 	private boolean hasLift;
 	private int liftSpeed ;
 	private int ballSpeedY;
+	private long timeToRand;
 	
 	public CustomProtocol() {
 		this.yRacket = 0;
@@ -16,14 +17,16 @@ public class CustomProtocol {
 		this.hasLift = false;
 		this.liftSpeed = 0;
 		this.ballSpeedY = 0;
+		this.timeToRand = 0;
 	}
 	
-	public void setCustomProtocol(int yRacket, Point ballPosition, boolean haslift, int liftSpeed, int ballSpeedY) {
+	public void setCustomProtocol(int yRacket, Point ballPosition, boolean haslift, int liftSpeed, int ballSpeedY, long timeToRand) {
 		this.yRacket = yRacket;
 		this.ballPosition.setLocation(ballPosition);
 		this.hasLift = haslift;
 		this.liftSpeed = liftSpeed;
 		this.ballSpeedY = ballSpeedY;
+		this.timeToRand = timeToRand;
 	}
 	
 	/** 
@@ -38,17 +41,19 @@ public class CustomProtocol {
 			this.hasLift = Boolean.valueOf(st[3]);
 			this.liftSpeed = Integer.parseInt(st[4]);
 			this.ballSpeedY = Integer.parseInt(st[5]);
+			this.timeToRand = Long.parseLong(st[6]);
 		} else {
 			this.yRacket = 0;
 			this.ballPosition.setLocation(0,0);
 			this.hasLift = false;
 			this.liftSpeed = 0;
 			this.ballSpeedY = 0;
+			this.timeToRand = 0;
 		}
 	}
 	
 	/** 
-	 * Format du protocole : "<yRacket>;<xBall>;<yBall>;<hasLift>;<liftSpeed>;<yBallSpeed>"
+	 * Format du protocole : "<yRacket>;<xBall>;<yBall>;<hasLift>;<liftSpeed>;<yBallSpeed>;<timeToRand>"
 	 */
 	public String toString() {
 		String s = "";
@@ -64,6 +69,8 @@ public class CustomProtocol {
 		s += Integer.toString(this.liftSpeed);
 		s += ";";
 		s += Integer.toString(this.ballSpeedY);
+		s += ";";
+		s += Long.toString(this.timeToRand);
 		return s;
 	}
 
@@ -88,5 +95,9 @@ public class CustomProtocol {
 	
 	public int getBallSpeedY() {
 		return ballSpeedY;
+	}
+	
+	public long getTime() {
+		return timeToRand;
 	}
 }

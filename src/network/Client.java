@@ -39,7 +39,7 @@ public class Client {
 	}
 	
 	public void setData(int yRacket, Point ballPosition, boolean haslift, int liftSpeed, int ballSpeedY) {
-		protocol.setCustomProtocol(yRacket, ballPosition, haslift, liftSpeed, ballSpeedY);
+		protocol.setCustomProtocol(yRacket, ballPosition, haslift, liftSpeed, ballSpeedY, 0);
 		writerOut.println(protocol.toString());
 		writerOut.flush();
 	}

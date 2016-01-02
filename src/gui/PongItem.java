@@ -6,8 +6,8 @@ import javax.swing.ImageIcon;
 
 abstract public class PongItem {
 	
-	protected final Image image;
-	protected final ImageIcon icon;
+	protected Image image;
+	protected ImageIcon icon;
 	protected int width;
 	protected int height;
 	protected Point position;
@@ -27,8 +27,17 @@ abstract public class PongItem {
 		return image;
 	}
 
+	public void setImage(Image image) {
+		this.image = image;
+		setIcon(image);
+	}
+
 	public ImageIcon getIcon() {
 		return icon;
+	}
+	
+	public void setIcon(Image image) {
+		this.icon.setImage(image);
 	}
 
 	public int getWidth() {
@@ -51,7 +60,7 @@ abstract public class PongItem {
 		this.position.setLocation(x, y);
 	}
 	
-	public void inverserPosition(int sizePongX) {
-		this.setPosition((sizePongX - this.getPosition().x - this.getWidth()), this.getPosition().y);
+	public void inverserPosition() {
+		this.setPosition((Pong.SIZE_PONG_X - this.getPosition().x - this.getWidth()), this.getPosition().y);
 	}
 }
