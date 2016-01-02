@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Image;
+import java.awt.Toolkit;
 
 public abstract class RacketType extends PongItem {
 	
@@ -32,6 +33,7 @@ public abstract class RacketType extends PongItem {
 	 * Remet la raquette au meme etat que lors de sa construction
 	 */
 	public void restartRacket(boolean player) {
+		this.restartImageRacket();
 		speed = 0;
 		setSpeedMax(RACKET_BASE_SPEED);
 		if(player)
@@ -63,6 +65,7 @@ public abstract class RacketType extends PongItem {
 	abstract void moveBallOnRacketOther(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
 	abstract public void divideRacket();
 	abstract public void multiplyRacket();
+	abstract public void restartImageRacket();
 
 	/**
 	 * Fonction de deplacement de la raquette

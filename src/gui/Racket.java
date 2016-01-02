@@ -7,39 +7,62 @@ import util.ExceptionPong;
 
 public class Racket extends RacketType{
 
+	private static final Image PONG_BARRE_NIV_P1 = Toolkit.getDefaultToolkit().createImage(
+			ClassLoader.getSystemResource("ressource/barrePongMultNivP1.png"));
 	private static final Image PONG_BARRE_NIV_0 = Toolkit.getDefaultToolkit().createImage(
 			ClassLoader.getSystemResource("ressource/barrePong.png"));
 	private static final Image PONG_BARRE_NIV_M1 = Toolkit.getDefaultToolkit().createImage(
 			ClassLoader.getSystemResource("ressource/barrePongDivNivM1.png"));
 	private static final Image PONG_BARRE_NIV_M2 = Toolkit.getDefaultToolkit().createImage(
 			ClassLoader.getSystemResource("ressource/barrePongDivNivM2.png"));
-	private static final int HEIGHT_NIV_0 = 76;
-	private static final int HEIGHT_NIV_M1 = 38;
-	private static final int HEIGHT_NIV_M2 = 19;
-
+	
 	public Racket(boolean player) {
 		super(PONG_BARRE_NIV_0, player);
 	}
 
+	public void restartImageRacket() {
+		setImage(PONG_BARRE_NIV_0);
+	}
+
 	public void divideRacket() {
-		if (getHeight() == HEIGHT_NIV_0)
-			setImage(PONG_BARRE_NIV_M1);
+		if (getImage().equals(PONG_BARRE_NIV_P1)) {
+			setImage(PONG_BARRE_NIV_0);
+			System.out.println("La taille de la raquette a ete divise par 2!");
+		}
 		else {
-			if (getHeight() == HEIGHT_NIV_M1)
-				setImage(PONG_BARRE_NIV_M2);
-			else
-				System.out.println("Diminution de la taille de la raquette impossible. La raquette est deja trop petite");
+			if (getImage().equals(PONG_BARRE_NIV_0)) {
+				setImage(PONG_BARRE_NIV_M1); 
+				System.out.println("La taille de la raquette a ete divise par 2!");
+				}
+			else {
+				if (getImage().equals(PONG_BARRE_NIV_M1)) {
+					setImage(PONG_BARRE_NIV_M2);
+					System.out.println("La taille de la raquette a ete divise par 2!");
+				}
+				else
+					System.out.println("Diminution de la taille de la raquette impossible. La raquette est deja trop petite");
+			}
 		}
 	}
 	
 	public void multiplyRacket() {
-		if (getHeight() == HEIGHT_NIV_M2)
+		if (getImage().equals(PONG_BARRE_NIV_M2)) {
 			setImage(PONG_BARRE_NIV_M1);
+			System.out.println("La taille de la raquette a ete augmente par 2!");
+		}
 		else {
-			if (getHeight() == HEIGHT_NIV_M1)
+			if (getImage().equals(PONG_BARRE_NIV_M1)) {
 				setImage(PONG_BARRE_NIV_0);
-			else
-				System.out.println("Augmentation de la taille de la raquette impossible. La raquette est deja trop grande");
+				System.out.println("La taille de la raquette a ete augmente par 2!");
+			}
+			else {
+				if (getImage().equals(PONG_BARRE_NIV_0)) {
+					setImage(PONG_BARRE_NIV_P1);
+					System.out.println("La taille de la raquette a ete augmente par 2!");
+				}
+				else
+					System.out.println("Augmentation de la taille de la raquette impossible. La raquette est deja trop grande");
+			}
 		}
 	}
 	

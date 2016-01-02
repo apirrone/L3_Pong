@@ -61,4 +61,10 @@ public class MagneticRacket extends RacketType {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void restartImageRacket() {
+		// TODO Auto-generated method stub
+		
+	}
 }
