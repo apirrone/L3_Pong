@@ -127,6 +127,7 @@ public class Pong extends JPanel implements KeyListener {
 			ball.restartBall(client);
 			racketPlayer.restartRacket(true);
 			racketOpponent.restartRacket(false);
+			bonus.deleteBonus();
 			/* Et actualisation du Pong */
 			updateScreen();
 			// On attend deux sec avant le debut du prochain round
@@ -305,8 +306,8 @@ public class Pong extends JPanel implements KeyListener {
 //				isBonusForMe = false;
 			}
 //			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y);
-			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y, this.timeToRand % Bonus.NUMBER_OF_BONUS);
-//			this.bonus.setBonus(isBonusForMe, 260, 5);
+//			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y, this.timeToRand % Bonus.NUMBER_OF_BONUS);
+			this.bonus.setBonus(isBonusForMe, 260, 5);
 			
 
 			System.out.println("Arrivee des bonus");

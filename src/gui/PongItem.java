@@ -38,6 +38,8 @@ abstract public class PongItem {
 	
 	public void setIcon(Image image) {
 		this.icon.setImage(image);
+		this.width = this.icon.getIconWidth();
+		this.height = this.icon.getIconHeight();
 	}
 
 	public int getWidth() {

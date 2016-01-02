@@ -162,7 +162,7 @@ public class Bonus extends PongItem {
 		racket.divideRacket();
 	}
 	
-	private void deleteBonus() {
+	public void deleteBonus() {
 		 inUse = false;
 		 System.out.println("Le bonus a ete utilise ou detruit");
 	}
