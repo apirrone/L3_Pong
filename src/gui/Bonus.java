@@ -10,7 +10,7 @@ public class Bonus extends PongItem {
 	private static final int BONUS_BASE_SPEED_X = 1;
 
 	public static final int BONUS_MAX_POSITION_Y  = 570;
-	public static final int NUMBER_OF_BONUS = 6;
+	public static final int NUMBER_OF_BONUS = 7;
 	
 	private Point speed;
 	private boolean inUse;
@@ -70,6 +70,9 @@ public class Bonus extends PongItem {
 				break;
 			case 5:
 				decreaseSizeRacket(racketPlayer);
+				break;
+			case 6:
+				System.out.println("Dommage pour toi, ce bonus est inutile.");
 				break;
 			default:
 				System.out.println("no bonus");

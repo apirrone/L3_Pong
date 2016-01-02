@@ -138,7 +138,7 @@ public abstract class BallType extends PongItem {
 						mvtYToDo --;
 						// Ce test permet d'ajouter le reste de la division de speed.y par speed.x
 						// Ainsi on pourra realiser ces derniers mouvements sur la dernière iteration de boucle de speed.x
-						if (mvtYToDo<Math.abs(speed.x) && j==1)
+						if (mvtYToDo<Math.abs(speed.x) && j==1 && Math.abs(speed.x)!=Math.abs(speed.y))
 							j += mvtYToDo;
 					}
 				}
