@@ -304,8 +304,8 @@ public class Pong extends JPanel implements KeyListener {
 				isBonusForMe = ((this.timeToRand % 2) == 0);
 //				isBonusForMe = false;
 			}
-			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y);
-//			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y, this.timeToRand % Bonus.NUMBER_OF_BONUS);
+//			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y);
+			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y, this.timeToRand % Bonus.NUMBER_OF_BONUS);
 //			this.bonus.setBonus(isBonusForMe, 260, 5);
 			
 

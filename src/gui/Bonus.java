@@ -14,7 +14,7 @@ public class Bonus extends PongItem {
 	
 	private Point speed;
 	private boolean inUse;
-//	private int applyBonus;
+	private int applyBonus;
 	
 	/**
 	 * 
@@ -26,14 +26,14 @@ public class Bonus extends PongItem {
 		this.position.setLocation(BONUS_BASE_POSITION_X, 0);
 	}
 	
-	public void setBonus (boolean serveur, long positionY /* , int numBonus */) {
+	public void setBonus (boolean serveur, long positionY, long numBonus) {
 		inUse = true;
 		position.setLocation(BONUS_BASE_POSITION_X, (int)positionY);
 		if (serveur)
 			speed.setLocation(-BONUS_BASE_SPEED_X, 0);
 		else 
 			speed.setLocation(BONUS_BASE_SPEED_X, 0);
-//		this.applyBonus = (int) numBonus;
+		this.applyBonus = (int) numBonus;
 		
 		/*
 		if(serveur) {
@@ -52,10 +52,7 @@ public class Bonus extends PongItem {
 	 * Fonction permettant de determiner le bonus a appliquer sur les raquettes et balle
 	 */
 	private void getRandomBonus(BallType ball, RacketType racketPlayer, RacketType racketOpponent) {
-		int min = 0;
-		int max = NUMBER_OF_BONUS;
-		int bonusId = min + (int)(Math.random() * ((max - min) + 1));
-		switch (bonusId) {
+		switch (applyBonus) {
 			case 0:
 				increaseSpeedBall(ball);
 				break;
@@ -81,16 +78,14 @@ public class Bonus extends PongItem {
 	
 	/**
 	 * Acces � la variable quel bonus a appliquer si le bonus est utilise:
-	 * Si 0 la vitesse de la balle est augmente
-	 * Si 1 la vitesse de la balle est ralentie
-	 * Si 2 La vitesse de la raquette touchant le bonus est augmentée
-	 * Si 3 la vitesse de la raquette touchant le bonus est diminuée
-	 * Si 4 la taille de la raquette touchant le bonus est augmentée
-	 * Si 5 la taille de la raquette touchant le bonus est diminuée
+	 * Si 1 la vitesse de la balle est augmente
+	 * Si 2 la vitesse de la balle est ralentie
+	 * Si 3 La vitesse de la raquette touchant le bonus est augmente
+	 * Si 4 la vitesse de la raquette touchant le bonus est diminue
 	 */
-//	public int getApplyBonus(){
-//		return this.applyBonus;
-//	}
+	public int getApplyBonus(){
+		return this.applyBonus;
+	}
 	
 	/** 
 	 * True si le bonus est toujours sur le pong, 
