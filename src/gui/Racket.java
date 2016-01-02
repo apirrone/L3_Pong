@@ -98,9 +98,11 @@ public class Racket extends RacketType{
 	/**
 	 * Reaction de la balle si elle touche le coin ou le haut de la raquette
 	 */
-	public void moveBallOnRacketOther(RacketType racketPlayer, RacketType racketOpponent, BallType ball) {	
+	public void moveBallOnRacketHaut(RacketType racketPlayer, RacketType racketOpponent, BallType ball) {	
 		if (racketPlayer.itemOnRacketHaut(ball) || racketOpponent.itemOnRacketHaut(ball))
 			ball.setSpeedY(-ball.getSpeed().y);	
+	}
+	public void moveBallOnRacketCorner(RacketType racketPlayer, RacketType racketOpponent, BallType ball) {	
 		if (racketPlayer.itemOnRacketCorner(ball) || racketOpponent.itemOnRacketCorner(ball))
 			ball.setSpeed(-ball.getSpeed().x, -ball.getSpeed().y);
 	}

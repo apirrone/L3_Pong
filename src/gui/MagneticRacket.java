@@ -37,13 +37,6 @@ public class MagneticRacket extends RacketType {
 			ball.setSpeedX(0);
 		}
 	}
-	
-	public void moveBallOnRacketOther(RacketType racketPlayer, RacketType racketOpponent, BallType ball) {
-		if (racketPlayer.itemOnRacketHaut(ball) || racketOpponent.itemOnRacketHaut(ball))
-			ball.setSpeed(0, -ball.getSpeed().y);	
-		if (racketPlayer.itemOnRacketCorner(ball) || racketOpponent.itemOnRacketCorner(ball))
-			ball.setSpeed(0, -ball.getSpeed().y);
-	}
 
 	@Override
 	public void divideRacket() {
@@ -59,6 +52,18 @@ public class MagneticRacket extends RacketType {
 
 	@Override
 	public void restartImageRacket() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void moveBallOnRacketHaut(RacketType racketPlayer, RacketType racketOpponent, BallType ball) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void moveBallOnRacketCorner(RacketType racketPlayer, RacketType racketOpponent, BallType ball) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -38,7 +38,7 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	public static final int SIZE_PONG_X = 800;
 	public static final int SIZE_PONG_Y = 600;
-	public static final int TIME_STEP = 10;
+	public static final int TIME_STEP = 1000;
 	public static final Point POINT_DEFAULT = new Point(0,0);
 	public static final float DECALAGE_MAX_ON_RACKET = 6;
 	public static final float NUMBER_OF_PLAYER = 2;

@@ -8,10 +8,10 @@ public abstract class RacketType extends PongItem {
 	/**
 	 * Definition des constantes de bases
 	 */	
-	public static final int RACKET_BASE_SPEED = 4;
+	public static final int RACKET_BASE_SPEED = -4;/*4*/
 	public static final int RACKET_PLAYER_BASE_POSITION_X = 28;
 	public static final int RACKET_OPPONENT_BASE_POSITION_X = 750;
-	public static final int RACKET_BASE_POSITION_Y = 250;
+	public static final int RACKET_BASE_POSITION_Y = 300;/*250*/
 	
 	/**
 	 * speed defini la vitesse sur "Y" de la raquette, en pixels par timeStep
@@ -21,7 +21,7 @@ public abstract class RacketType extends PongItem {
 	
 	public RacketType(Image image, boolean player) {
 		super(image);
-		speed = 0;
+		speed = 0;/*0*/
 		setSpeedMax(RACKET_BASE_SPEED);
 		if(player)
 			this.position.setLocation(RACKET_PLAYER_BASE_POSITION_X, RACKET_BASE_POSITION_Y);
@@ -62,7 +62,8 @@ public abstract class RacketType extends PongItem {
 	}
 
 	abstract void moveBallOnRacketCote(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
-	abstract void moveBallOnRacketOther(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
+	abstract void moveBallOnRacketHaut(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
+	abstract void moveBallOnRacketCorner(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
 	abstract public void divideRacket();
 	abstract public void multiplyRacket();
 	abstract public void restartImageRacket();
