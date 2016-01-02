@@ -8,12 +8,12 @@ public abstract class BallType extends PongItem {
 	/**
 	 * Definition des constantes de bases
 	 */	
-	private static final int BALL_BASE_SPEED_X = -2;/*2*/
-	private static final int BALL_BASE_SPEED_Y = -2;/*0*/
+	private static final int BALL_BASE_SPEED_X = 2;
+	private static final int BALL_BASE_SPEED_Y = 0;
 	private static final int BALL_BASE_LIFTSPEED = 0;
 	private static final boolean BALL_BASE_HASLIFT = false;
-	private static final int BALL_BASE_POSITION_X = 49;/*390*/
-	private static final int BALL_BASE_POSITION_Y = 280;/*290*/
+	private static final int BALL_BASE_POSITION_X = 390;
+	private static final int BALL_BASE_POSITION_Y = 290;
 	private static final int TO_MAKE_LIFTSPEED_IN_PERCENT = 10;
 	private static final int LIFTSPEED_MAX = 90;
 	private static final int LIFTSPEED_MIN = -90;
@@ -95,8 +95,6 @@ public abstract class BallType extends PongItem {
 	 * Fonction de déplacement de la balle
 	 */
 	public void moveBall(RacketType racketPlayer, RacketType racketOpponent, Score score) {
-		System.out.println("0  ball pos X = "+this.getPosition().x+" Y = "+this.getPosition().y+" racketY = "+racketPlayer.getPosition().y+" speed X = "+this.getSpeed().x+" Y = "+this.getSpeed().y); 
-
 		// On cree une copie de speed.y pour connaitre le nombre de mouvement Y restant
 		int mvtYToDo = Math.abs(speed.y);
 		// On calcul combien de mouvement sur Y il faut faire, pour chaque mouvement de X
@@ -109,10 +107,8 @@ public abstract class BallType extends PongItem {
 		int mvtXMade = 0;
 		// Pour chaque speed.x on va se déplacer de speed.y/speed.x
 		for(int i=Math.abs(speed.x); i>0; i--) {
-			System.out.println("1  ball pos X = "+this.getPosition().x+" Y = "+this.getPosition().y+" racketY = "+racketPlayer.getPosition().y+" speed X = "+this.getSpeed().x+" Y = "+this.getSpeed().y); 
 			// Si la balle est sur la raquette on change la direction de la balle
 			racketPlayer.moveBallOnRacketCote(racketPlayer, racketOpponent, this);
-			System.out.println("2  ball pos X = "+this.getPosition().x+" Y = "+this.getPosition().y+" racketY = "+racketPlayer.getPosition().y+" speed X = "+this.getSpeed().x+" Y = "+this.getSpeed().y); 
 			// Si la raquette est en mouvement, on donne un effet a la balle
 			if(testIfMoveRacketCote(racketPlayer)) {
 				doLift(racketPlayer, true);
@@ -147,10 +143,8 @@ public abstract class BallType extends PongItem {
 					}
 				}
 			}
-			System.out.println("3  ball pos X = "+this.getPosition().x+" Y = "+this.getPosition().y+" racketY = "+racketPlayer.getPosition().y+" speed X = "+this.getSpeed().x+" Y = "+this.getSpeed().y); 
 			// On realise le mouvement horizontal d'un pixel
-			position.translate(speed.x/Math.abs(speed.x), 0);
-			System.out.println("4  ball pos X = "+this.getPosition().x+" Y = "+this.getPosition().y+" racketY = "+racketPlayer.getPosition().y+" speed X = "+this.getSpeed().x+" Y = "+this.getSpeed().y); 
+			position.translate(speed.x/Math.abs(speed.x), 0); 
 			mvtXMade ++;
 			// Si la balle touche notre cote du pong, on arrete la balle ET l'adversaire gagne un point
 			// C'est la fin d'un round

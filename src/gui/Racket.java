@@ -3,8 +3,6 @@ package gui;
 import java.awt.Image;
 import java.awt.Toolkit;
 
-import util.ExceptionPong;
-
 public class Racket extends RacketType{
 
 	private static final Image PONG_BARRE_NIV_P1 = Toolkit.getDefaultToolkit().createImage(

@@ -1,17 +1,16 @@
 package gui;
 
 import java.awt.Image;
-import java.awt.Toolkit;
 
 public abstract class RacketType extends PongItem {
 	
 	/**
 	 * Definition des constantes de bases
 	 */	
-	public static final int RACKET_BASE_SPEED = -4;/*4*/
+	public static final int RACKET_BASE_SPEED = 4;
 	public static final int RACKET_PLAYER_BASE_POSITION_X = 28;
 	public static final int RACKET_OPPONENT_BASE_POSITION_X = 750;
-	public static final int RACKET_BASE_POSITION_Y = 300;/*250*/
+	public static final int RACKET_BASE_POSITION_Y = 250;
 	
 	/**
 	 * speed defini la vitesse sur "Y" de la raquette, en pixels par timeStep
@@ -21,7 +20,7 @@ public abstract class RacketType extends PongItem {
 	
 	public RacketType(Image image, boolean player) {
 		super(image);
-		speed = 0;/*0*/
+		speed = 0;
 		setSpeedMax(RACKET_BASE_SPEED);
 		if(player)
 			this.position.setLocation(RACKET_PLAYER_BASE_POSITION_X, RACKET_BASE_POSITION_Y);
@@ -72,21 +71,21 @@ public abstract class RacketType extends PongItem {
 	 * Fonction de deplacement de la raquette
 	 */
 	public void moveRacket(BallType ball) {
-		int posY=position.y;
 		boolean prob=false;
-		for(int i=Math.abs(speed); i>0; i--) {
+		for(int i=Math.abs(speed); i>0 && prob==false; i--) {
 			if (itemOnRacketHaut(ball) || itemOnRacketCorner(ball))
 				prob=true;
-			position.y += (speed/Math.abs(speed));
+			else
+				position.y += (speed/Math.abs(speed));
 		}
 		if (itemOnRacketHaut(ball) || itemOnRacketCorner(ball))
 			prob=true;
 		if (prob)
-			position.y = posY;
+			position.y -= (speed/Math.abs(speed));
 		if (position.y < 0)
 			position.y = 0;
 		if (position.y > Pong.SIZE_PONG_Y - height)
-			position.y = Pong.SIZE_PONG_Y - height;
+			position.y = Pong.SIZE_PONG_Y - height; 
 	}
 	
 	public void setY(int y) {

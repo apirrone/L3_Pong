@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Date;
 
 import javax.swing.JPanel;
 
@@ -38,12 +37,12 @@ public class Pong extends JPanel implements KeyListener {
 	 */
 	public static final int SIZE_PONG_X = 800;
 	public static final int SIZE_PONG_Y = 600;
-	public static final int TIME_STEP = 1000;
+	public static final int TIME_STEP = 10;
 	public static final Point POINT_DEFAULT = new Point(0,0);
 	public static final float DECALAGE_MAX_ON_RACKET = 6;
 	public static final float NUMBER_OF_PLAYER = 2;
-	public static final int TIME_MIN_TO_HAVE_BONUS = 300;/*300*/
-	public static final int TIME_MAX_ADDED_TO_HAVE_BONUS = 700;/*700*/
+	public static final int TIME_MIN_TO_HAVE_BONUS = 700;
+	public static final int TIME_MAX_ADDED_TO_HAVE_BONUS = 1500;
 	public static final int MULTIPLICATE_NUMBER_TO_RAND_TIME = 13;
 
 	/**
@@ -58,7 +57,6 @@ public class Pong extends JPanel implements KeyListener {
 	private Score pongScore;
 	private int playTime;
 	private Bonus bonus;
-//	private Bonus bonus1;
 	private boolean bonusIsCreated;
 	private long time;
 	private long timeToRand;
