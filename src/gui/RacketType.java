@@ -80,7 +80,7 @@ public abstract class RacketType extends PongItem {
 		}
 		if (itemOnRacketHaut(ball) || itemOnRacketCorner(ball))
 			prob=true;
-		if (prob)
+		if (prob && speed != 0)
 			position.y -= (speed/Math.abs(speed));
 		if (position.y < 0)
 			position.y = 0;
