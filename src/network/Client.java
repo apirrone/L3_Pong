@@ -42,6 +42,8 @@ public class Client {
 		protocol.setCustomProtocol(yRacket, ballPosition, haslift, liftSpeed, ballSpeedY, 0);
 		writerOut.println(protocol.toString());
 		writerOut.flush();
+		
+		
 	}
 	
 	public CustomProtocol getData() throws ExceptionPong {
