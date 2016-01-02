@@ -28,7 +28,7 @@ public class Pong extends JPanel implements KeyListener {
 	 * scoreColor definit la couleur d'ecriture du score
 	 */
 	private static final Color BACKGROUND_COLOR = new Color(0x22, 0x40, 0);
-	private static final Color SCORE_COLOR = new Color(0, 0, 0);
+	private static final Color SCORE_COLOR = new Color(0xFF, 0xFF, 0xFF);
 	private static final int TIME_TO_WAIT_AT_END_OF_ROUND = 2000;
 
 	/**
@@ -42,8 +42,8 @@ public class Pong extends JPanel implements KeyListener {
 	public static final Point POINT_DEFAULT = new Point(0,0);
 	public static final float DECALAGE_MAX_ON_RACKET = 6;
 	public static final float NUMBER_OF_PLAYER = 2;
-	public static final int TIME_MIN_TO_HAVE_BONUS = 20;/*300*/
-	public static final int TIME_MAX_ADDED_TO_HAVE_BONUS = 50;/*700*/
+	public static final int TIME_MIN_TO_HAVE_BONUS = 300;/*300*/
+	public static final int TIME_MAX_ADDED_TO_HAVE_BONUS = 700;/*700*/
 	public static final int MULTIPLICATE_NUMBER_TO_RAND_TIME = 13;
 
 	/**
@@ -306,8 +306,8 @@ public class Pong extends JPanel implements KeyListener {
 //				isBonusForMe = false;
 			}
 //			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y);
-//			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y, this.timeToRand % Bonus.NUMBER_OF_BONUS);
-			this.bonus.setBonus(isBonusForMe, 260, 4);
+			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y, this.timeToRand % Bonus.NUMBER_OF_BONUS);
+//			this.bonus.setBonus(isBonusForMe, 260, 0);
 			
 
 			System.out.println("Arrivee des bonus");
