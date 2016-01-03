@@ -33,6 +33,7 @@ public class Bonus extends PongItem {
 			speed.setLocation(-BONUS_BASE_SPEED_X, 0);
 		else 
 			speed.setLocation(BONUS_BASE_SPEED_X, 0);
+		//determine quel bonus sera applique a ce bonus quand il sera utilise
 		this.applyBonus = (int) numBonus;
 		
 		/*
@@ -43,7 +44,7 @@ public class Bonus extends PongItem {
 			this.position.setLocation(BONUS_BASE_POSITION_X, 300);
 			this.speed = new Point(-BONUS_BASE_SPEED_X, 0);
 		}
-		//determine quel bonus sera applique a ce bonus quand il sera utilis�
+		//determine quel bonus sera applique a ce bonus quand il sera utilise
 		this.applyBonus = RandomNumber.randomValue(min, max);
 		*/
 	}
@@ -80,7 +81,7 @@ public class Bonus extends PongItem {
 	}
 	
 	/**
-	 * Acces � la variable quel bonus a appliquer si le bonus est utilise:
+	 * Acces a la variable quel bonus a appliquer si le bonus est utilise:
 	 * Si 1 la vitesse de la balle est augmente
 	 * Si 2 la vitesse de la balle est ralentie
 	 * Si 3 La vitesse de la raquette touchant le bonus est augmente

@@ -147,10 +147,10 @@ public class Pong extends JPanel implements KeyListener {
 			case KeyEvent.VK_KP_DOWN:
 				racketPlayer.setSpeed(racketPlayer.getSpeedMax());
 				break;
-			case KeyEvent.VK_RIGHT:
-			case KeyEvent.VK_KP_RIGHT:
-				racketPlayer.releaseTheBall(ball, this);
-				break;
+//			case KeyEvent.VK_RIGHT:
+//			case KeyEvent.VK_KP_RIGHT:
+//			racketPlayer.releaseTheBall(ball, this);
+//				break;
 			default:
 				System.out.println("Tu viens d'appuyer sur la touche "+e+" qui n'a pas d'utilite");
 		}
