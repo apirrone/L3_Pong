@@ -203,10 +203,10 @@ public abstract class BallType extends PongItem {
      * Reaction de la balle si elle touche le cote de la raquette
      */
     public void moveBallOnRacketCote(RacketType racketPlayer, RacketType racketOpponent) {
-            if (racketPlayer.itemOnRacketCote(this)) 
-                    changeDirectionBall(racketPlayer);
-            if (racketOpponent.itemOnRacketCote(this)) 
-                    changeDirectionBall(racketOpponent);
+    	if (racketPlayer.itemOnRacketCote(this)) 
+    		changeDirectionBall(racketPlayer);
+    	if (racketOpponent.itemOnRacketCote(this)) 
+    		changeDirectionBall(racketOpponent);
     }
 
 	/**
@@ -218,27 +218,27 @@ public abstract class BallType extends PongItem {
 	}
     
     public void changeDirectionBall (RacketType racket) {
-            // Valeur calculee par : ((distance entre le milieu de la balle et le milieu de la raquette) / 
-            // ((1/2)* (longueur de la raquette + longueur de la balle))) * 
-            // decalage Maximal sur Y
-            float valueY = ((((float) getPosition().y + (getHeight() / 2)) - (racket.getPosition().y + (racket.getHeight() / 2))) / 
-                            (((racket.getHeight() + getHeight()) / 2))) * Pong.DECALAGE_MAX_ON_RACKET;
-            // Si la balle a un effet
-            if(getHasLift()){
-                    // On ajoute l'effet a la direction de la balle, cet effet est defini comme un pourcentage
-                    if(valueY > 0)
-                            valueY = (float)valueY + ((valueY * getLiftSpeed())/100);
-                    else{
-                            if(valueY < 0)
-                                    valueY = (float)valueY + ((valueY * (- getLiftSpeed()))/100);
-                            else
-                                    valueY = 0;
-                    }
-                    // On enleve l'effet sur la balle
-                    setHasLift(false);
-            }
-            setSpeedY(Math.round(valueY));
-            setSpeedX(- getSpeed().x);
+    	// Valeur calculee par : ((distance entre le milieu de la balle et le milieu de la raquette) / 
+    	// ((1/2)* (longueur de la raquette + longueur de la balle))) * 
+    	// decalage Maximal sur Y
+    	float valueY = ((((float) getPosition().y + (getHeight() / 2)) - (racket.getPosition().y + (racket.getHeight() / 2))) / 
+    			(((racket.getHeight() + getHeight()) / 2))) * Pong.DECALAGE_MAX_ON_RACKET;
+    	// Si la balle a un effet
+    	if(getHasLift()){
+    		// On ajoute l'effet a la direction de la balle, cet effet est defini comme un pourcentage
+    		if(valueY > 0)
+    			valueY = (float)valueY + ((valueY * getLiftSpeed())/100);
+    		else{
+    			if(valueY < 0)
+    				valueY = (float)valueY + ((valueY * (- getLiftSpeed()))/100);
+    			else
+    				valueY = 0;
+    		}
+    		// On enleve l'effet sur la balle
+    		setHasLift(false);
+    	}
+    	setSpeedY(Math.round(valueY));
+    	setSpeedX(- getSpeed().x);
     }
 	
 	/**
