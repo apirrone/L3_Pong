@@ -108,7 +108,7 @@ public abstract class BallType extends PongItem {
 		// Pour chaque speed.x on va se déplacer de speed.y/speed.x
 		for(int i=Math.abs(speed.x); i>0; i--) {
 			// Si la balle est sur la raquette on change la direction de la balle
-			racketPlayer.moveBallOnRacketCote(racketPlayer, racketOpponent, this);
+			moveBallOnRacketCote(racketPlayer, racketOpponent);
 			// Si la raquette est en mouvement, on donne un effet a la balle
 			if(testIfMoveRacketCote(racketPlayer)) {
 				doLift(racketPlayer, true);
@@ -172,7 +172,7 @@ public abstract class BallType extends PongItem {
 	 */
 	public void oneMoveBallOnY (RacketType racketPlayer, RacketType racketOpponent) {
 		// On test si on ne touche pas la raquette
-		racketPlayer.moveBallOnRacketHaut(racketPlayer, racketOpponent, this);
+		moveBallOnRacketHaut(racketPlayer, racketOpponent);
 		// On realise le mouvement vertical d'un pixel
 		position.translate(0, speed.y/Math.abs(speed.y));
 		// Si la balle tape le haut du pong
@@ -198,6 +198,48 @@ public abstract class BallType extends PongItem {
 				speed.y = -speed.y;
 		}
 	}
+	
+    /**
+     * Reaction de la balle si elle touche le cote de la raquette
+     */
+    public void moveBallOnRacketCote(RacketType racketPlayer, RacketType racketOpponent) {
+            if (racketPlayer.itemOnRacketCote(this)) 
+                    changeDirectionBall(racketPlayer);
+            if (racketOpponent.itemOnRacketCote(this)) 
+                    changeDirectionBall(racketOpponent);
+    }
+
+	/**
+	 * Reaction de la balle si elle touche le haut de la raquette
+	 */
+	public void moveBallOnRacketHaut(RacketType racketPlayer, RacketType racketOpponent) {	
+		if (racketPlayer.itemOnRacketHaut(this) || racketOpponent.itemOnRacketHaut(this))
+			setSpeedY(- getSpeed().y);	
+	}
+    
+    public void changeDirectionBall (RacketType racket) {
+            // Valeur calculee par : ((distance entre le milieu de la balle et le milieu de la raquette) / 
+            // ((1/2)* (longueur de la raquette + longueur de la balle))) * 
+            // decalage Maximal sur Y
+            float valueY = ((((float) getPosition().y + (getHeight() / 2)) - (racket.getPosition().y + (racket.getHeight() / 2))) / 
+                            (((racket.getHeight() + getHeight()) / 2))) * Pong.DECALAGE_MAX_ON_RACKET;
+            // Si la balle a un effet
+            if(getHasLift()){
+                    // On ajoute l'effet a la direction de la balle, cet effet est defini comme un pourcentage
+                    if(valueY > 0)
+                            valueY = (float)valueY + ((valueY * getLiftSpeed())/100);
+                    else{
+                            if(valueY < 0)
+                                    valueY = (float)valueY + ((valueY * (- getLiftSpeed()))/100);
+                            else
+                                    valueY = 0;
+                    }
+                    // On enleve l'effet sur la balle
+                    setHasLift(false);
+            }
+            setSpeedY(Math.round(valueY));
+            setSpeedX(- getSpeed().x);
+    }
 	
 	/**
 	 * Test si la raquette touche la balle quand elle est en mouvement

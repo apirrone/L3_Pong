@@ -60,9 +60,6 @@ public abstract class RacketType extends PongItem {
 		this.speedMax = speedMax;
 	}
 
-	abstract void moveBallOnRacketCote(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
-	abstract void moveBallOnRacketHaut(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
-	abstract void moveBallOnRacketCorner(RacketType racketPlayer, RacketType racketOpponent, BallType ball);
 	abstract public void divideRacket();
 	abstract public void multiplyRacket();
 	abstract public void restartImageRacket();
