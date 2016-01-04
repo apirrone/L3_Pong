@@ -2,11 +2,6 @@ package tests;
 
 import static org.junit.Assert.*;
 
-import java.awt.Image;
-import java.awt.Toolkit;
-
-import javax.swing.ImageIcon;
-
 import gui.Racket;
 
 import org.junit.Test;
@@ -56,5 +51,4 @@ public class RacketTest {
 		racket.multiplyRacket();
 		assertTrue(racket.getHeight() == 152 && racket.getWidth() == 22);
 	}
-
 }

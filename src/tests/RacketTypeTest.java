@@ -61,10 +61,9 @@ public class RacketTypeTest {
 	public void testMoveRacket() {
 		RacketType racket = new Racket(true);
 		BallType ball = new Ball(true);
-		ball.setPosition(30 , 230);
 		racket.setSpeed(2);
 		racket.moveRacket(ball);
-		assertTrue(racket.getPosition().y == 249);
+		assertTrue(racket.getPosition().y == 252);
 	}
 
 	@Test
@@ -105,5 +104,4 @@ public class RacketTypeTest {
 		ball.setPosition(50 , 326);
 		assertTrue(racket.itemOnRacketCorner(ball));
 	}
-
 }

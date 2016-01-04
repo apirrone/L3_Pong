@@ -79,6 +79,10 @@ public class Bonus extends PongItem {
 		return inUse;
 	}
 	
+	public Point getSpeed(){
+		return this.speed;
+	}
+	
 	public void moveBonus(RacketType racketPlayer, RacketType racketOpponent, BallType ball) {
 		for (int i=Math.abs(speed.x); i>0; i--) {
 			// Si le bonus touche l'une des raquettes on applique le bonus
