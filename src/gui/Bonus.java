@@ -137,6 +137,5 @@ public class Bonus extends PongItem {
 	
 	public void deleteBonus() {
 		 inUse = false;
-		 System.out.println("Le bonus a ete utilise ou detruit");
 	}
 }	
