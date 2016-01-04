@@ -28,11 +28,13 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Le serveur va attendre une connexion pendant "TIME_MAX_TO_WAIT_CONNECTION" secondes
+	 */
 	public void waitForConnection() throws ExceptionPong {
 		try {
-			// Le serveur va attendre une connexion pendant "timeMaxToWaitConnection" secondes;
 			serverSocket.setSoTimeout(TIME_MAX_TO_WAIT_CONNECTION);
-			System.out.println("Attente de connexion, "+TIME_MAX_TO_WAIT_CONNECTION+" secondes avant deconnexion\n");
+			System.out.println("Attente de connexion, "+TIME_MAX_TO_WAIT_CONNECTION+" secondes avant deconnexion");
 			socket = serverSocket.accept();
 			System.out.println("Connexion Etablie");
 		} catch (IOException e) {

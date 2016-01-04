@@ -106,14 +106,14 @@ public class Pong extends JPanel implements KeyListener {
 		if(!pongScore.getFinRound()) {
 			playTime++;
 			ball.moveBall(racketPlayer, racketOpponent, pongScore);
-			/* Actualisation de la position de la raquette */
+			// Actualisation de la position de la raquette 
 			racketPlayer.moveRacket(ball);
-			/* Actualisation de la position de la raquette */
+			// Actualisation de la position de la raquette 
 			racketOpponent.moveRacket(ball);
 			if(playTime == (TIME_MIN_TO_HAVE_BONUS + (timeToRand % TIME_MAX_ADDED_TO_HAVE_BONUS)) || bonusIsCreated) {
 				bonusManagement();
 			}
-			/* Et actualisation du Pong */
+			// Et actualisation du Pong 
 			updateScreen();
 		} else {
 		// Sinon on reinitialise le round
@@ -126,7 +126,7 @@ public class Pong extends JPanel implements KeyListener {
 			racketPlayer.restartRacket(true);
 			racketOpponent.restartRacket(false);
 			bonus.deleteBonus();
-			/* Et actualisation du Pong */
+			// Et actualisation du Pong 
 			updateScreen();
 			// On attend deux sec avant le debut du prochain round
 			try {
@@ -147,12 +147,7 @@ public class Pong extends JPanel implements KeyListener {
 			case KeyEvent.VK_KP_DOWN:
 				racketPlayer.setSpeed(racketPlayer.getSpeedMax());
 				break;
-//			case KeyEvent.VK_RIGHT:
-//			case KeyEvent.VK_KP_RIGHT:
-//			racketPlayer.releaseTheBall(ball, this);
-//				break;
 			default:
-				System.out.println("Tu viens d'appuyer sur la touche "+e+" qui n'a pas d'utilite");
 		}
 	}
 	
@@ -167,7 +162,6 @@ public class Pong extends JPanel implements KeyListener {
 				racketPlayer.setSpeed(0);
 				break;
 			default:
-				System.out.println("Tu viens de relacher la touche "+e+" qui n'a pas d'utilite");
 		}
 	}
 	
@@ -201,7 +195,6 @@ public class Pong extends JPanel implements KeyListener {
 		graphicContext.setColor(SCORE_COLOR);
 		graphicContext.drawString("score Player:"+Integer.toString(pongScore.getScorePlayer()), 400, 50);
 		graphicContext.drawString("score Opponent:"+Integer.toString(pongScore.getScoreOpponent()), 400, 70);
-		//Permet le lancement des bonus a un moment precis
 		if (bonus.getInUse() == true) 
 			graphicContext.drawImage(bonus.getImage(), bonus.getPosition().x, bonus.getPosition().y, bonus.getWidth(), bonus.getHeight(), null);
 		this.repaint();
@@ -214,7 +207,6 @@ public class Pong extends JPanel implements KeyListener {
 			server.setData((int)racketPlayer.getPosition().getY(), ball.getPosition(), ball.getHasLift(), ball.getLiftSpeed(), ball.getSpeed().y, this.timeToRand);
 			CustomProtocol p = server.getData();
 			racketOpponent.setY(p.getRacketY());
-//			System.out.println("ball pos X = "+(SIZE_PONG_X - ball.getPosition().x - ball.getWidth())+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y);
 			// Si la balle est de l'autre cote du Pong, on prend les donnees de l'adversaire
 			if (ball.getPosition().getX() > ((SIZE_PONG_X - ball.getWidth())/2) ) {
 				if ((System.currentTimeMillis() - time) >= TIME_STEP) {
@@ -225,15 +217,12 @@ public class Pong extends JPanel implements KeyListener {
 								ball.getLiftSpeed() != p.getLiftSpeed() ||
 								ball.getSpeed().getY() != p.getBallSpeedY()) {
 						cheater = true;
-//						System.out.println("ball pos X = "+(SIZE_PONG_X - ball.getPosition().x - ball.getWidth())+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y);
-//						System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
 					}
 					time = System.currentTimeMillis();
 				}
 				ball.setPosition(p.getBallPosition());
-				ball.inverserPosition();
-//				System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
-				/* Pour des raisons d'implementations, si la balle est proche de la racket de l'adversaire, (proche d'environ 2 mouvements de la balle sur X)
+				ball.switchPosition();
+				/* Pour des raisons d'implementations, si la balle est proche de la racket de l'adversaire, (proche d'environ deux mouvements de la balle sur X)
 				 * on va prendre quelques donnees de la balle sans les testees et en annulant le test de triche*/
 				if (ball.getPosition().getX() < RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth() || 
 						ball.getPosition().getX() > RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth() - (2 * Math.abs(ball.getSpeed().getX()))) {
@@ -243,8 +232,7 @@ public class Pong extends JPanel implements KeyListener {
 					cheater = false;
 				}
 				if (cheater)
-//					throw new ExceptionPong("ATTENTION : Il y a un tricheur dans la partie.\nLa partie est arretee");
-					System.out.println("CHEATER !!!!!"); 
+					throw new ExceptionPong("ATTENTION : Il y a un tricheur dans la partie.\nLa partie est arretee");
 			}
 		} else {
 			// Je suis client
@@ -253,7 +241,6 @@ public class Pong extends JPanel implements KeyListener {
 			racketOpponent.setY(p.getRacketY());
 			if (timeToRand != p.getTime())
 				timeToRand = p.getTime();
-//			System.out.println("ball pos X = "+ball.getPosition().x+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y); 
 			// Si la balle est de l'autre cote du Pong, on prend les donnees de l'adversaire
 			if (ball.getPosition().getX() > ((SIZE_PONG_X - ball.getWidth())/2) ) {
 				if ((System.currentTimeMillis() - time) >= TIME_STEP) {
@@ -264,15 +251,12 @@ public class Pong extends JPanel implements KeyListener {
 										ball.getLiftSpeed() != p.getLiftSpeed() ||
 										ball.getSpeed().getY() != p.getBallSpeedY()) {
 						cheater = true;
-//						System.out.println("ball pos X = "+ball.getPosition().x+" Y = "+ball.getPosition().y+" lift? "+ball.getHasLift()+" Opp = "+p.getHasLift()+" P = "+ball.getLiftSpeed()+" O = "+p.getLiftSpeed()+" speed X = "+ball.getSpeed().x+" Y = "+ball.getSpeed().y); 
-//						System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
 					}
 					time = System.currentTimeMillis();
 				}
 				ball.setPosition(p.getBallPosition());
-				ball.inverserPosition();
-//				System.out.println("ball pos X = "+ball.getPosition().getX()+" OppX = "+(RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth()));
-				/* Pour des raisons d'implementations, si la balle est proche de la racket de l'adversaire, (proche d'environ 2 mouvements de la balle sur X) 
+				ball.switchPosition();
+				/* Pour des raisons d'implementations, si la balle est proche de la racket de l'adversaire, (proche d'environ deux mouvements de la balle sur X) 
 				 * on va prendre quelques donnees de la balle sans les testees et en annulant le test de triche*/
 				if (ball.getPosition().getX() < RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth() || 
 						ball.getPosition().getX() > RacketType.RACKET_OPPONENT_BASE_POSITION_X - ball.getWidth() - (2 * Math.abs(ball.getSpeed().getX()))) {
@@ -282,8 +266,7 @@ public class Pong extends JPanel implements KeyListener {
 					cheater = false;
 				}
 				if (cheater)
-//					throw new ExceptionPong("ATTENTION : Il y a un tricheur dans la partie.\nLa partie est arretee");
-					System.out.println("CHEATER !!!!!"); 
+					throw new ExceptionPong("ATTENTION : Il y a un tricheur dans la partie.\nLa partie est arretee");
 			}
 		}
 	}
@@ -297,46 +280,21 @@ public class Pong extends JPanel implements KeyListener {
 			if(this.client == null) {
 				// Je suis serveur
 				isBonusForMe = ((this.timeToRand % 2) == 1);
-//				isBonusForMe = true;
 			} else {
 				// Je suis client
 				isBonusForMe = ((this.timeToRand % 2) == 0);
-//				isBonusForMe = false;
 			}
-//			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y);
+			// Mise en place d'un bonus pseudo aleatoire en fonction du timeToRand
 			this.bonus.setBonus(isBonusForMe, this.timeToRand % Bonus.BONUS_MAX_POSITION_Y, this.timeToRand % Bonus.NUMBER_OF_BONUS);
-//			this.bonus.setBonus(isBonusForMe, 260, 0);
-			
-
-			System.out.println("Arrivee des bonus");
-//			System.out.println("timeBonus = "+(TIME_MIN_TO_HAVE_BONUS + (timeToRand % TIME_MAX_ADDED_TO_HAVE_BONUS))+" qui? "+(this.timeToRand % 2)+" o�? "+this.timeToRand % Bonus.BONUS_MAX_POSITION_Y+" lequel? "+this.timeToRand % Bonus.NUMBER_OF_BONUS);
-			
-			
 			bonusIsCreated = true;
-		//	bonus.updateScreen(this);
-//			bonus1.updateScreen(this);
 		}
 		if (bonus.getInUse() == true) {
 			bonus.moveBonus(racketPlayer, racketOpponent, ball);
 		}
-//		if (bonus1.getInUse() == true) {
-//			bonus1.moveBonus(SIZE_PONG_X, SIZE_PONG_Y ,racketPlayer, racketOpponent, ball);
-//			bonus1.updateScreen(this);
-//		}
-		/*
-		if (bonus.getInUse() == false && bonus1.getInUse() == false) {
-			playTime = 0;
-			timeToRand = System.currentTimeMillis() / 1000;
-			bonusIsCreated = false;
-			System.out.print("Fin des bonus\n");
-		} else
-			playTime = 300;
-		*/
 		if (bonus.getInUse() == false) {
 			playTime = 0;
 			timeToRand = MULTIPLICATE_NUMBER_TO_RAND_TIME * (System.currentTimeMillis() / 1000);
 			bonusIsCreated = false;
-			System.out.println("Fin des bonus");
 		}
 	}
 }

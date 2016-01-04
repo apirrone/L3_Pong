@@ -12,6 +12,10 @@ public class Bonus extends PongItem {
 	public static final int BONUS_MAX_POSITION_Y  = 570;
 	public static final int NUMBER_OF_BONUS = 7;
 	
+	/**
+	 * inUse est un boolean qui nous permet de savoir si oui ou non le bonus est actif en jeu
+	 * applyBonus est l'identifiant du type bonus a utilise
+	 */
 	private Point speed;
 	private boolean inUse;
 	private int applyBonus;
@@ -33,24 +37,11 @@ public class Bonus extends PongItem {
 			speed.setLocation(-BONUS_BASE_SPEED_X, 0);
 		else 
 			speed.setLocation(BONUS_BASE_SPEED_X, 0);
-		//determine quel bonus sera applique a ce bonus quand il sera utilise
 		this.applyBonus = (int) numBonus;
-		
-		/*
-		if(serveur) {
-			this.position.setLocation(BONUS_BASE_POSITION_X, 300);
-			this.speed = new Point(BONUS_BASE_SPEED_X, 0);
-		} else {
-			this.position.setLocation(BONUS_BASE_POSITION_X, 300);
-			this.speed = new Point(-BONUS_BASE_SPEED_X, 0);
-		}
-		//determine quel bonus sera applique a ce bonus quand il sera utilise
-		this.applyBonus = RandomNumber.randomValue(min, max);
-		*/
 	}
 	
 	/**
-	 * Fonction permettant de determiner le bonus a appliquer sur les raquettes et balle
+	 * Fonction permettant de determiner le bonus a appliquer sur les raquettes ou balle
 	 */
 	private void getRandomBonus(BallType ball, RacketType racketPlayer, RacketType racketOpponent) {
 		switch (applyBonus) {
@@ -80,17 +71,6 @@ public class Bonus extends PongItem {
 		}
 	}
 	
-	/**
-	 * Acces a la variable quel bonus a appliquer si le bonus est utilise:
-	 * Si 1 la vitesse de la balle est augmente
-	 * Si 2 la vitesse de la balle est ralentie
-	 * Si 3 La vitesse de la raquette touchant le bonus est augmente
-	 * Si 4 la vitesse de la raquette touchant le bonus est diminue
-	 */
-	public int getApplyBonus(){
-		return this.applyBonus;
-	}
-	
 	/** 
 	 * True si le bonus est toujours sur le pong, 
 	 * False si le bonus a traverse le pong et a ete utilise ou detruit
@@ -110,19 +90,8 @@ public class Bonus extends PongItem {
 				getRandomBonus(ball, racketOpponent, racketPlayer);
 				deleteBonus();
 			}
-			for (int j=(Math.abs(speed.y)/Math.abs(speed.x)); j>0; j--) {
-				if (racketPlayer.itemOnRacketHaut(this) || racketPlayer.itemOnRacketCorner(this)) {
-					getRandomBonus(ball, racketPlayer, racketOpponent);
-					deleteBonus();
-				}
-				if (racketOpponent.itemOnRacketHaut(this) || racketOpponent.itemOnRacketCorner(this)) {
-					getRandomBonus(ball,racketOpponent, racketPlayer);
-					deleteBonus();
-				}
-				this.position.translate(0, speed.y/Math.abs(speed.y));
-			}
 			this.position.translate(speed.x/Math.abs(speed.x), 0);
-			// Si le bonus touche le bord de l'ecran a gauche ou a droite il est efface
+			// Si le bonus ne touche pas le cote de l'une des raquettes il est efface
 			if (position.x < (RacketType.RACKET_PLAYER_BASE_POSITION_X + racketPlayer.getWidth()) || position.x > (RacketType.RACKET_OPPONENT_BASE_POSITION_X - width))
 				deleteBonus();
 		}	

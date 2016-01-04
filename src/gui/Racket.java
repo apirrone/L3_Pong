@@ -5,6 +5,9 @@ import java.awt.Toolkit;
 
 public class Racket extends RacketType{
 
+	/**
+	 * Les quatres niveaux de PONG_BARRE représentent les quatres tailles de raquettes possibles
+	 */
 	private static final Image PONG_BARRE_NIV_P1 = Toolkit.getDefaultToolkit().createImage(
 			ClassLoader.getSystemResource("ressource/barrePongMultNivP1.png"));
 	private static final Image PONG_BARRE_NIV_0 = Toolkit.getDefaultToolkit().createImage(
@@ -22,6 +25,9 @@ public class Racket extends RacketType{
 		setImage(PONG_BARRE_NIV_0);
 	}
 
+	/**
+	 * Diminue la taille de la raquette
+	 */
 	public void divideRacket() {
 		if (getImage().equals(PONG_BARRE_NIV_P1)) {
 			setImage(PONG_BARRE_NIV_0);
@@ -42,7 +48,10 @@ public class Racket extends RacketType{
 			}
 		}
 	}
-	
+
+	/**
+	 * Augmente la taille de la raquette
+	 */
 	public void multiplyRacket() {
 		if (getImage().equals(PONG_BARRE_NIV_M2)) {
 			setImage(PONG_BARRE_NIV_M1);

@@ -83,11 +83,19 @@ public class RacketTypeTest {
 	}
 
 	@Test
-	public void testItemOnRacketHaut() {
+	public void testItemOnRacketTop() {
 		RacketType racket = new Racket(true);
 		BallType ball = new Ball(true);
 		ball.setPosition(30 , 230);
-		assertTrue(racket.itemOnRacketHaut(ball));
+		assertTrue(racket.itemOnRacketTop(ball));
+	}
+
+	@Test
+	public void testItemOnRacketBot() {
+		RacketType racket = new Racket(true);
+		BallType ball = new Ball(true);
+		ball.setPosition(30 , 326);
+		assertTrue(racket.itemOnRacketBot(ball));
 	}
 
 	@Test

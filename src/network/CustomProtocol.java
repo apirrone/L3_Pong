@@ -101,16 +101,11 @@ public class CustomProtocol {
 		return s;
 	}
 
-
 	public byte[] toByteArray(){
 		byte[] ret;
-		
 		ret = this.toString().getBytes();
-		
 		return ret;
 	}
-	
-	
 	
 	/**
 	 * Get / Set accesseurs des attributs

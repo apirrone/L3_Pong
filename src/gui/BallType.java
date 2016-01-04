@@ -172,7 +172,7 @@ public abstract class BallType extends PongItem {
 	 */
 	public void oneMoveBallOnY (RacketType racketPlayer, RacketType racketOpponent) {
 		// On test si on ne touche pas la raquette
-		moveBallOnRacketHaut(racketPlayer, racketOpponent);
+		moveBallOnRacketTopOrBot(racketPlayer, racketOpponent);
 		// On realise le mouvement vertical d'un pixel
 		position.translate(0, speed.y/Math.abs(speed.y));
 		// Si la balle tape le haut du pong
@@ -210,10 +210,11 @@ public abstract class BallType extends PongItem {
     }
 
 	/**
-	 * Reaction de la balle si elle touche le haut de la raquette
+	 * Reaction de la balle si elle touche le haut ou le bas de la raquette
 	 */
-	public void moveBallOnRacketHaut(RacketType racketPlayer, RacketType racketOpponent) {	
-		if (racketPlayer.itemOnRacketHaut(this) || racketOpponent.itemOnRacketHaut(this))
+	public void moveBallOnRacketTopOrBot(RacketType racketPlayer, RacketType racketOpponent) {	
+		if (racketPlayer.itemOnRacketTop(this) || racketOpponent.itemOnRacketTop(this) ||
+				racketPlayer.itemOnRacketBot(this) || racketOpponent.itemOnRacketBot(this))
 			setSpeedY(- getSpeed().y);	
 	}
     
