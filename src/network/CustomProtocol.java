@@ -56,30 +56,6 @@ public class CustomProtocol {
 	}
 	
 	/** 
-	 * Fonction de conversion d'une string en CustomProtocol
-	 */
-	public void setCustomProtocol(byte[] b) {
-		if(b.length != 0 && !b.toString().equals("error")) {
-			// Separe dans un tableau de String les elements de la chaine "s" separes par ";"
-			String s = b.toString();
-			String[] st = s.split(";");
-			this.yRacket = Integer.parseInt(st[0]);
-			this.ballPosition.setLocation(Integer.parseInt(st[1]), Integer.parseInt(st[2]));
-			this.hasLift = Boolean.valueOf(st[3]);
-			this.liftSpeed = Integer.parseInt(st[4]);
-			this.ballSpeedY = Integer.parseInt(st[5]);
-			this.timeToRand = Long.parseLong(st[6]);
-		} else {
-			this.yRacket = 0;
-			this.ballPosition.setLocation(0,0);
-			this.hasLift = false;
-			this.liftSpeed = 0;
-			this.ballSpeedY = 0;
-			this.timeToRand = 0;
-		}
-	}
-	
-	/** 
 	 * Format du protocole : "<yRacket>;<xBall>;<yBall>;<hasLift>;<liftSpeed>;<yBallSpeed>;<timeToRand>"
 	 */
 	public String toString() {
@@ -99,12 +75,6 @@ public class CustomProtocol {
 		s += ";";
 		s += Long.toString(this.timeToRand);
 		return s;
-	}
-
-	public byte[] toByteArray(){
-		byte[] ret;
-		ret = this.toString().getBytes();
-		return ret;
 	}
 	
 	/**
